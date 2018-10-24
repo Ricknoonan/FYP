@@ -49,8 +49,6 @@ odds = Odds
 konst :: a -> Obs a
 konst k = Obs (\t -> k)
 
-----Needs work----
---ToDo: look at paper again to see how time horizon is reached
 --Checks if time horizon has been reached
 sameDate :: Date -> Date -> Bool
 sameDate (Date t1) (Date t2) = (t1 == t2) 
@@ -58,4 +56,5 @@ sameDate (Date t1) (Date t2) = (t1 == t2)
 --Checks current date and future date
 at :: Date -> Obs Bool 
 at t_future = Obs (\t ->  sameDate t_future t)
-----Needs Work-----
+
+
