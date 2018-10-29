@@ -4,9 +4,12 @@ import Contract
 
 --This function returns type contract called time by combining a one contract, 
 -- a scale contract and an odds contract. 
-betCon :: Date -> Double -> Double -> Currency -> Contract
-betCon t k o cur = time (at t) (odds (konst o) (scale (konst k) (one cur)))
 
+bet :: Double -> Double -> Transfer -> Contract
+bet amount price cur = scale (konst (payout price amount)) (scale (konst amount) (one cur))
 
-bet1 = betCon (Date 5) 100 10 EUR 
+sendMoney :: Date -> Double -> Double -> Transfer -> Contract
+sendMoney settleDate amount price cur  = time (at settleDate) (give (bet amount price cur))
 
+bettingContract = sendMoney 
+bettingContract1 = bettingContract (Date 10) 100 10 (Currency EUR)  
