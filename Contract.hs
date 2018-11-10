@@ -3,7 +3,10 @@ module Contract where
 import Numeric
 import Control.Monad
 import Data.Unique
-import Data.Time
+import Data.Time.Calendar 
+import Data.Time.LocalTime
+
+--import Prelude hiding (show)
 
 data CurrencySymbol = EUR | USD | GBP
       deriving (Eq, Show, Ord)
@@ -25,22 +28,25 @@ data Contract = Zero |
                 Give Contract |
                 And Contract Contract |
                 Bet Contract
-      deriving (Show)
+        deriving (Show)
 
 -- \item Amount bet {Currency}{Amount}. Odds {Odds}. Payout {Currency}{Amount*Odds} on {Date}
--- \item Amount bet €100. Odds 10/1. Payout €1000
+-- \item Amount bet €100. Odds 10/1. Payout €1000. Date 
 
 data ReadableContract = AmountBet String |
                         Odds String |
                         Payout String |
-                        BettingContract ReadableContract ReadableContract ReadableContract
-      deriving (Show)
+                        ExpireDate String |
+                        DateReached (Obs Bool)|
+                        BettingContract ReadableContract ReadableContract ReadableContract ReadableContract ReadableContract
+        deriving (Show)
 
 newtype Obs a = Obs (Date -> a)
 
+--instance Show a => Show (Obs a) where
+--show (Obs o) = "(Obs " ++ show  (o today) ++ ")"
 instance Show a => Show (Obs a) where
-   show (Obs o) = "(Obs " ++ show  (o today) ++ ")"
-
+   show (Obs o) = show  (o today) 
 
 -------ReadableContract--------
 --This takes the One contract and returns a double 1 for the purpose of scaling 
@@ -62,12 +68,19 @@ atOdds :: Double -> ReadableContract
 atOdds odds = 
     Odds (show odds)
 
---bettingContract take the 
-bettingContract :: Double -> Double -> Transfer -> ReadableContract
-bettingContract odds bet currency = 
-    BettingContract (amountBet bet currency) (atOdds odds) (payout (Scale odds (Scale bet (One currency))))
+--Bet (Time (Obs False) (Scale (Obs 5) (Scale (Obs 100.0) (One (Currency EUR)))))
+dateReached :: Date -> ReadableContract
+dateReached settleDate = DateReached (at settleDate)
 
-bettingContract1 = bettingContract 10 10 (Currency EUR)
+expireDate :: Date -> ReadableContract
+expireDate settleDate = ExpireDate (show settleDate)
+
+--bettingContract take the 
+bettingContract :: Double -> Double -> Transfer -> Date -> ReadableContract
+bettingContract odds bet currency settleDate = 
+    BettingContract (amountBet bet currency) (atOdds odds) (payout (Scale odds (Scale bet (One currency)))) (dateReached settleDate) (expireDate settleDate)
+
+bettingContract1 = bettingContract 10 10 (Currency USD) (Date 10) 
 
 currency :: Transfer -> String
 currency (Currency EUR) = (show (EUR))
@@ -77,7 +90,7 @@ currency (Currency GBP) = (show (GBP))
 
 
 today :: Date
-today = Date 0 
+today = Date 0
 
 zero :: Contract
 zero = Zero 
@@ -116,7 +129,3 @@ sameDate (Date t1) (Date t2) = (t1 == t2)
 --Checks current date and future date
 at :: Date -> Obs Bool 
 at t_future = Obs (\t ->  sameDate t_future t)
-
-
-
-
