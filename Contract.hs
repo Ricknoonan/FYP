@@ -1,5 +1,6 @@
 module Contract where 
 
+import Prelude hiding (and)
 import Numeric
 import Control.Monad
 import Data.Unique
@@ -11,112 +12,60 @@ import Data.Time.LocalTime
 data CurrencySymbol = EUR | USD | GBP
       deriving (Eq, Show, Ord)
 
-data AssetCode = Stocks | Bonds 
-      deriving (Eq, Show, Ord)
+currency :: Transfer -> String
+currency (Currency EUR) = (show (EUR))
+currency (Currency USD) = (show (USD))
+currency (Currency GBP) = (show (GBP))
 
-data Transfer = Currency CurrencySymbol | Asset AssetCode | Null
+data Transfer = Currency CurrencySymbol | Null
        deriving (Eq, Show, Ord)
 
 data Date = Date  Int
       deriving (Show)
 
+today :: Date
+today = Date 0
+
 data Contract = Zero | 
                 One Transfer | 
-                Time (Obs Bool) Contract | 
+                Time (Obs Bool) Date Contract | 
                 Scale Double Contract | 
                 Get Contract |
                 Give Contract |
-                And Contract Contract |
-                Bet Contract
+                And Contract Contract       
         deriving (Show)
-
--- \item Amount bet {Currency}{Amount}. Odds {Odds}. Payout {Currency}{Amount*Odds} on {Date}
--- \item Amount bet €100. Odds 10/1. Payout €1000. Date 
 
 data ReadableContract = AmountBet String |
                         Odds String |
                         Payout String |
+                        AtContractExpire ReadableContract ReadableContract ReadableContract|
                         ExpireDate String |
-                        DateReached (Obs Bool)|
-                        BettingContract ReadableContract ReadableContract ReadableContract ReadableContract ReadableContract
+                        DateReached (Obs Bool) |
+                        BettingContract ReadableContract ReadableContract ReadableContract  
         deriving (Show)
 
 newtype Obs a = Obs (Date -> a)
 
---instance Show a => Show (Obs a) where
---show (Obs o) = "(Obs " ++ show  (o today) ++ ")"
 instance Show a => Show (Obs a) where
    show (Obs o) = show  (o today) 
-
--------ReadableContract--------
---This takes the One contract and returns a double 1 for the purpose of scaling 
-oneInteger :: Contract -> Double
-oneInteger (One transfer) = 1
-
---payout takes a scale contract and returns Payout of type ReadableContract by multiplying the odds by the bet and converting to String using show
-payout :: Contract -> ReadableContract
-payout (Scale odds (Scale bet (One cur))) = 
-    Payout ((currency cur)++(show(odds * bet * oneInteger (One cur))))
 
 --amountBet take the bet size and currency of bet and returns AmountBet of type ReadableContract
 amountBet :: Double -> Transfer -> ReadableContract 
 amountBet bet cur = 
     AmountBet (currency (cur)++show bet)
 
---atOdds convets odds to Strig
+--atOdds convets odds to String
 atOdds :: Double -> ReadableContract
 atOdds odds = 
     Odds (show odds)
 
---Bet (Time (Obs False) (Scale (Obs 5) (Scale (Obs 100.0) (One (Currency EUR)))))
 dateReached :: Date -> ReadableContract
-dateReached settleDate = DateReached (at settleDate)
+dateReached settleDate = 
+    DateReached (at settleDate)
 
 expireDate :: Date -> ReadableContract
-expireDate settleDate = ExpireDate (show settleDate)
-
---bettingContract take the 
-bettingContract :: Double -> Double -> Transfer -> Date -> ReadableContract
-bettingContract odds bet currency settleDate = 
-    BettingContract (amountBet bet currency) (atOdds odds) (payout (Scale odds (Scale bet (One currency)))) (dateReached settleDate) (expireDate settleDate)
-
-bettingContract1 = bettingContract 10 10 (Currency USD) (Date 10) 
-
-currency :: Transfer -> String
-currency (Currency EUR) = (show (EUR))
-currency (Currency USD) = (show (USD))
-currency (Currency GBP) = (show (GBP))
---------End ReadableContract--------------
-
-
-today :: Date
-today = Date 0
-
-zero :: Contract
-zero = Zero 
-
-time :: Obs Bool -> Contract -> Contract
-time = Time
-
-one :: Transfer -> Contract
-one = One 
-
-scale :: Double -> Contract -> Contract
-scale = Scale 
-
-get :: Contract -> Contract
-get = Get
-
-give :: Contract -> Contract
-give = Give
-
-and' :: Contract -> Contract -> Contract
-and' = And 
-
-bet :: Contract -> Contract
-bet = Bet
-
------Observables-----
+expireDate settleDate = 
+    ExpireDate (show settleDate)
 
 --Constant to scale contract 
 konst :: a -> Obs a
