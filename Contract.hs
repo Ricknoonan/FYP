@@ -7,8 +7,6 @@ import Data.Unique
 import Data.Time.Calendar 
 import Data.Time.LocalTime
 
---import Prelude hiding (show)
-
 data CurrencySymbol = EUR | USD | GBP
       deriving (Eq, Show, Ord)
 
@@ -66,6 +64,9 @@ dateReached settleDate =
 expireDate :: Date -> ReadableContract
 expireDate settleDate = 
     ExpireDate (show settleDate)
+
+oneReadable :: Contract -> Double
+oneReadable (One transfer) = 1
 
 --Constant to scale contract 
 konst :: a -> Obs a

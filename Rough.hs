@@ -24,4 +24,27 @@
 -- 5. Return some action that is acted on the blockchain 
 
 --contractToReadable :: Double -> Double -> Transfer -> ReadableContract 
---contractToReadable x y transfer = BetContract ((show transfer)++(show (multiply (Scale x (Scale y (One transfer))))) ++ " bet at " ++ (show y))
+--contractToReadable x y transfer = BetContract ((show transfer)++(show (multiply (Scale x (Scale y (One transfer))))) ++ " bet at " ++ (show y))7
+zero :: Contract
+zero = Zero
+
+time :: Obs Bool -> Date -> Contract -> Contract
+time = Time
+
+one :: Transfer -> Contract
+one = One 
+
+scale :: Double -> Contract -> Contract
+scale = Scale 
+
+get :: Contract -> Contract
+get = Get
+
+give :: Contract -> Contract
+give = Give
+
+and :: Contract -> Contract -> Contract
+and = And 
+
+    one :: Transfer -> c
+    scale :: Double -> c -> c
