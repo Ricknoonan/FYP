@@ -33,8 +33,10 @@ data Contract = Zero |
                 And Contract Contract       
         deriving (Show)
 
-data ReadableContract = AmountBet String |
-                        Odds String |
+data ReadableContract = Empty |
+                        --Single Int |
+	                    AmountBet String |
+                        Odds Double |
                         Payout String |
                         AtContractExpire ReadableContract ReadableContract ReadableContract|
                         ExpireDate String |
@@ -55,7 +57,7 @@ amountBet bet cur =
 --atOdds convets odds to String
 atOdds :: Double -> ReadableContract
 atOdds odds = 
-    Odds (show odds)
+    Odds odds
 
 dateReached :: Date -> ReadableContract
 dateReached settleDate = 
@@ -67,6 +69,9 @@ expireDate settleDate =
 
 oneReadable :: Contract -> Double
 oneReadable (One transfer) = 1
+
+
+--Observables--
 
 --Constant to scale contract 
 konst :: a -> Obs a
