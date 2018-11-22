@@ -6,7 +6,9 @@ import ContractClass
 -- \item Amount bet €100. Odds 10/1. Payout €1000. Date 
 bettingContract :: Double -> Double -> Transfer -> Date -> ReadableContract
 bettingContract odds bet currency settleDate = 
-    BettingContract (amountBet bet currency) (atOdds odds) (time (at settleDate)(settleDate)(Scale odds (Scale bet (One currency))))
+    FinalContract (amount bet currency) (odds) 
+        (time (at settleDate)(settleDate)(Scale odds (Scale bet (One currency))))
 
 bettingContract1 = bettingContract 10 10 (Currency USD) (Date 10) 
 --BettingContract (AmountBet "USD10.0") (Odds "10.0") (AtContractExpire (DateReached False) (ExpireDate "Date 10") (Payout "USD100.0"))
+

@@ -4,23 +4,28 @@ import Contract
 
 class Contracts c where
     zero :: c
-    time :: Obs Bool -> Date -> Contract -> c
     one :: Transfer -> c
+    time :: Obs Bool -> Date -> Contract -> c
     scale :: Double -> Contract -> c
+    and :: c -> c -> c
 
 instance Contracts Contract where
     zero = Zero
-    time = Time
     one = One
-    scale = Scale  
+    time = Time
+    scale = Scale 
+    and = And 
 
 instance Contracts ReadableContract where
     zero = Empty
+    one (cur) = Single (currency cur)(oneReadable (One cur))
 
-    time (isSettleDate)(settleDate)(Scale odds (Scale bet (One cur))) =
+    time (isSettleDate)(settleDate)(Scale amountx (Scale amounty (One cur))) = 
+        AtContractExpire (dateReached settleDate) (expireDate settleDate) 
+            (scale amountx (Scale amounty (One cur)))
+    time (isSettleDate)(settleDate)(Scale amountx (One cur)) = 
         AtContractExpire (dateReached settleDate) 
-                (expireDate settleDate) 
-                        (scale odds (Scale bet (One cur)))
+            (expireDate settleDate) (scale amountx (One cur))
 
-    scale odds (Scale bet (One cur)) = 
-        Payout ((currency cur) ++ show(odds * bet * oneReadable (One cur)))
+    scale scalex (One cur) = Payout (currency cur) (scalex * oneReadable (One cur))
+    scale scaley (Scale scalex (One cur)) = Payout (currency cur) (scalex * oneReadable (One cur) * scaley)

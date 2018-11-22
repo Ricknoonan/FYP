@@ -34,14 +34,13 @@ data Contract = Zero |
         deriving (Show)
 
 data ReadableContract = Empty |
-                        --Single Int |
-	                    AmountBet String |
-                        Odds Double |
-                        Payout String |
+                        Single String Double |
+                        Amount String Double |
+                        Payout String Double |
                         AtContractExpire ReadableContract ReadableContract ReadableContract|
                         ExpireDate String |
                         DateReached (Obs Bool) |
-                        BettingContract ReadableContract ReadableContract ReadableContract  
+                        FinalContract ReadableContract Double ReadableContract  
         deriving (Show)
 
 newtype Obs a = Obs (Date -> a)
@@ -50,14 +49,9 @@ instance Show a => Show (Obs a) where
    show (Obs o) = show  (o today) 
 
 --amountBet take the bet size and currency of bet and returns AmountBet of type ReadableContract
-amountBet :: Double -> Transfer -> ReadableContract 
-amountBet bet cur = 
-    AmountBet (currency (cur)++show bet)
-
---atOdds convets odds to String
-atOdds :: Double -> ReadableContract
-atOdds odds = 
-    Odds odds
+amount :: Double -> Transfer -> ReadableContract 
+amount bet cur = 
+    Amount (currency (cur)) (bet)
 
 dateReached :: Date -> ReadableContract
 dateReached settleDate = 
@@ -69,7 +63,6 @@ expireDate settleDate =
 
 oneReadable :: Contract -> Double
 oneReadable (One transfer) = 1
-
 
 --Observables--
 
