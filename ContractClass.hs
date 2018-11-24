@@ -17,15 +17,20 @@ instance Contracts Contract where
     and = And 
 
 instance Contracts ReadableContract where
-    zero = Empty
-    one (cur) = Single (currency cur)(oneReadable (One cur))
+    zero = ZeroReadable
+    one (cur) = OneReadable (oneReadable (One cur))
 
     time (isSettleDate)(settleDate)(Scale amountx (Scale amounty (One cur))) = 
-        AtContractExpire (dateReached settleDate) (expireDate settleDate) 
+        TimeReadable (dateReached settleDate) (expireDate settleDate) 
             (scale amountx (Scale amounty (One cur)))
-    time (isSettleDate)(settleDate)(Scale amountx (One cur)) = 
-        AtContractExpire (dateReached settleDate) 
-            (expireDate settleDate) (scale amountx (One cur))
 
-    scale scalex (One cur) = Payout (currency cur) (scalex * oneReadable (One cur))
-    scale scaley (Scale scalex (One cur)) = Payout (currency cur) (scalex * oneReadable (One cur) * scaley)
+    time (isSettleDate)(settleDate)(Scale amount (One cur)) = 
+        TimeReadable (dateReached settleDate) (expireDate settleDate) 
+            (scale amount (One cur))
+
+    scale amount (One cur) = 
+        ScaleReadable (amount * oneReadable (One cur))
+        
+    scale scaley (Scale scalex (One cur)) = 
+        ScaleReadable (scalex * oneReadable (One cur) * scaley)
+    and = Join 

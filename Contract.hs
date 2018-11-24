@@ -10,11 +10,6 @@ import Data.Time.LocalTime
 data CurrencySymbol = EUR | USD | GBP
       deriving (Eq, Show, Ord)
 
-currency :: Transfer -> String
-currency (Currency EUR) = (show (EUR))
-currency (Currency USD) = (show (USD))
-currency (Currency GBP) = (show (GBP))
-
 data Transfer = Currency CurrencySymbol | Null
        deriving (Eq, Show, Ord)
 
@@ -22,7 +17,7 @@ data Date = Date  Int
       deriving (Show)
 
 today :: Date
-today = Date 0
+today = Date 10
 
 data Contract = Zero | 
                 One Transfer | 
@@ -33,14 +28,14 @@ data Contract = Zero |
                 And Contract Contract       
         deriving (Show)
 
-data ReadableContract = Empty |
-                        Single String Double |
-                        Amount String Double |
-                        Payout String Double |
-                        AtContractExpire ReadableContract ReadableContract ReadableContract|
-                        ExpireDate String |
+data ReadableContract = ZeroReadable |
+                        OneReadable Double |
+                        TimeReadable ReadableContract ReadableContract ReadableContract | 
+                        ScaleReadable Double |
+                        Amount Double | 
+                        ExpireDate Date |
                         DateReached (Obs Bool) |
-                        FinalContract ReadableContract Double ReadableContract  
+                        Join ReadableContract ReadableContract           
         deriving (Show)
 
 newtype Obs a = Obs (Date -> a)
@@ -49,9 +44,8 @@ instance Show a => Show (Obs a) where
    show (Obs o) = show  (o today) 
 
 --amountBet take the bet size and currency of bet and returns AmountBet of type ReadableContract
-amount :: Double -> Transfer -> ReadableContract 
-amount bet cur = 
-    Amount (currency (cur)) (bet)
+amount :: Double -> ReadableContract 
+amount bet = Amount (bet)
 
 dateReached :: Date -> ReadableContract
 dateReached settleDate = 
@@ -59,10 +53,11 @@ dateReached settleDate =
 
 expireDate :: Date -> ReadableContract
 expireDate settleDate = 
-    ExpireDate (show settleDate)
+    ExpireDate settleDate
 
 oneReadable :: Contract -> Double
 oneReadable (One transfer) = 1
+ 
 
 --Observables--
 
