@@ -1,7 +1,12 @@
 # FYP
 Repo for Final Year Project: Haskell DSL for smart contracts on the ethereum blockchain
 
-Contracts.hs contains the contract datatypes as well as functions produce a simple betting contract.
+Contracts.hs the data types Contract and ReadableContract and evaluators for each. 
 
-ContractClass.hs contains typeclass Contract which defines functions for different types of contracts and instances for each 
+ContractClass.hs contains the class Contract and an instance for contract.
+
+Testing.hs contains test functions for each contract 
+
+Betting.hs, Lottery.hs and Futures are contract examples
+
 

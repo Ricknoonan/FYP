@@ -5,19 +5,24 @@ import Contract
 class Contracts c where
     zero :: c
     one :: Transfer -> c
-    time :: Obs Bool -> Date -> Contract -> c
+    time :: Obs Bool -> Contract -> c
     scale :: Double -> Contract -> c
-    and :: c -> c -> c
+    and' :: c -> c -> c
+    give :: c -> c
+    or' :: c -> c -> c
 
 instance Contracts Contract where
     zero = Zero
     one = One
     time = Time
     scale = Scale 
-    and = And 
+    and' = And
+    give = Give
+    or' = Or
 
+{-
 instance Contracts ReadableContract where
-    zero = ZeroReadable
+    zero = ZeroReadable "Empty"
     one (cur) = OneReadable (oneReadable (One cur))
 
     time (isSettleDate)(settleDate)(Scale amountx (Scale amounty (One cur))) = 
@@ -34,3 +39,4 @@ instance Contracts ReadableContract where
     scale scaley (Scale scalex (One cur)) = 
         ScaleReadable (scalex * oneReadable (One cur) * scaley)
     and = Join 
+    -}

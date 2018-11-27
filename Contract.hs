@@ -17,25 +17,25 @@ data Date = Date  Int
       deriving (Show)
 
 today :: Date
-today = Date 10
+today = Date 0
 
-data Contract = Zero | 
-                One Transfer | 
-                Time (Obs Bool) Date Contract | 
-                Scale Double Contract | 
-                Get Contract |
-                Give Contract |
-                And Contract Contract       
+data Contract = Zero |
+                One Transfer |
+                Time (Obs Bool) Contract | 
+                Scale Double Contract |
+                Give Contract | 
+                And Contract Contract |
+                Or Contract Contract     
         deriving (Show)
 
-data ReadableContract = ZeroReadable |
-                        OneReadable Double |
-                        TimeReadable ReadableContract ReadableContract ReadableContract | 
-                        ScaleReadable Double |
-                        Amount Double | 
-                        ExpireDate Date |
-                        DateReached (Obs Bool) |
-                        Join ReadableContract ReadableContract           
+data ReadableContract = Empty String |
+                        Single Transfer |
+                        Payout Double |
+                        Send ReadableContract |
+                        Expired (Obs Bool) |
+                        BetterContract ReadableContract  |
+                        Join ReadableContract ReadableContract |
+                        TimeReadable ReadableContract ReadableContract         
         deriving (Show)
 
 newtype Obs a = Obs (Date -> a)
@@ -43,22 +43,28 @@ newtype Obs a = Obs (Date -> a)
 instance Show a => Show (Obs a) where
    show (Obs o) = show  (o today) 
 
---amountBet take the bet size and currency of bet and returns AmountBet of type ReadableContract
-amount :: Double -> ReadableContract 
-amount bet = Amount (bet)
+--evalC takes the primitive contracts and performs the neccesary computations on
+--and returns a double that can be used in evalR
+evalC :: Contract -> Double 
+evalC Zero           = 0
+evalC (One t)        = 1
+evalC (o `Scale` c)  = o * evalC c
+evalC (o `Time` c)   = evalC c
+evalC (c1 `And` c2)  = evalC c1 + evalC c2
+evalC (c1 `Or` c2)   = max (evalC c1) (evalC c2)
 
-dateReached :: Date -> ReadableContract
-dateReached settleDate = 
-    DateReached (at settleDate)
-
-expireDate :: Date -> ReadableContract
-expireDate settleDate = 
-    ExpireDate settleDate
-
-oneReadable :: Contract -> Double
-oneReadable (One transfer) = 1
- 
-
+--evalR takes the primitive contracts and returns readable contracts using evalC when needed
+evalR :: Contract -> ReadableContract
+evalR Zero          = Empty "Empty"
+evalR (One t)       = Single t
+evalR (o `Scale` c) = Payout (evalC (o `Scale` c))
+evalR (Give c)      = Send (evalR c)
+evalR (o `Time` c)  = TimeReadable (Expired o) (evalR c)
+evalR (c1 `And` c2) = (evalR c1) `Join` (evalR c2)
+evalR (c1 `Or` c2)  = if (evalC (c1 `Or` c2)) == (evalC c1)
+                        then BetterContract (evalR c1)
+                        else BetterContract (evalR c2)
+                   
 --Observables--
 
 --Constant to scale contract 
