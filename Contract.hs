@@ -24,68 +24,60 @@ dateConverter (Date (y,m,d)) = resultIO (y,m,d)
 dateSame :: Day -> Day -> Bool
 dateSame d1 d2 = d1 == d2
 --}
-{--
-data ContactSt = ContactSt { 
-    people :: People [Person],
-    etherBalance :: EtherBalance Money,
-    owner :: Owner Person
-}
---}
-data ContactSt = People Person |
-                 EtherBalance Money |
-                 Owner Int 
-        deriving (Show)
 
-addToState :: Money -> Person -> State ContactSt ()
-addToState val p = do 
-	(EtherBalance bal) <- get
-	put $ EtherBalance (bal + val)
-	(People person) <- get
-	put $ People p
-	(Owner owner) <- get 
-	put $ Owner p
+data Person = Person Int  
+    deriving(Show,Eq)
 
-takeFromState :: Money -> State ContactSt ()
-takeFromState val = do 
-	(EtherBalance bal) <- get 
-	put $ EtherBalance (bal - val)
+data Money = Money Int 
+    deriving (Show,Eq)
 
-getValue :: State ContactSt (Person, Money, Int)
-getValue = do
-	(People person) <- get
-	(EtherBalance bal) <- get
-	(Owner owner) <- get 
-	pure (person, bal, owner)
+data Owner = Owner Person
+    deriving (Show,Eq)
 
-initialState :: State ContactSt ()
+--Record to keep track of contract state, people is an array of people involved in the contract, 
+--owner is the "owner" of the contract
+--meaning the person interacting with the contract(not currently functional)
+data ContractSt = ContractSt { 
+    people :: [Person],
+    etherBalance :: Money,
+    owner :: Person }
+
+addEther :: Money -> Person -> State ContractSt ContractSt
+addEther val p = do
+    cs <- get
+    let bal = etherBalance cs + val
+    put $ cs { etherBalance = bal}
+    newState <- get
+    return newState
+
+subEther :: Money -> State ContractSt ContractSt
+subEther val = do 
+	cs <- get 
+	let bal = etherBalance cs - val
+	put $ cs { etherBalance = bal}
+	newState <- get
+	return newState
+
+initialState :: State ContractSt ContractSt
 initialState = do 
-	(Owner owner) <- get
-	let owner = 0
-	put $ Owner owner
-	(People people) <- get 
-	put $ People 0
-	(EtherBalance bal) <- get
-	let bal = 0
-	put $ EtherBalance bal
-{--
-program :: State ContactSt (Person, Money, Int)
-program = do
-  addToState 10 1
-  takeFromState 4
-  getValue
+	cs <- get 
+	put $ cs {people = [], etherBalance = 0, owner = 0}
+	newState <- get
+	return newState
 
-runProgram :: (Person, Money, Int)
-runProgram = evalState program (EtherBalance 0)
---}
+instance Num Money where
+    (Money x) + (Money y) = Money (x + y)
+    (Money x) - (Money y) = Money (x - y)
+
+instance Num Person where
+	(Person x) + (Person y) = Person (x + y)
+	(Person x) - (Person y) = Person (x - y)
+
 data Date = Date (Integer,Int,Int)
     deriving (Show, Eq)
 
 today :: Date
 today = Date (2018,12,14)
-
-type Person = Int
-
-type Money = Int
 
 data Contract = End |
                 Time Date Contract Contract| 
@@ -123,30 +115,33 @@ instance Show a => Show (Obs a) where
 
 type OP = [Output]
 
-evalC :: Contract -> State ContactSt () -> (Contract, OP, State ContactSt ()) 
+evalC :: Contract -> State ContractSt ContractSt -> (Contract, OP, State ContractSt ContractSt)
 evalC c@(CashIn val person c1 c2) s = 
-	(c1, [CommitPass person (val)], addToState val person)
+	(c1, [CommitPass person (val)], addEther val person)
 
 evalC c@(Time date c1 c2) s
     | (at date) = (c1, [], s)
     | otherwise = (c2, [], s)
 
 evalC c@(Pay person1 person2 val c1) s = 
-	(c1, [PaySuccess person1 person2 val], takeFromState val)
+	(c1, [PaySuccess person1 person2 val], subEther val)
 
 evalC c@(Until date c1 c2) s
     | (at date) = (c2, [Null], s)
     | otherwise = (c1, [], s)
 
-evalAll :: Contract -> (Contract, OP, State ContactSt ())
+evalAll :: Contract -> (Contract, OP, State ContractSt ContractSt)
 evalAll c = evalAll2 c [] initialState
 
-evalAll2 :: Contract -> OP -> State ContactSt () -> (Contract, OP, State ContactSt ())
+evalAll2 :: Contract -> OP -> State ContractSt ContractSt -> (Contract, OP, State ContractSt ContractSt)
 evalAll2 c o s
     | c == End = (c, o, s)
     | otherwise = evalAll2 nc (o ++ no) ns
         where
-            (nc, no, ns) = evalC c s
+            (nc, no, ns) = evalC c s 
+
+instance Show ContractSt where
+	show (ContractSt [person] e o) = show ["People: " ++ show [person] ++ "Ether: " ++ show e ++ "Owner: " ++ show o] 
        
 --Observables--
 
