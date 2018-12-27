@@ -37,10 +37,10 @@ data Owner = Owner Person
 --Record to keep track of contract state, people is an array of people involved in the contract, 
 --owner is the "owner" of the contract
 --meaning the person interacting with the contract(not currently functional)
-data ContractSt = ContractSt { 
-    people :: [Person],
-    etherBalance :: Money,
-    owner :: Person }
+
+
+data ContractSt = ContractSt { people :: [Person], etherBalance :: Money, owner :: Person } deriving (Show)
+
 
 addEther :: Money -> Person -> State ContractSt ContractSt
 addEther val p = do
@@ -52,18 +52,19 @@ addEther val p = do
 
 subEther :: Money -> State ContractSt ContractSt
 subEther val = do 
-	cs <- get 
-	let bal = etherBalance cs - val
-	put $ cs { etherBalance = bal}
-	newState <- get
-	return newState
+    cs <- get 
+    let bal = etherBalance cs - val
+    put $ cs {etherBalance = bal}
+    newState <- get
+    return newState
 
 initialState :: State ContractSt ContractSt
 initialState = do 
-	cs <- get 
-	put $ cs {people = [], etherBalance = 0, owner = 0}
-	newState <- get
-	return newState
+    cs <- get 
+    put $ cs {people = [], etherBalance = 0, owner = 0}
+    newState <- get
+    return newState
+
 
 instance Num Money where
     (Money x) + (Money y) = Money (x + y)
@@ -140,9 +141,7 @@ evalAll2 c o s
         where
             (nc, no, ns) = evalC c s 
 
-instance Show ContractSt where
-	show (ContractSt [person] e o) = show ["People: " ++ show [person] ++ "Ether: " ++ show e ++ "Owner: " ++ show o] 
-       
+
 --Observables--
 
 --Constant to scale contract 
