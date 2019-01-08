@@ -4,7 +4,7 @@ import Prelude hiding (and, Nothing)
 import Numeric
 import Data.Unique
 import Data.Time
-import Control.Monad.Trans.State.Lazy
+import Control.Monad.Trans.State.Strict
 
 {--
 data Date = Date (Integer, Int, Int)
@@ -41,38 +41,27 @@ data Owner = Owner Person
 
 data ContractSt = ContractSt { people :: [Person], etherBalance :: Money, owner :: Person } deriving (Show)
 
-
-addEther :: Money -> Person -> State ContractSt ContractSt
-addEther val p = do
-    cs <- get
-    let bal = etherBalance cs + val
-    put $ cs { etherBalance = bal}
-    newState <- get
-    return newState
-
-subEther :: Money -> State ContractSt ContractSt
-subEther val = do 
+updateState :: (Money -> Money -> Money) -> Money -> Person -> State ContractSt ()
+updateState f val per = do
     cs <- get 
-    let bal = etherBalance cs - val
-    put $ cs {etherBalance = bal}
-    newState <- get
-    return newState
+    let bal = (etherBalance cs) + (val) 
+    let person = people cs ++ [per]
+    put $ cs { people = person, etherBalance = bal, owner = per}
 
-initialState :: State ContractSt ContractSt
+initialState :: State ContractSt ()
 initialState = do 
     cs <- get 
-    put $ cs {people = [], etherBalance = 0, owner = 0}
-    newState <- get
-    return newState
-
+    put $ cs {people = [1], etherBalance = 0, owner = 0}
 
 instance Num Money where
     (Money x) + (Money y) = Money (x + y)
     (Money x) - (Money y) = Money (x - y)
+    fromInteger x = Money (fromInteger x)
 
 instance Num Person where
 	(Person x) + (Person y) = Person (x + y)
 	(Person x) - (Person y) = Person (x - y)
+        fromInteger x = Person (fromInteger x)
 
 data Date = Date (Integer,Int,Int)
     deriving (Show, Eq)
@@ -116,31 +105,39 @@ instance Show a => Show (Obs a) where
 
 type OP = [Output]
 
-evalC :: Contract -> State ContractSt ContractSt -> (Contract, OP, State ContractSt ContractSt)
+evalC :: Contract -> State ContractSt () -> (Contract, OP, State ContractSt ())
 evalC c@(CashIn val person c1 c2) s = 
-	(c1, [CommitPass person (val)], addEther val person)
+	(c1, [CommitPass person (val)], updateState (+) val person)
 
 evalC c@(Time date c1 c2) s
     | (at date) = (c1, [], s)
     | otherwise = (c2, [], s)
 
 evalC c@(Pay person1 person2 val c1) s = 
-	(c1, [PaySuccess person1 person2 val], subEther val)
+	(c1, [PaySuccess person1 person2 val], updateState (-) val person1)
 
 evalC c@(Until date c1 c2) s
     | (at date) = (c2, [Null], s)
     | otherwise = (c1, [], s)
 
-evalAll :: Contract -> (Contract, OP, State ContractSt ContractSt)
-evalAll c = evalAll2 c [] initialState
+evalAll :: Contract -> (Contract, OP, ContractSt)
+evalAll c = execLast3 (evalAll2 c [] initialState)
 
-evalAll2 :: Contract -> OP -> State ContractSt ContractSt -> (Contract, OP, State ContractSt ContractSt)
+evalAll2 :: Contract -> OP -> State ContractSt () -> (Contract, OP, State ContractSt ())
 evalAll2 c o s
     | c == End = (c, o, s)
     | otherwise = evalAll2 nc (o ++ no) ns
         where
-            (nc, no, ns) = evalC c s 
+            (nc, no,ns) = evalC c s
 
+execLast3 :: (Contract, OP, State ContractSt ()) -> (Contract, OP, ContractSt)
+execLast3 f = maplast3 myExecuter f
+
+myExecuter :: State ContractSt () -> (ContractSt)
+myExecuter f = execState (f) (ContractSt {people = [], etherBalance = 0 , owner = 0 })
+
+maplast3 :: (x -> c) -> (a,b,x) -> (a,b,c)
+maplast3 f (a,b,x) = (a, b, f x)
 
 --Observables--
 
