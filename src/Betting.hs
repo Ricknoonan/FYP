@@ -9,13 +9,11 @@ bettingContract
 	      = until (Date (2018,12,13)) 
 	            (cashIn 20 1 
 	                (cashIn 30 2 
-	                    (cashIn 40 3
-	                        (time (Date (2018,12,14))
-	                            (pay 1 2 40 End)	                        
-	                        End)
+	                    (time (Date (2018,12,14))
+	                        (pay 1 2 40 End)	                        
 	                    End)
 	                End)                           	
 	            End)
 	        End
 
-c1 = evalAll(bettingContract)
+--c1 = evalAll(bettingContract)

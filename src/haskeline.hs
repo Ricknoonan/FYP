@@ -8,7 +8,7 @@ type ErrorWithIO = ExceptT String IO
 
 
 foo :: String -> ErrorWithIO String
-foo "paul" = do liftIO $ putStrLn "Paul!"
+foo "Yes" = do liftIO $ putStrLn "Paul!"
                 return "OK!"
 foo _ = throwError "ERROR!"
 
@@ -19,7 +19,7 @@ runRepl = runInputT defaultSettings $ loop
 
 loop :: InputT IO ()
 loop = do
-    line <- getInputLine "> "
+    line <- getInputLine "Use Betting Contract? "
     case line of
         Nothing -> return ()
         Just input -> do return $ putStrLn "asd"
@@ -31,3 +31,4 @@ loop = do
 
 main :: IO ()
 main = runRepl >> putStrLn "Goodbye!"
+
