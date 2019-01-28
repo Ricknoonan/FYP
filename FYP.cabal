@@ -20,7 +20,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     Contract
                        ContractClass
-  build-depends:       base, transformers, containers, time
+  build-depends:       base, transformers, containers, time, haskeline
   default-language:    Haskell2010
 
 executable FYP

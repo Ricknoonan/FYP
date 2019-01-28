@@ -9,17 +9,15 @@ type ErrorWithIO = ExceptT String IO
 
 foo :: String -> ErrorWithIO String
 foo "Yes" = do liftIO $ putStrLn "Paul!"
-                return "OK!"
 foo _ = throwError "ERROR!"
 
 
 runRepl :: IO ()
 runRepl = runInputT defaultSettings $ loop
 
-
 loop :: InputT IO ()
 loop = do
-    line <- getInputLine "Use Betting Contract? "
+    line <- getInputLine "Bet amount: "
     case line of
         Nothing -> return ()
         Just input -> do return $ putStrLn "asd"

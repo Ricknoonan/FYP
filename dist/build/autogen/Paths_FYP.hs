@@ -30,10 +30,10 @@ version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "C:\\Users\\richi\\AppData\\Roaming\\cabal\\bin"
-libdir     = "C:\\Users\\richi\\AppData\\Roaming\\cabal\\x86_64-windows-ghc-8.2.1\\FYP-0.1.0.0-CmOY3hzaPYG8WRm9YTP7P0"
+libdir     = "C:\\Users\\richi\\AppData\\Roaming\\cabal\\x86_64-windows-ghc-8.2.1\\FYP-0.1.0.0-ARNssx0Pg5HAgMTe776MUp"
 dynlibdir  = "C:\\Users\\richi\\AppData\\Roaming\\cabal\\x86_64-windows-ghc-8.2.1"
 datadir    = "C:\\Users\\richi\\AppData\\Roaming\\cabal\\x86_64-windows-ghc-8.2.1\\FYP-0.1.0.0"
-libexecdir = "C:\\Users\\richi\\AppData\\Roaming\\cabal\\FYP-0.1.0.0-CmOY3hzaPYG8WRm9YTP7P0\\x86_64-windows-ghc-8.2.1\\FYP-0.1.0.0"
+libexecdir = "C:\\Users\\richi\\AppData\\Roaming\\cabal\\FYP-0.1.0.0-ARNssx0Pg5HAgMTe776MUp\\x86_64-windows-ghc-8.2.1\\FYP-0.1.0.0"
 sysconfdir = "C:\\Users\\richi\\AppData\\Roaming\\cabal\\etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
