@@ -5,43 +5,61 @@ module Main (
 import Contract
 import ContractClass
 import Prelude hiding (until)
-import Data.Char(digitToInt)
+import Betting 
+import System.IO.Unsafe (unsafePerformIO)
+
+{--
+main :: Contract -> IO ()
+main c = do 
+    putStrLn "Enter Input: "
+    input <- getLine
+    case input of 
+        Nothing -> return ()
+        Just lineIn -> case lineIn of
+            Nothing -> return ()
+            Just inputted 
+--}
 
 main :: IO ()
 main = do 
-    let input = evalAll(bettingContract)
+    control (bettingContract)
+
+control :: Contract -> IO ()
+control c = do 
+    putStrLn (show c) 
+    let res = loop c
+    let (nc, no, ns) = evalAll c (unsafePerformIO (res))
+    control nc 
+    putStrLn ("Contract finished")
+
+loop :: Contract -> IO Money
+loop c = do 
+    case c of 
+        (Until obs c1 c2) -> return (0)
+        (CashIn val person c1 c2)  -> do 
+                                putStrLn "Enter Input: "
+                                input <- getLine 
+                                return (read input :: Money)
+        {--
+        (Pay person1 person2 val c1) -> do 
+                                putStrLn "Enter decision: "
+                                input <- getLine 
+                                return (read input :: Person)
+       --}
+
+{--
+    unsafePerformIO $ 
+    let (c,o,s) = evalAll(bettingContract)
     putStrLn(prettyPrint input)
 
 prettyPrint :: (Contract,OP,State) -> String
 prettyPrint (con, op, st) = (show con ++ show op ++ show st)
 
-bettingContract :: Contract
-bettingContract 
-        =   (until (OrOb (Date (2018,12,13)) (Amount 100))
-                (cashIn 20 1
-                    (cashIn 20 2
-                        (when (Ob (Date (2018,12,14)))
-                            (pay 1 2 40 End)                            
-                        End)                        
-                    End)
-                End)
-            End)    
-
-{--
-crowdFunder :: Contract 
-crowdFunder 
-             = (until (OrOb (Date (2018,12,13)) Amount 100) 
-                    (cashInUnlimited input 1 
-                        (cashInUnlimited input 2 
-                            (cashInUnlimited input 3
-                                (cashInUnlimited input 4 )   
---}              
-{--
 type ErrorWithIO = ExceptT String IO
+
 
 foo :: String -> ErrorWithIO String
 foo "Yes" = do liftIO $ putStrLn "Paul!"
-                return "OK!"
 foo _ = throwError "ERROR!"
 
 
@@ -63,16 +81,4 @@ loop = do
 main :: IO ()
 main = runRepl >> putStrLn "Goodbye!"
 
-
-look :: InputT IO ()
-loop = do 
-    line <- getInputLine "Bet amount: "
-    case line of
-        Nothing -> return ()
-        Just input -> do 
-            case unsafePerformIO $ runExceptT $ 
-                End)
-
 --}
-
-
