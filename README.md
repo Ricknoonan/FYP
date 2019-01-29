@@ -1,11 +1,11 @@
-# FYP: Haskell DSL for smart contracts on the ethereum blockchain
+# Final Year Project
+## Haskell DSL for smart contracts on the ethereum blockchain
 
-Contracts.hs the data types Contract and ReadableContract and evaluators for each. 
+This is a smart contract DSL written in haskell that will be able to produce ethereum bytecode. 
 
-ContractClass.hs contains the class Contract and an instance for contract.
+Currently, when run this evaluates a sample contract and shows how the contract is being evaluated in the output. 
 
-Tests.hs contains test functions for each contract 
+## Run
 
-Betting.hs, Lottery.hs and Futures are contract examples
-
-
+### Cabal 
+* `$ cabal run `
