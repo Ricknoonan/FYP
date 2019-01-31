@@ -29,7 +29,10 @@ data State = State {
              deriving (Eq,Show,Ord)
 
 data InputState = InputState {
-                    moneyIn :: Money
+                    moneyIn :: Money,
+                    decision :: Person,
+                    nothing :: String
+                    --date :: Observables
                     } 
              deriving (Eq,Show,Ord)
 
@@ -40,10 +43,10 @@ emptyState = State {people = Map.empty, etherBalance = 0, owner = 0}
 emptyOb :: ControlObs
 emptyOb = NoOb
 
-{--
-emptyInp :: In 
-emptyInp = In { moneyIn = 0, decision = 0}
---}
+emptyInput :: InputState
+emptyInput = InputState { moneyIn = 0, decision = 0, nothing = "0"}
+
+
 -- Contract data types 
 
 data Contract = End |
@@ -90,8 +93,6 @@ type OP = [Output]
 
 --data In = Money | Decision
 
-
-
 -- Takes a function, the current balance and the amount being committed and returns new balance
 evalValue :: (Money -> Money -> Money) -> State -> Money -> Money 
 evalValue f s val = f (etherBalance s) val 
@@ -115,20 +116,28 @@ evalC inp c@(When obs c1 c2) co o s
     | otherwise = (c, [], s)
 
 evalC inp c@(Pay person1 person2 val c1) co o s = 
-	(c1, [PaySuccess (person1) val], s {etherBalance = newBal})
+    (c1, [PaySuccess (person1) val], s {etherBalance = newBal})
         where
             newBal = evalValue (-) s val 
 
 evalC inp c@(Until obs c1 c2) co o s =  evalAll2 inp c1 obs o s
 
-evalAll :: Contract -> Money -> (Contract, OP, State)
-evalAll c inp = evalAll2 (buffer inp) c emptyOb [] emptyState
+--TODO--
+-- This initialises everyting when each new contract is returned, needs fixing 
+evalAll :: Contract -> String -> (Contract, OP, State)
+evalAll c@(CashIn val person c1 c2) inp = evalAll2  inVal c emptyOb [] emptyState
+        where
+            inVal = InputState { moneyIn = (read inp :: Money), decision = 0, nothing = "0"}
 
-buffer :: Money -> InputState 
-buffer i = InputState { moneyIn = i}
---buffer (Decision) = InputState { moneyIn = 0, decision = Decision }
+evalAll c@(Pay person1 person2 val c1) inp = evalAll2 inDecision c emptyOb [] emptyState
+        where
+            inDecision = InputState { moneyIn = 0, decision = Person (read inp :: Int), nothing = "0"}
 
--- Facilitates input 
+evalAll c inp = evalAll2 noInput c emptyOb [] emptyState
+        where 
+            noInput = InputState {moneyIn = 0, decision = 0, nothing = "0"}
+
+  
 evalAll2 :: InputState -> Contract -> ControlObs -> OP -> State -> (Contract, OP, State)
 evalAll2 inp c@(CashIn val person c1 c2) co o s  =  (nc, no, ns) 
         where
@@ -136,29 +145,10 @@ evalAll2 inp c@(CashIn val person c1 c2) co o s  =  (nc, no, ns)
 evalAll2 inp c@(Pay person1 person2 val c1) co o s = (nc, no, ns)
         where 
             (nc, no, ns) = evalC inp c co o s
+
 evalAll2 inp c co o s = evalAll2 inp nc co no ns
         where
             (nc, no, ns) = evalC inp c co o s 
-
--- IO attempt 
--- Gets input from user and checks it against whats defined in the contract.
-input :: Money -> Person -> Money
-input m p = (unsafePerformIO $ cashIO m p)
-
-cashIO :: Money -> Person -> IO (Money)
-cashIO m p = do 
-    putStrLn "Enter amount:  " >> putStrLn (show m) >> putStrLn (show p)
-    line <- getLine 
-    return (read line :: Money)
-
-decisionInput :: Person -> Person -> Person
-decisionInput p1 p2 = (unsafePerformIO $ decisionIIO p1 p2)
-
-decisionIIO :: Person -> Person -> IO (Person)
-decisionIIO p1 p2 = do
-    putStrLn (show p1 ++ " or " ++ show p2) 
-    line <- getLine 
-    return (read line :: Person)
 
 --Observables--
 
@@ -177,24 +167,11 @@ sameDate (Date (t1, t2, t3)) (Date (t4, t5, t6)) =
     (t1 > t4 ) && (t2 > t5) && (t3 > t6)
 
 at :: Observables -> Bool 
-at tContract = sameDate tContract today
+at tContract = sameDate tContract (Date (unsafePerformIO (todayDate)))
 
-today :: Observables
-today = Date (2018,12,12)
+todayDate :: IO (Integer,Int,Int) -- :: (year,month,day)
+todayDate = getCurrentTime >>= return . toGregorian . utctDay
 
----------------------------
---Annex--
---------------------------
-
-{--
-evalOnce :: Contract -> OP -> State -> (Contract,OP,State)
-evalOnce c o s = (nc,no,ns)
-    where 
-        (nc,no,ns) = evalC c s 
-
---    | (at obs) = (c2, cp {date = },[Null], s) -- evalObs to return a bool here 
---    | otherwise = (c1, [], s)
---}
 instance Num Person where
     (Person x) + (Person y) = Person (x + y)
     (Person x) - (Person y) = Person (x - y)
