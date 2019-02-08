@@ -6,19 +6,11 @@ import Prelude hiding (until)
 
 bettingContract :: Contract
 bettingContract 
-              = (until (OrOb (Date (2018,12,13)) (Amount 100))
-                    (cashIn 20 1 
-                    (cashIn 20 2                     
-                        (when (Ob (Amount 40))
-                            (pay 1 2 40 End)	                        
-	                        End)	                    
-	                    End)
-	                End)                               	
-	            End)
-
-
-
-
-
+              = (until (EitherOb (Date (2018,12,13)) (Amount 100))
+                    (cashIn 20 address (people 5) 
+                        (pay (Ob (Winner address)) End) 
+	                End)
+	            End)                               	
 	        
 
+--(when (Ob (Amount 40))

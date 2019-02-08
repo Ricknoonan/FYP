@@ -7,7 +7,7 @@ import System.Console.Haskeline
 type ErrorWithIO = ExceptT String IO
 
 
-foo :: String -> ErrorWithIO String
+foo :: String -> ExceptT String IO
 foo "Yes" = do liftIO $ putStrLn "Paul!"
 foo _ = throwError "ERROR!"
 
@@ -17,15 +17,16 @@ runRepl = runInputT defaultSettings $ loop
 
 loop :: InputT IO ()
 loop = do
-    line <- getInputLine "Bet amount: "
+    line <- getInputLine "> "
     case line of
         Nothing -> return ()
-        Just input -> do return $ putStrLn "asd"
-                         case unsafePerformIO $ runExceptT $ foo input of
-                             Left err -> outputStrLn err >> loop
-                             Right res -> do
-                                 x <- outputStrLn . show $ res
-                                 loop
+        Just input -> do 
+          liftIO (putStrLn "asd")
+          x <- liftIO (runExceptT $ foo input)
+          case x of
+            Left err  -> outputStrLn err
+            Right res -> outputStrLn (show res)
+          loop
 
 main :: IO ()
 main = runRepl >> putStrLn "Goodbye!"

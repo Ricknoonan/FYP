@@ -9,11 +9,13 @@ class Contracts c where
     and' :: c -> c -> c
     give :: c -> c
     or' :: c -> c -> c
-    cashIn :: Money -> Person -> Contract -> Contract -> c
-    cashInUnlimited :: Money -> Person -> Contract -> Contract -> c
-    cashOut :: Money -> Person -> Contract -> Contract -> c
-    pay :: Person -> Person -> Money -> Contract -> c
+    cashAndPeople :: Money -> Person  -> Contract -> Contract -> c
+    cashIn :: Money -> Address -> Contract -> Contract -> Contract -> c
+    cashInUnlimited :: Address -> Contract -> Contract -> Contract -> c
+    cashOut ::  Contract -> Contract -> c
+    pay :: ControlObs -> Contract -> c
     until :: ControlObs -> Contract -> Contract -> c
+    people :: Int -> c
 
 instance Contracts Contract where
     zero = End
@@ -23,6 +25,7 @@ instance Contracts Contract where
     give = Give
     or' = Or
     cashIn = CashIn
+    people = People
     cashInUnlimited = CashInUnlimited
     cashOut = CashOut
     pay = Pay

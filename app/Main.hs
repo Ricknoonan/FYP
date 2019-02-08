@@ -12,30 +12,56 @@ import System.IO.Unsafe (unsafePerformIO)
 
 main :: IO ()
 main = do 
-    control (bettingContract)
+    loop bettingContract emptyOb emptyState
 
-control :: Contract -> IO ()
-control c = do 
-    putStrLn (show c) 
-    let res = loop c
-    let (nc, no, ns) = evalAll c (unsafePerformIO (res))
-    putStrLn (show no)
-    if (nc == End) then putStrLn ("Contract finished")
-        else control nc
-    
-loop :: Contract -> IO String
-loop c = do 
+loop :: Contract -> ControlObs -> State -> IO ()
+loop c co s = do
     case c of 
-        (Until obs c1 c2) -> return ("Nothing")
-        (CashIn val person c1 c2)  -> do 
-                                putStrLn "Enter Input: "
+        (CashIn val addr people c1 c2) -> do 
+                                putStrLn "What is your wallet address? > "
+                                address <- getLine
+                                putStrLn (show address ++ " Commit " ++ show val ++ " >")
                                 input <- getLine 
-                                return input
-        
-        (Pay person1 person2 val c1) -> do 
+                                let (nc, no, ns, nco) = run (CashIn val address people c1 c2) input co s 
+                                putStrLn (show no ++ show ns)
+                                loop nc nco ns 
+
+        (Pay addr c1) -> do 
                                 putStrLn "Enter decision: "
                                 input <- getLine 
-                                return input
-        (When obs c1 c2) -> return ("Nothing")
-                             
+                                let (nc, no, ns, nco) = run c input co s
+                                putStrLn (show no)
+                                loop nc nco ns    
 
+        (End) -> putStrLn ("Contract finished")
+
+        c -> do 
+            let (nc, no, ns, nco) = run c "Nothing" co s 
+            loop nc nco ns 
+
+{--
+foo :: String -> ExceptT String IO
+foo "Yes" = do liftIO $ putStrLn "Paul!"
+foo _ = throwError "ERROR!"
+
+
+runRepl :: IO ()
+runRepl = runInputT defaultSettings $ loop
+
+loop :: InputT IO ()
+loop = do
+    line <- getInputLine "> "
+    case line of
+        Nothing -> return ()
+        Just input -> do 
+          liftIO (putStrLn "asd")
+          x <- liftIO (runExceptT $ foo input)
+          case x of
+            Left err  -> outputStrLn err
+            Right res -> outputStrLn (show res)
+          loop
+
+main :: IO ()
+main = runRepl >> putStrLn "Goodbye!"
+
+--}
