@@ -12,7 +12,7 @@ class Contracts c where
     cashAndPeople :: Money -> Person  -> Contract -> Contract -> c
     cashIn :: Money -> Address -> Contract -> Contract -> Contract -> c
     cashInUnlimited :: Address -> Contract -> Contract -> Contract -> c
-    cashOut ::  Contract -> Contract -> c
+    cashBackAll ::  Contract -> c
     pay :: ControlObs -> Contract -> c
     until :: ControlObs -> Contract -> Contract -> c
     people :: Int -> c
@@ -27,6 +27,6 @@ instance Contracts Contract where
     cashIn = CashIn
     people = People
     cashInUnlimited = CashInUnlimited
-    cashOut = CashOut
+    cashBackAll = CashBackAll
     pay = Pay
     until = Until

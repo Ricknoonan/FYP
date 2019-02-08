@@ -18,9 +18,9 @@ type Owner = Person
 
 type Address = String
 
-data Action =  Commit Person Money |
-               PayOut Person Money 
-    deriving (Eq,Show,Ord)
+type Decision = Person 
+
+type OP = [Output]
 
 --Record to keep track of contract state, people is an array of people involved in the contract
 --etherBalance keeps track of money held in the contract at any stage of evaluation 
@@ -61,7 +61,7 @@ data Contract = End |
                 Until ControlObs Contract Contract| -- until a certain observable, the following contracts can be evaluated
                 CashIn Money Address Contract Contract Contract| -- allows a person to commit x amount that is defined the in the contract
                 CashInUnlimited Address Contract Contract Contract|
-                CashOut Contract Contract|
+                CashBackAll Contract |
                 Pay ControlObs Contract| -- Pays person depening on event 
                 People Int 
         deriving (Show, Eq)
@@ -84,7 +84,8 @@ data Observables = Date (Integer, Int, Int) |
                    Amount Money |
                    Winner Address |
                    Highest Address |
-                   Random Address
+                   Random Address |
+                   Beneficiary Address
             deriving (Show, Eq)
 
 -- ControlObs controls the observables and are evaluated to return boolean types to control if contract 
@@ -95,9 +96,9 @@ data ControlObs = NoOb |
                   Ob Observables
         deriving (Show, Eq)
 
-type Decision = Person 
-
-type OP = [Output]
+data Action =  Commit Person Money |
+               PayOut Person Money 
+    deriving (Eq,Show,Ord)
 
 -- Takes a function, the current balance and the amount being committed and returns new balance
 evalValue :: (Money -> Money -> Money) -> State -> Money -> Money 
@@ -121,16 +122,22 @@ evalC inp c@(CashIn val address (People p) c1 c2) co o s
 
 evalC inp c@(When obs c1 c2) co o s
     | evalObs obs s inp = (c1, [], s, co)
-    | otherwise = (c, [], s, co)
+    | otherwise = (c2, [], s, co)
 
-evalC inp c@(Pay obs c1) co o s = (c1, [PaySuccess (PayOut x payAmount)], s {etherBalance = newBal}, co)
+--TODO
+-- This function just pays first person in list, doesn't handle multiple beneficiaries.
+-- Need to divide up money based on number of beneficiaries
+
+evalC inp c@(Pay obs c1) co o s 
+    | length (x:xs) > 0 = (c1, [PaySuccess (PayOut x payAmount)], updateState, co)
         where
             payAmount = etherBalance s 
             newBal = evalValue (-) s payAmount 
+            updateState = s {etherBalance = newBal}
             (x:xs) = evalPay obs s inp 
 
-evalC inp c@(CashOut c1 c2) co o s 
-    | evalObs co s inp = (c2, o, updateState, co)
+evalC inp c@(CashBackAll c1) co o s 
+    | evalObs co s inp = (c1, o, updateState, co)
     | (size s) > 0 = evalC inp c co (o ++ [no]) updateState
     | otherwise = evalC inp c1 co o s
         where 
@@ -140,7 +147,16 @@ evalC inp c@(CashOut c1 c2) co o s
             refund = commitAtIndex (size s) s
             updateState = s {commits = newCommits, etherBalance = (currentBal - refund), owner = ""}
 
---evalC inp c@(CashInUnlimited )
+evalC inp c@(CashInUnlimited addr (People p) c1 c2) co o s 
+    | evalObs co s inp && (size s < p) = (c, output, updateState, co)
+    | (size s == p) = (c1, [CommitFail (Commit addr inVal)], s, co)
+    | otherwise = (c1,[CommitFail (Commit addr inVal)], s, co)
+        where 
+            newBal = evalValue (+) s inVal 
+            os = commits s
+            output = [CommitPass (Commit addr inVal)]
+            inVal = moneyIn inp 
+            updateState = s {commits = Map.insert (index p s) (Commit addr inVal) os, etherBalance = newBal, owner = addr}
 
 evalC inp c@(Until obs c1 c2) co o s =  evalAll2 inp c1 obs o s
 
@@ -153,15 +169,20 @@ run c@(Pay address c1) inp co s = evalAll2 inDecision c co [] s
         where
             inDecision = InputState { moneyIn = 0, decision = (read inp :: Int), nothing = "0"}
 
+run c@(CashInUnlimited address people c1 c2) inp co s = evalAll2 inVal c co [] s
+        where
+            inVal = InputState { moneyIn = (read inp :: Money), decision = 0, nothing = "0"}
+
 run c inp co s = evalAll2 noInput c co [] s
         where 
             noInput = InputState {moneyIn = 0, decision = 0, nothing = "0"}
 
 
 evalAll2 :: InputState -> Contract -> ControlObs -> OP -> State -> (Contract, OP, State, ControlObs)
-evalAll2 inp c@(CashIn val address people c1 c2) co o s  =  (nc, no, ns, nco) 
+evalAll2 inp c@(CashIn val address people c1 c2) co o s  = (nc, no, ns, nco) 
         where
             (nc, no, ns, nco) = evalC inp c co o s 
+
 evalAll2 inp c@(Pay address c1) co o s = (nc, no, ns, nco)
         where 
             (nc, no, ns, nco) = evalC inp c co o s
@@ -170,13 +191,19 @@ evalAll2 inp c@(Until obs c1 c2) co o s = evalAll2 inp nc nco no ns
         where
             (nc, no, ns, nco) = evalC inp c co o s 
 
+evalAll2 inp c@(CashInUnlimited address people c1 c2) co o s  = (nc, no, ns, nco) 
+        where
+            (nc, no, ns, nco) = evalC inp c co o s  
+
 evalAll2 inp c co o s = evalAll2 inp nc co no ns
         where
             (nc, no, ns, nco) = evalC inp c co o s 
 
+--TODO Handle address that did not make a committment i.e Beneficiary
 evalPay :: ControlObs -> State -> InputState -> [Address]
 evalPay (Ob (Highest addr)) s inp = getAddress (findAtIndex (highestInMap (commits s)) s)
 evalPay (Ob (Winner addr)) s inp = getAddress (findAtIndex([decision inp]) s)
+--evalPay (Ob (Beneficiary addr)) s inp = 
 
 evalObs :: ControlObs -> State -> InputState -> Bool
 evalObs (EitherOb obs1 obs2) s inp = (checkObs obs1 s inp) || (checkObs obs2 s inp)

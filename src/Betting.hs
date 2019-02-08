@@ -13,4 +13,3 @@ bettingContract
 	            End)                               	
 	        
 
---(when (Ob (Amount 40))

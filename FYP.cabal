@@ -21,6 +21,7 @@ library
   exposed-modules:     Contract
                        ContractClass
                        Betting
+                       CrowdFunding
   build-depends:       base, transformers, containers, time, haskeline
   default-language:    Haskell2010
 

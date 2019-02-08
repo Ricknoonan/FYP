@@ -6,6 +6,7 @@ import Contract
 import ContractClass
 import Prelude hiding (until)
 import Betting 
+import CrowdFunding
 import System.IO.Unsafe (unsafePerformIO)
 
 
@@ -13,6 +14,7 @@ import System.IO.Unsafe (unsafePerformIO)
 main :: IO ()
 main = do 
     loop bettingContract emptyOb emptyState
+    --loop crowdfundingContract emptyOb emptyState
 
 loop :: Contract -> ControlObs -> State -> IO ()
 loop c co s = do
@@ -27,11 +29,22 @@ loop c co s = do
                                 loop nc nco ns 
 
         (Pay addr c1) -> do 
-                                putStrLn "Enter decision: "
+                                putStrLn "Enter decision > "
                                 input <- getLine 
                                 let (nc, no, ns, nco) = run c input co s
                                 putStrLn (show no)
-                                loop nc nco ns    
+                                loop nc nco ns
+
+        (CashInUnlimited addr people c1 c2) -> do
+                                putStrLn "What is your wallet address? > "
+                                addr <- getLine
+                                putStrLn "Enter Commit > "
+                                input <- getLine 
+                                let (nc, no, ns, nco) = run (CashInUnlimited addr people c1 c2) input co s 
+                                putStrLn (show no ++ show ns)
+                                loop nc nco ns
+
+
 
         (End) -> putStrLn ("Contract finished")
 
