@@ -1,18 +1,16 @@
 module Contract where 
 
-import Prelude hiding (and)
+import Prelude hiding (and,or)
 import Numeric
 import Data.Unique
 import Data.Time
 import Data.Map (Map, (!))
 import qualified Data.Map as Map
 import System.IO.Unsafe (unsafePerformIO)
-import System.Console.Haskeline
-import Control.Monad.Trans.Except 
 
 type Person = Address  
 
-type Money = Int 
+type Money = Double 
 
 type Owner = Person
 
@@ -22,237 +20,207 @@ type Decision = Person
 
 type OP = [Output]
 
---Record to keep track of contract state, people is an array of people involved in the contract
---etherBalance keeps track of money held in the contract at any stage of evaluation 
---owner is the person interacting with the contract
-
-data State = State {
-               commits :: Map.Map Int Action,
-               etherBalance  :: Money,
-               owner :: Person
+data ContractState = ContractState {
+                commits :: Map.Map Int Action,
+                etherBalance  :: Money,
+                owner :: Person
              }
              deriving (Eq,Show,Ord)
 
-data InputState = InputState {
-                    moneyIn :: Money,
-                    decision :: Int,
-                    nothing :: String
-                    } 
-             deriving (Eq,Show,Ord)
+data ParamState = ParamState {
+                maxPeople :: Int ,
+                amountSize :: Money, 
+                duration :: (Integer, Int, Int)
+              }
+              deriving (Show)
 
--- Initial starting point of contract evaluation with empty values. 
-emptyState :: State
-emptyState = State {commits = Map.empty, etherBalance = 0, owner = "0"}
+emptyCState :: ContractState
+emptyCState = ContractState {commits = Map.empty, etherBalance = 0, owner = "0"}
 
-emptyOb :: ControlObs
-emptyOb = NoOb
-
-emptyInput :: InputState
-emptyInput = InputState { moneyIn = 0, decision = 0, nothing = "0"}
-
--- Contract data types 
+emptyPState :: ParamState 
+emptyPState = ParamState {maxPeople = 0, amountSize = 0, duration = (0,0,0)}
 
 data Contract = End |
-                When ControlObs Contract Contract| -- When observable is true, next action can happen
+                Single Parameter |
+                When Parameter Contract| -- When observable is true, next action can happen
                 Scale Double Contract |
                 Give Contract | 
+                Get Contract |
                 And Contract Contract|
                 Or Contract Contract |
-                Until ControlObs Contract Contract| -- until a certain observable, the following contracts can be evaluated
-                CashIn Money Address Contract Contract Contract| -- allows a person to commit x amount that is defined the in the contract
-                CashInUnlimited Address Contract Contract Contract|
+                Until Parameter Contract | -- until a certain observable, the following contracts can be evaluated
+                CashIn InputCondition Contract| -- allows a person to commit x amount that is defined the in the contract
                 CashBackAll Contract |
-                Pay ControlObs Contract| -- Pays person depening on event 
-                People Int 
+                Send SendCondition | -- Sends person depening on event 
+                Initiate Contract |
+                Allow Parameter Contract 
         deriving (Show, Eq)
 
--- Output of produced for each stage of evaluation e.g CommitPass means that someone has succesfully 
--- commited money to contract based on contract conditions 
+data InputCondition = Min Money |
+                      Max Money |
+                      Equal Money |
+                      NoLimit
+            deriving (Show, Eq)
+
+data SendCondition = Winner PayOption |
+                     Highest PayOption|
+                     Random PayOption |
+                     Beneficiary PayOption 
+                deriving (Show, Eq)
 
 data Output = Null |
               CommitFail Action |
               CommitPass Action |
-              PayFail Action |
-              PaySuccess Action |
+              SendFail |
+              SendSuccess Action |
               CashRedeemed [Action] |
+              OwnerSet Address |
+              Message String |
               ObNotReached 
         deriving(Show)
 
--- Current observables that can be used to in a contract. Amount can be used to limit the amount in a contract
-
-data Observables = Date (Integer, Int, Int) |
+data Parameter =   Date (Integer, Int, Int) |
                    Amount Money |
-                   Winner Address |
-                   Highest Address |
-                   Random Address |
-                   Beneficiary Address
-            deriving (Show, Eq)
+                   People Int 
+                deriving (Show, Eq, Ord)
 
--- ControlObs controls the observables and are evaluated to return boolean types to control if contract 
-    --can progress in evaluation 
-data ControlObs = NoOb |
-                  BothOb Observables Observables |
-                  EitherOb Observables Observables |
-                  Ob Observables
-        deriving (Show, Eq)
+data PayOption = All | 
+                 Partial Double 
+                deriving (Show, Eq, Ord)
 
 data Action =  Commit Person Money |
-               PayOut Person Money 
+               SendOut Person Money 
     deriving (Eq,Show,Ord)
 
+data Input = CashInp Address Money |
+             Decision Int |
+             SetOwner Address |
+             Empty
+        deriving (Show, Eq, Ord)
+
 -- Takes a function, the current balance and the amount being committed and returns new balance
-evalValue :: (Money -> Money -> Money) -> State -> Money -> Money 
+evalValue :: (Money -> Money -> Money) -> ContractState -> Money -> Money 
 evalValue f s val = f (etherBalance s) val 
 
--- evalC controls the contract evaluation
--- depending on the type of contract e.g cashIn or unitil, certain observables are checked and the next contract
--- to be evaluated, the updated state and the output at the statge are returned 
-
-evalC :: InputState -> Contract -> ControlObs -> OP -> State -> (Contract, OP, State, ControlObs)
-evalC inp c@(CashIn val address (People p) c1 c2) co o s 
-    | val == inVal && evalObs co s inp && (size s < p) = (c, output, updateState, co)
-    | not (evalObs co s inp) || (size s == p) = (c1, [CommitFail (Commit address inVal)], s, co)
-    | otherwise = (c,[CommitFail (Commit address inVal)], s, co)
+-- TODO: Should move to next contract when contract is full not accept another input, fail and then move on
+evalC :: Input -> Contract -> ParamState -> OP -> ContractState -> (Contract, OP, ContractState, ParamState)
+evalC i@(CashInp address money) c@(CashIn inpCon c1) pst o st 
+    | evalInput inpCon money && evalParam c pst st i && ((size st + 1) < maxPeople pst) = (c, outputP, updateState, pst) 
+    | (size st + 1) == (maxPeople pst) = (c1, outputP, updateState, pst)
+    | not (evalParam c pst st i) || (size st == maxPeople pst) = (c1, outputF, st, pst)
+    | otherwise = (c, outputF, st, pst)
         where
-            newBal = evalValue (+) s inVal 
-            os = commits s
-            output = [CommitPass (Commit address inVal)]
-            updateState = s {commits = Map.insert (index p s) (Commit address inVal) os, etherBalance = newBal, owner = address}
-            inVal = moneyIn inp 
+            newBal = evalValue (+) st money 
+            comms = commits st
+            outputP = [CommitPass (Commit address money)]
+            outputF = [CommitFail (Commit address money)]
+            updateState = st {commits = Map.insert (index (maxPeople pst) st) (Commit address money) comms, etherBalance = newBal}
 
-evalC inp c@(When obs c1 c2) co o s
-    | evalObs obs s inp = (c1, [], s, co)
-    | otherwise = (c2, [], s, co)
+-- Infinite loop on fail 
+evalC i c@(When param c1) pst o st
+    | evalParam c pst st i = (c1, [], st, pst)
+    | otherwise = (c, [], st, pst)
 
---TODO
--- This function just pays first person in list, doesn't handle multiple beneficiaries.
--- Need to divide up money based on number of beneficiaries
-
-evalC inp c@(Pay obs c1) co o s 
-    | length (x:xs) > 0 = (c1, [PaySuccess (PayOut x payAmount)], updateState, co)
+-- Needs to check if contract horizon is reached 
+evalC i c@(Send param) pst o st 
+    | length payees > 0 = (End, (loopPayees payees payAmount), updateState, pst)
+    | otherwise = (c, [SendFail], updateState, pst)
         where
-            payAmount = etherBalance s 
-            newBal = evalValue (-) s payAmount 
-            updateState = s {etherBalance = newBal}
-            (x:xs) = evalPay obs s inp 
+            payAmount = (etherBalance st)/payeesLength
+            newBal = evalValue (-) st payAmount 
+            updateState = st {etherBalance = newBal}
+            payeesLength = fromIntegral (length payees) 
+            payees = evalSend param st i 
 
-evalC inp c@(CashBackAll c1) co o s 
-    | evalObs co s inp = (c1, o, updateState, co)
-    | (size s) > 0 = evalC inp c co (o ++ [no]) updateState
-    | otherwise = evalC inp c1 co o s
+-- Really only for crowdfunder type contracts where if something (e.g Amount) isn't reached then refund money to each participant. Used in conjunction with and or contract 
+-- e.g when (Date y,m,d) send Owner All 'or ' cashBackAll 
+evalC i c@(CashBackAll c1) pst o st 
+    | evalParam c pst st i = (c1, o, updateState, pst)
+    | (size st) > 0 = evalC i c pst (o ++ [no]) updateState
+    | otherwise = evalC i c1 pst o st
         where 
-            no = CashRedeemed (findAtIndex ([size s]) s)
-            newCommits = Map.delete (size s) (commits s)
-            currentBal = etherBalance s
-            refund = commitAtIndex (size s) s
-            updateState = s {commits = newCommits, etherBalance = (currentBal - refund), owner = ""}
+            no = CashRedeemed (findAtIndex ([size st]) st)
+            newCommits = Map.delete (size st) (commits st)
+            currentBal = etherBalance st
+            refund = commitAtIndex (size st) st
+            updateState = st {commits = newCommits, etherBalance = (currentBal - refund)}
 
-evalC inp c@(CashInUnlimited addr (People p) c1 c2) co o s 
-    | evalObs co s inp && (size s < p) = (c, output, updateState, co)
-    | (size s == p) = (c1, [CommitFail (Commit addr inVal)], s, co)
-    | otherwise = (c1,[CommitFail (Commit addr inVal)], s, co)
-        where 
-            newBal = evalValue (+) s inVal 
-            os = commits s
-            output = [CommitPass (Commit addr inVal)]
-            inVal = moneyIn inp 
-            updateState = s {commits = Map.insert (index p s) (Commit addr inVal) os, etherBalance = newBal, owner = addr}
+evalC i c@(Until param c1) pst o st =
+    case param of 
+        (Date (y,m,d)) -> (c1, [], st, pst {duration = (y,m,d)})
+        (Amount x) -> (c1, [], st, pst {amountSize = x})
+        (People p) -> (c1, [], st, pst {maxPeople = p})
 
-evalC inp c@(Until obs c1 c2) co o s =  evalAll2 inp c1 obs o s
+evalC i@(SetOwner address) c@(Initiate c1) pst o st = 
+    (c1, [OwnerSet address], st {owner = address} ,pst)
+            
+run :: Contract -> Input -> ParamState -> ContractState -> (Contract, OP, ContractState, ParamState)
+run c@(CashIn val c1) inp@(CashInp address money) pst s = evalC inp c pst [] s
+run c@(Send address) inp@(Decision d) pst s = evalC inp c pst [] s
+run c inp pst s = evalC inp c pst [] s
 
-run :: Contract -> String -> ControlObs -> State -> (Contract, OP, State, ControlObs)
-run c@(CashIn val address people c1 c2) inp co s = evalAll2 inVal c co [] s
-        where
-            inVal = InputState { moneyIn = (read inp :: Money), decision = 0, nothing = "0"}
+evalInput :: InputCondition -> Money -> Bool
+evalInput (Min m) inp = (inp > m )
+evalInput (Max m) inp = (inp < m )
+evalInput (Equal m) inp = (inp == m)
+evalInput (NoLimit) inp = True
 
-run c@(Pay address c1) inp co s = evalAll2 inDecision c co [] s
-        where
-            inDecision = InputState { moneyIn = 0, decision = (read inp :: Int), nothing = "0"}
+evalParam :: Contract -> ParamState -> ContractState -> Input -> Bool
+evalParam c pst const (CashInp address money)
+    | (duration pst) /= (0,0,0) = at (Date (duration pst))
+    | (amountSize pst) /= 0 = (etherBalance const + money) <= amountSize pst
+    | otherwise = True
 
-run c@(CashInUnlimited address people c1 c2) inp co s = evalAll2 inVal c co [] s
-        where
-            inVal = InputState { moneyIn = (read inp :: Money), decision = 0, nothing = "0"}
+evalParam (When para c1) pst const i = 
+    case para of 
+        (Date (y,m,d)) -> at (Date (y,m,d))
+        (Amount x) -> (etherBalance const) == x 
+        _ -> False
 
-run c inp co s = evalAll2 noInput c co [] s
-        where 
-            noInput = InputState {moneyIn = 0, decision = 0, nothing = "0"}
-
-
-evalAll2 :: InputState -> Contract -> ControlObs -> OP -> State -> (Contract, OP, State, ControlObs)
-evalAll2 inp c@(CashIn val address people c1 c2) co o s  = (nc, no, ns, nco) 
-        where
-            (nc, no, ns, nco) = evalC inp c co o s 
-
-evalAll2 inp c@(Pay address c1) co o s = (nc, no, ns, nco)
-        where 
-            (nc, no, ns, nco) = evalC inp c co o s
-
-evalAll2 inp c@(Until obs c1 c2) co o s = evalAll2 inp nc nco no ns
-        where
-            (nc, no, ns, nco) = evalC inp c co o s 
-
-evalAll2 inp c@(CashInUnlimited address people c1 c2) co o s  = (nc, no, ns, nco) 
-        where
-            (nc, no, ns, nco) = evalC inp c co o s  
-
-evalAll2 inp c co o s = evalAll2 inp nc co no ns
-        where
-            (nc, no, ns, nco) = evalC inp c co o s 
+evalParam (CashBackAll c1) pst const i
+    | (duration pst) /= (0,0,0) = at (Date (duration pst))
+    | otherwise = True
 
 --TODO Handle address that did not make a committment i.e Beneficiary
-evalPay :: ControlObs -> State -> InputState -> [Address]
-evalPay (Ob (Highest addr)) s inp = getAddress (findAtIndex (highestInMap (commits s)) s)
-evalPay (Ob (Winner addr)) s inp = getAddress (findAtIndex([decision inp]) s)
---evalPay (Ob (Beneficiary addr)) s inp = 
+evalSend :: SendCondition -> ContractState -> Input -> [Address]
+evalSend (Highest p) st (Decision d) = getAddress (findAtIndex (highestInMap (commits st)) st)
+evalSend (Winner p) st (Decision d) = getAddress (findAtIndex([d]) st)
 
-evalObs :: ControlObs -> State -> InputState -> Bool
-evalObs (EitherOb obs1 obs2) s inp = (checkObs obs1 s inp) || (checkObs obs2 s inp)
-evalObs (BothOb obs1 obs2) s inp = (checkObs obs1 s inp) && (checkObs obs2 s inp)
-evalObs (Ob obs1) s inp = checkObs obs1 s inp
-evalObs (NoOb) s inp = True 
-
-checkObs :: Observables -> State -> InputState -> Bool
-checkObs (Date(y,m,d)) s inp = at (Date(y,m,d))
-checkObs (Amount x) s inp = (etherBalance s + moneyIn inp) <= x
-
-sameDate :: Observables -> Observables -> Bool
+sameDate :: Parameter -> Parameter -> Bool
 sameDate (Date (t1, t2, t3)) (Date (t4, t5, t6)) 
     | (t1 > t4 ) = False 
     | (t1 > t4 ) && (t2 > t5) = False
     | (t1 > t4 ) && (t2 > t5) && (t3 > t6) = False
     | otherwise = True
 
-at :: Observables -> Bool 
+at :: Parameter -> Bool 
 at tContract = sameDate tContract (Date (unsafePerformIO (todayDate)))
 
 todayDate :: IO (Integer,Int,Int) -- :: (year,month,day)
 todayDate = getCurrentTime >>= return . toGregorian . utctDay
 
-index :: Int -> State -> Int 
+index :: Int -> ContractState -> Int 
 index p s
     | Map.member p (commits s) = index (p-1) s
     | otherwise = p 
 
-size :: State -> Int 
+size :: ContractState -> Int 
 size s = Map.size (commits s)
 
-getMoneyCommit :: [Action] -> Int 
+getMoneyCommit :: [Action] -> Money 
 getMoneyCommit [(Commit p m)] = m
 
 getAddress :: [Action] -> [Address]
 getAddress [(Commit p m)] = [p]
 getAddress (Commit p m:rest) = p:getAddress rest
 
-commitAtIndex :: Int -> State -> Int
+commitAtIndex :: Int -> ContractState -> Money
 commitAtIndex ind s = getMoneyCommit (findAtIndex [ind] s)
 
-findAtIndex :: [Int] -> State -> [Action]
+findAtIndex :: [Int] -> ContractState -> [Action]
 findAtIndex [] s = [(Commit "No Commit" 0)]
 findAtIndex [i] s = [(Map.findWithDefault (Commit "No Commit" 0) (i) (commits s))]
 findAtIndex (i:is) s = (Map.findWithDefault (Commit "No Commit" 0) (i) (commits s)):findAtIndex is s
-
-address :: Address 
-address = " "
 
 highestInMap :: Map Int Action -> [Int]
 highestInMap m = go [] Nothing (Map.toList m)
@@ -263,3 +231,7 @@ highestInMap m = go [] Nothing (Map.toList m)
         | getMoneyCommit [v] < getMoneyCommit [u] = go ks (Just u) rest
         | getMoneyCommit [v] > getMoneyCommit [u] = go [k] (Just v) rest
         | otherwise = go (k:ks) (Just v) rest
+
+loopPayees :: [String] -> Double -> OP
+loopPayees [x] payAmount = [SendSuccess (SendOut x payAmount)]
+loopPayees (x:xs) payAmount = SendSuccess (SendOut x payAmount) : loopPayees xs payAmount

@@ -3,30 +3,32 @@ module ContractClass where
 import Contract
 
 class Contracts c where
-    zero :: c
-    when :: ControlObs -> Contract -> Contract -> c
+    end :: c
+    when :: Parameter -> Contract -> c
     scale :: Double -> Contract -> c
-    and' :: c -> c -> c
+    and :: c -> c -> c
     give :: c -> c
-    or' :: c -> c -> c
-    cashAndPeople :: Money -> Person  -> Contract -> Contract -> c
-    cashIn :: Money -> Address -> Contract -> Contract -> Contract -> c
-    cashInUnlimited :: Address -> Contract -> Contract -> Contract -> c
+    get :: c -> c
+    or :: c -> c -> c
+    cashIn :: InputCondition -> Contract -> c
     cashBackAll ::  Contract -> c
-    pay :: ControlObs -> Contract -> c
-    until :: ControlObs -> Contract -> Contract -> c
-    people :: Int -> c
+    send :: SendCondition -> c
+    until :: Parameter -> Contract -> c
+    initiate :: Contract -> c
+    allow :: Parameter -> Contract -> c
 
 instance Contracts Contract where
-    zero = End
+    end = End
     when = When
     scale = Scale 
-    and' = And
+    and = And
     give = Give
-    or' = Or
+    or = Or
     cashIn = CashIn
-    people = People
     cashInUnlimited = CashInUnlimited
     cashBackAll = CashBackAll
-    pay = Pay
+    send = Send
     until = Until
+    initiate = Initiate
+    get = Get
+    allow = Allow
