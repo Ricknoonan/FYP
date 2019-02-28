@@ -51,9 +51,11 @@ data Contract = End |
                 Until Parameter Contract | -- until a certain observable, the following contracts can be evaluated
                 CashIn InputCondition Contract| -- allows a person to commit x amount that is defined the in the contract
                 CashBackAll Contract |
-                Send SendCondition | -- Sends person depening on event 
+                Send SendCondition Contract | -- Sends person depening on event 
                 Initiate Contract |
-                Allow Parameter Contract 
+                Allow Parameter Contract |
+                Function String Contract  |
+                Constructor Contract 
         deriving (Show, Eq)
 
 data InputCondition = Min Money |
@@ -65,7 +67,9 @@ data InputCondition = Min Money |
 data SendCondition = Winner PayOption |
                      Highest PayOption|
                      Random PayOption |
-                     Beneficiary PayOption 
+                     Owner PayOption |
+                     Beneficiary PayOption |
+                     Person PayOption
                 deriving (Show, Eq)
 
 data Output = Null |
@@ -85,7 +89,9 @@ data Parameter =   Date (Integer, Int, Int) |
                 deriving (Show, Eq, Ord)
 
 data PayOption = All | 
-                 Partial Double 
+                 Rest |
+                 Withdraw Money |
+                 Partial Money 
                 deriving (Show, Eq, Ord)
 
 data Action =  Commit Person Money |
@@ -101,6 +107,9 @@ data Input = CashInp Address Money |
 -- Takes a function, the current balance and the amount being committed and returns new balance
 evalValue :: (Money -> Money -> Money) -> ContractState -> Money -> Money 
 evalValue f s val = f (etherBalance s) val 
+
+payeesLength :: [Address] -> Double
+payeesLength payees = fromIntegral (length payees) 
 
 -- TODO: Should move to next contract when contract is full not accept another input, fail and then move on
 evalC :: Input -> Contract -> ParamState -> OP -> ContractState -> (Contract, OP, ContractState, ParamState)
@@ -122,18 +131,15 @@ evalC i c@(When param c1) pst o st
     | otherwise = (c, [], st, pst)
 
 -- Needs to check if contract horizon is reached 
-evalC i c@(Send param) pst o st 
+evalC i c@(Send param c1) pst o st 
     | length payees > 0 = (End, (loopPayees payees payAmount), updateState, pst)
     | otherwise = (c, [SendFail], updateState, pst)
         where
-            payAmount = (etherBalance st)/payeesLength
+            payAmount = (etherBalance st)/(payeesLength payees)
             newBal = evalValue (-) st payAmount 
             updateState = st {etherBalance = newBal}
-            payeesLength = fromIntegral (length payees) 
             payees = evalSend param st i 
 
--- Really only for crowdfunder type contracts where if something (e.g Amount) isn't reached then refund money to each participant. Used in conjunction with and or contract 
--- e.g when (Date y,m,d) send Owner All 'or ' cashBackAll 
 evalC i c@(CashBackAll c1) pst o st 
     | evalParam c pst st i = (c1, o, updateState, pst)
     | (size st) > 0 = evalC i c pst (o ++ [no]) updateState
@@ -153,10 +159,21 @@ evalC i c@(Until param c1) pst o st =
 
 evalC i@(SetOwner address) c@(Initiate c1) pst o st = 
     (c1, [OwnerSet address], st {owner = address} ,pst)
-            
+
+evalC i c@(Function str c1) pst o st = evalC i c1 pst o st
+{--
+payAmount :: Input -> ContractState -> [Address] -> SendCondition -> Money
+payAmount i st p (Winner) = etherBalance st/p 
+payAmount i st p (Highest) = etherBalance st/p
+payAmount (Decision d) st p (Withdraw x) 
+    | 
+--}
+  --check persons balance see if they have deposited that amount, asssuming yes take that amount from 
+    -- that persons account and update balance
+
 run :: Contract -> Input -> ParamState -> ContractState -> (Contract, OP, ContractState, ParamState)
 run c@(CashIn val c1) inp@(CashInp address money) pst s = evalC inp c pst [] s
-run c@(Send address) inp@(Decision d) pst s = evalC inp c pst [] s
+run c@(Send address c1) inp@(Decision d) pst s = evalC inp c pst [] s
 run c inp pst s = evalC inp c pst [] s
 
 evalInput :: InputCondition -> Money -> Bool

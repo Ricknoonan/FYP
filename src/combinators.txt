@@ -1,0 +1,122 @@
+Note: I use "e" to denote ether in descriptions
+
+--Parameters--
+Parameters are types in contracts and are used to define certain variables in contracts. These inlcude things like Date, Amount, People, Winner etc. e.g Until (Date 2019,03,01) or When (Amount 100). These allow for contracts to be able to define parameters and denote certain actions. 
+e.g (when (Amount 100) (send (Owner All) End)) means that when the the contract amount is e100, send the owner of the contract the balance of the contract. This could be used as part of crowdfunder where e100 is the goal amount. 
+
+--InputCondition--
+InputConditions dictate if passed money input meets certain critera. 
+The conditions are Min, Max, Equal or NoLimit. These check to see if the passed amount satisfy one of those conditions.
+e.g (until (Date d) (cashIn (Min 5)) End) means until the date has been reached allow someone to commit a max of e5. If NoLimit was used instead of Min 5, then the input  could be any amount. 
+
+--SendCondition--
+SendConditions decide how ether is transferred out of the contract. 
+Currently the conditions are Winner, Highest, Random, and Owner. 
+They can serve differnt functons depening on the context. Winner is used when a winner needs to be determined. Highest could be used for a bidding contract where the highest bid needs to be calculated, random decided a random winner from the people in the contract which could be used for a lottery contract and owner where the contract balance goes to the owner of the contract which could be used for a crowdfunder contract. Pay options are added to sendcontions and they are All or Partial. This allows the amount sent to be either in full or to be a portion of the total amount. This could be used for example if the owner of the contract wanted to take a fee, maybe a bookmaker. 
+
+Contract Combinator Primitives
+End 
+End is used when there are no more contract to follow.
+
+When 
+The when contract takes an observable and the next contract.
+When the observable condition is met, the next contract can be evaluated.
+Example
+(When (Date (2019,03,01))
+        --allow something when condition is met--)
+
+Until 
+This contract takes an observable and the next contract.
+Example
+(until (Date (2019,03,01)) 
+    --allow something if condition not met--)
+
+CashIn 
+This contract takes a contstructor of type Money and the next contract. 
+CashIn allowes someone to commit the amount outlined in the contract. 
+The money constructor can be used for specify the amount that should be committed. 
+Example
+    (until (Date (2019,03,01))
+        (cashIn (Equal 5)) 
+         -- another contract--)
+which allows exactly e5 to be comitted unlimited number of times by differnt people until the date is reached and then moves on to the next contract. 
+
+Send 
+This contract takes an observable and the next contract.
+Send allows for sending money out of the contract to specified person. 
+Send contracts take the aformentioned send conditions which determine who gets paid. 
+Example
+   (until (Amount 20)
+        (cashIn (Min 5)) 
+            (send (Winner All)))
+which allows a minimum of e5 to be comitted unlimited number of times by differnt people until the amount, 20, is reached. Send is then invoked and the above case the entire contract balance is sent to the winner.
+
+Initiate
+This contract signifies claiming ownership of a contract. When initiate is used that person interacting with the contract is the owner and has specific rights. For example, the owner could
+be allowed to decide the outcome of bet or be the beneficiary of a crowdfunder. 
+Typically this used when setting up some contract you want people to interact with and defining terms of the contract.
+e.g (initiate 
+		(until (Amount 20)
+            (cashIn (Min 5)) 
+                (send (Owner All)))
+which sends the contract balance to the owner once prior contracts have been evaluated.
+
+And 
+This contract takes two contracts and evaluates both contracts. An example of how this could be used would be with two send contracts where you could send x amount to someone And send y amount to someone else. 
+Example 
+    (initiate 
+		(until (Amount 20)
+            (cashIn (Min 5)
+                (send (Winner Partial 0.9)) 'and' (send (Owner Rest)))))
+
+Or 
+This contract takes two contract and returns one contract. This contract allows for two contracts to be evaluated. If the first one fails, then the second one is evaluated. 
+Example 
+    (initiate 
+		(until (Amount 20)
+            (cashIn (Min 5)
+                (send (Owner All))'or' --some other contract-- )))
+which tries to send owner all and if that fails send 
+
+CashBackAll 
+This contract allows for all participants to be refunded their commitments. Used in case of another contract failing. This could be used for a crowdfunder contract where if the goal isn't met, everyone gets refunded. 
+Example
+    (when (Date (2019,03,01))
+        (cashBackAll))
+
+
+Example of Contract combination using primitives
+
+--This is is a simple bet that has a end date i.e. the date that betting event is on and a max bet and weh when the date is reached, the balance of the contract is sent to the winner. 
+simpleBet :: (Integer, Int, Int) -> Contract
+simpleBet d =
+	(until (Date d) 
+		(cashIn (Max 5) 
+			(send (Winner All))))
+
+-- Say you wanted to limit the number of people in the contract, all you need to do is take your simple bet and add it to a until contract with the number people as a parameter to until. 
+limitPeople :: Int -> (Integer, Int, Int) -> Contract 
+limitPeople p d = 
+	(until (People p) 
+		(simpleBet d))
+
+-- Maybe you want to stop betting when a cetain pot size if reached again you do the same thing and add your previous contract to a new contract. 
+limitAmount :: Money -> Int -> (Integer, Int, Int) -> Contract
+limitAmount m p d = 
+	(until (Amount m) 
+		(limitPeople p d))
+	
+-- Finally, if you want to denote and owner of the contract which allows you to do certain things like decide winners and collect procedes.
+initiateOwnerShip :: Money -> Int -> (Integer, Int, Int) -> Contract
+initiateOwnerShip m p d = 
+	(initiate 
+		(limitAmount m p d))
+
+		
+    
+
+
+
+
+
+
