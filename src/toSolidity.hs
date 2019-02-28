@@ -41,15 +41,6 @@ isPayPub (Function str c1) = isPayPub c1
 isPayPub (CashIn (inp) c1) = True 
 isPayPub _ = False 
 
-{--
-checkNext :: Contract -> Bool
-checkNext c = 
-    case c of 
-        (Constructor c1) -> True
-        (Function str c1) -> True
-        _ -> False
---}
-
 testContract :: Contract
 testContract = (function "deposit" (cashIn (Equal 5) End))
 
