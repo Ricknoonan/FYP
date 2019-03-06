@@ -9,7 +9,7 @@ bank = (constructor (initiate (deposit)))
 
 cashOut :: Contract
 cashOut = 
-	(function "cashOut" (send Person (Withdraw)) End)
+	(function "cashOut" (send (Person (Withdraw)) End)
 
 deposit :: Contract 
 deposit = 

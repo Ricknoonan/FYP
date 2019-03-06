@@ -43,9 +43,6 @@ emptyPState = ParamState {maxPeople = 0, amountSize = 0, duration = (0,0,0)}
 data Contract = End |
                 Single Parameter |
                 When Parameter Contract| -- When observable is true, next action can happen
-                Scale Double Contract |
-                Give Contract | 
-                Get Contract |
                 And Contract Contract|
                 Or Contract Contract |
                 Until Parameter Contract | -- until a certain observable, the following contracts can be evaluated
@@ -54,8 +51,9 @@ data Contract = End |
                 Send SendCondition Contract | -- Sends person depening on event 
                 Initiate Contract |
                 Allow Parameter Contract |
-                Function String Contract  |
-                Constructor Contract 
+                Function String Contract |
+                Constructor Contract |
+                Return String Contract 
         deriving (Show, Eq)
 
 data InputCondition = Min Money |
@@ -90,7 +88,7 @@ data Parameter =   Date (Integer, Int, Int) |
 
 data PayOption = All | 
                  Rest |
-                 Withdraw Money |
+                 Withdraw |
                  Partial Money 
                 deriving (Show, Eq, Ord)
 
@@ -185,7 +183,7 @@ evalInput (NoLimit) inp = True
 evalParam :: Contract -> ParamState -> ContractState -> Input -> Bool
 evalParam c pst const (CashInp address money)
     | (duration pst) /= (0,0,0) = at (Date (duration pst))
-    | (amountSize pst) /= 0 = (etherBalance const + money) <= amountSize pst
+    | (amountSize pst) /= 0 = (etherBalance const + money) <= amountSize pst 
     | otherwise = True
 
 evalParam (When para c1) pst const i = 

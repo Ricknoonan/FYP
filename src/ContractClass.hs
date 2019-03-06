@@ -14,6 +14,7 @@ class Contracts c where
     initiate :: Contract -> c
     function :: String -> Contract -> c 
     constructor :: Contract -> c
+    return :: String -> Contract -> c
 
 instance Contracts Contract where
     end = End
@@ -27,5 +28,6 @@ instance Contracts Contract where
     initiate = Initiate
     function = Function 
     constructor = Constructor
+    return = Return
 
 
