@@ -25,19 +25,25 @@ sortTypes c =
         (Return str c1) -> [(Expr ("return " ++ str ++ ";"))] : sortTypes c1
         (End) -> []
 
--- get string out of expression, only works when there is on expression like eg below
+-- get string out of expression, only works when there is one expression like eg below
 getExpr :: [[SolTypes]] -> String
 getExpr ([Expr str]:rest) = str 
 
 --This function will take out he "nothings" and return the actul funtion 
 toString :: [[String]] -> String
-toString [[str]] = str
+toString (([str]): rest) = str ++ toString rest
+toString [] = []
 
 createFunctions :: Contract -> [[SolTypes]] -> [[String]]
 createFunctions c ([Fun str] : rest) = 
     ["function " ++ str ++ (isParameter c 0) ++ (isPubPriv c 0)  ++ (isStateMutable c 0)++ (isReturn c 0) ++ "{" ++ getExpr rest ++ "}"] : createFunctions c rest
+
 createFunctions c ([Con] : rest) = 
     ["constructor"] : createFunctions c rest
+
+createFunctions c ([Expr str] : rest) = 
+    createFunctions c rest
+
 createFunctions _ _ = []
 
 isStateMutable :: Contract -> Int -> String 
@@ -63,7 +69,7 @@ isPubPriv _ 1 = "public "
 isPubPriv _ 2 = ""
 
 testContract :: Contract
-testContract = c1
+testContract = c3
 
 c1 :: Contract
 c1 = (function "deposit" (cashIn (Equal 5) End))
@@ -71,8 +77,11 @@ c1 = (function "deposit" (cashIn (Equal 5) End))
 c2 :: Contract 
 c2 = (function "sayHello" (return "HelloWorld" End))
 
+c3 :: Contract 
+c3 = (function "sayHello" (return "HelloWorld" (function "deposit" (cashIn (Equal 5) End))))
 
-createContract = "pragma solidity ^0.5.0;" ++ "\n" ++ "contract Hello {" ++ "\n" ++
+
+createContract = "pragma solidity ^0.5.0;" ++ "\n" ++ "contract HelloDeposit {" ++ "\n" ++
                       toString(createFunctions testContract (runTypes)) ++ "\n" ++ "}"
 
 toFile :: IO ()

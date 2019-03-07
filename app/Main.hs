@@ -15,6 +15,8 @@ main c = do
     putStrLn 
     loop bettingContract emptyPState emptyCState
 
+
+
 loop :: Contract -> ParamState -> ContractState -> IO ()
 loop c pst st = do
     case c of 
@@ -28,7 +30,7 @@ loop c pst st = do
                                 putStrLn (show no ++ show ns)
                                 loop nc nco ns 
 
-        (Send obs c1) -> do 
+        (Send (Winner p) c1) -> do 
                                 putStrLn "Enter decision > "
                                 decision <- getLine 
                                 let dec = (read decision :: Int)
@@ -42,6 +44,11 @@ loop c pst st = do
             let (nc, no, ns, nco) = run c (SetOwner address) pst st 
             putStrLn (show no)
             loop nc nco ns
+        (Withdraw amount c1) -> do
+            putStrLn "Pick account to withdraw from: "
+            account <- getLine 
+            let acc = (read account :: Money) 
+
 
         (End) -> putStrLn ("Contract finished")
 
