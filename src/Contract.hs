@@ -30,7 +30,7 @@ data ContractState = ContractState {
 data ParamState = ParamState {
                 maxPeople :: Int ,
                 amountSize :: Money, 
-                duration :: (Integer, Int, Int)
+                duration :: Int
               }
               deriving (Show)
 
@@ -38,7 +38,7 @@ emptyCState :: ContractState
 emptyCState = ContractState {commits = Map.empty, etherBalance = 0, owner = "0"}
 
 emptyPState :: ParamState 
-emptyPState = ParamState {maxPeople = 0, amountSize = 0, duration = (0,0,0)}
+emptyPState = ParamState {maxPeople = 0, amountSize = 0, duration = 0}
 
 data Contract = End |
                 Single Parameter |
@@ -81,7 +81,7 @@ data Output = Null |
               ObNotReached 
         deriving(Show)
 
-data Parameter =   Date (Integer, Int, Int) |
+data Parameter =   Days Int |
                    Amount Money |
                    People Int 
                 deriving (Show, Eq, Ord)
@@ -151,7 +151,7 @@ evalC i c@(CashBackAll c1) pst o st
 
 evalC i c@(Until param c1) pst o st =
     case param of 
-        (Date (y,m,d)) -> (c1, [], st, pst {duration = (y,m,d)})
+        (Days d) -> (c1, [], st, pst {duration = d})
         (Amount x) -> (c1, [], st, pst {amountSize = x})
         (People p) -> (c1, [], st, pst {maxPeople = p})
 
@@ -182,18 +182,18 @@ evalInput (NoLimit) inp = True
 
 evalParam :: Contract -> ParamState -> ContractState -> Input -> Bool
 evalParam c pst const (CashInp address money)
-    | (duration pst) /= (0,0,0) = at (Date (duration pst))
+    | (duration pst) /= 0 = at (Days (duration pst))
     | (amountSize pst) /= 0 = (etherBalance const + money) <= amountSize pst 
     | otherwise = True
 
 evalParam (When para c1) pst const i = 
     case para of 
-        (Date (y,m,d)) -> at (Date (y,m,d))
+        (Days d) -> at (Days d)
         (Amount x) -> (etherBalance const) == x 
         _ -> False
 
 evalParam (CashBackAll c1) pst const i
-    | (duration pst) /= (0,0,0) = at (Date (duration pst))
+    | (duration pst) /= 0 = at (Days (duration pst))
     | otherwise = True
 
 --TODO Handle address that did not make a committment i.e Beneficiary
@@ -201,18 +201,21 @@ evalSend :: SendCondition -> ContractState -> Input -> [Address]
 evalSend (Highest p) st (Decision d) = getAddress (findAtIndex (highestInMap (commits st)) st)
 evalSend (Winner p) st (Decision d) = getAddress (findAtIndex([d]) st)
 
+--TODO this needs to be changed to unix timestamps instead of hard dates
+---------------
 sameDate :: Parameter -> Parameter -> Bool
-sameDate (Date (t1, t2, t3)) (Date (t4, t5, t6)) 
-    | (t1 > t4 ) = False 
-    | (t1 > t4 ) && (t2 > t5) = False
-    | (t1 > t4 ) && (t2 > t5) && (t3 > t6) = False
-    | otherwise = True
+sameDate (Days inContract) (Days now) 
+    | now < inContract = False
+    | now == inContract = True
+    | otherwise = False
 
 at :: Parameter -> Bool 
-at tContract = sameDate tContract (Date (unsafePerformIO (todayDate)))
+at tContract = sameDate tContract (intialDays)
 
-todayDate :: IO (Integer,Int,Int) -- :: (year,month,day)
-todayDate = getCurrentTime >>= return . toGregorian . utctDay
+intialDays :: Parameter 
+intialDays = Days 0
+
+--------------
 
 index :: Int -> ContractState -> Int 
 index p s

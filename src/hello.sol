@@ -6,3 +6,7 @@ contract Greeter {
             return "Hello World!";
     }
 }
+
+    constructor (string memory initialMessage) public {
+            message=initialMessage;
+    }

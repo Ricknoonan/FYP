@@ -1,4 +1,13 @@
 pragma solidity ^0.5.0;
-contract Hello {
-function sayHello() public payable pure returns(string memory) {return HelloWorld;}function deposit() public payable pure returns(string memory) {require(msg.value ==5.0);}
+contract HelloDeposit {
+constructor() public {owner = msg.sender;
+}
+function finalize() public payable payable {if (totalAmount ==10.0){ 
+owner.transfer(this.balance);
+}
+function join() public payable payable {require (peopleCount < 2);
+peopleCount++;
+require(msg.value ==5.0);
+}
+
 }
