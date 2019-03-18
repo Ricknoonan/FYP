@@ -50,15 +50,20 @@ data Contract = End |
                 CashBackAll Contract |
                 Send SendCondition Contract | -- Sends person depening on event 
                 Initiate Contract |
-                Allow Parameter Contract |
+                Allow Modifier Contract |
                 Function String Contract |
+                Not Contract |
+                Set Parameter Contract |
                 Constructor Contract |
-                Return String Contract 
+                Return String Contract |
+                AddTo String Contract 
         deriving (Show, Eq)
 
 data InputCondition = Min Money |
                       Max Money |
                       Equal Money |
+                      Higher String | 
+                      Lower |
                       NoLimit
             deriving (Show, Eq)
 
@@ -69,6 +74,10 @@ data SendCondition = Winner PayOption |
                      Beneficiary PayOption |
                      Person PayOption
                 deriving (Show, Eq)
+
+data Modifier = OnlyOwner |
+                NotOwner 
+            deriving (Show, Eq)
 
 data Output = Null |
               CommitFail Action |
@@ -82,8 +91,13 @@ data Output = Null |
         deriving(Show)
 
 data Parameter =   Days Int |
-                   Amount Money |
-                   People Int 
+                   Amount Money|
+                   TotalReached |
+                   TimesUp |
+                   People Int |
+                   TotalAmount |
+                   TimeLimit |
+                   ContractOwner 
                 deriving (Show, Eq, Ord)
 
 data PayOption = All | 

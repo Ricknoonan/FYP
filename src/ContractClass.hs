@@ -15,6 +15,10 @@ class Contracts c where
     function :: String -> Contract -> c 
     constructor :: Contract -> c
     return :: String -> Contract -> c
+    not :: Contract -> c
+    allow :: Modifier -> Contract -> c
+    set :: Parameter -> Contract -> c
+    addTo :: String -> Contract -> c
 
 instance Contracts Contract where
     end = End
@@ -29,5 +33,8 @@ instance Contracts Contract where
     function = Function 
     constructor = Constructor
     return = Return
-
+    not = Not
+    allow = Allow
+    set = Set
+    addTo = AddTo
 

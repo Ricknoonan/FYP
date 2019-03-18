@@ -17,3 +17,6 @@ deposit =
 
  
 --(constructor (initiate (function "deposit" (cashIn (NoLimit) (function "cashOut" (send Person (Withdraw)) End))))
+
+-- Need maps if someones needs to have a certain amount associated with their address
+-- Know i
