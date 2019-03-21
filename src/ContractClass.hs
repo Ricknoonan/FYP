@@ -11,7 +11,6 @@ class Contracts c where
     cashBackAll ::  Contract -> c
     send :: SendCondition -> Contract -> c
     until :: Parameter -> Contract -> c
-    initiate :: Contract -> c
     function :: String -> Contract -> c 
     constructor :: Contract -> c
     return :: String -> Contract -> c
@@ -19,6 +18,8 @@ class Contracts c where
     allow :: Modifier -> Contract -> c
     set :: Parameter -> Contract -> c
     addTo :: String -> Contract -> c
+    withdraw :: Contract -> c
+    unless :: FunctionCondition -> Contract -> c
 
 instance Contracts Contract where
     end = End
@@ -29,7 +30,6 @@ instance Contracts Contract where
     cashBackAll = CashBackAll
     send = Send
     until = Until
-    initiate = Initiate
     function = Function 
     constructor = Constructor
     return = Return
@@ -37,4 +37,6 @@ instance Contracts Contract where
     allow = Allow
     set = Set
     addTo = AddTo
+    withdraw = Withdraw
+    unless = Unless
 

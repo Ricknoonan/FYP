@@ -10,7 +10,7 @@ bettingContract =
 
 join :: Contract
 join = 
-    (function "join" (until (People 2) (cashIn (Equal 5) End ))) 
+    (function "join" (until (People 2) (cashIn (Equal 5) (addTo (Person) "bet" End)))) 
    
 finalize :: Contract
 finalize = 

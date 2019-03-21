@@ -48,15 +48,16 @@ data Contract = End |
                 Until Parameter Contract | -- until a certain observable, the following contracts can be evaluated
                 CashIn InputCondition Contract| -- allows a person to commit x amount that is defined the in the contract
                 CashBackAll Contract |
-                Send SendCondition Contract | -- Sends person depening on event 
-                Initiate Contract |
+                Send SendCondition Contract |
+                Withdraw Contract |
                 Allow Modifier Contract |
                 Function String Contract |
                 Not Contract |
                 Set Parameter Contract |
                 Constructor Contract |
                 Return String Contract |
-                AddTo String Contract 
+                AddTo String Contract |
+                Unless FunctionCondition Contract 
         deriving (Show, Eq)
 
 data InputCondition = Min Money |
@@ -70,10 +71,13 @@ data InputCondition = Min Money |
 data SendCondition = Winner PayOption |
                      Highest PayOption|
                      Random PayOption |
-                     Owner PayOption |
+                     ToOwner PayOption |
                      Beneficiary PayOption |
                      Person PayOption
                 deriving (Show, Eq)
+
+data FunctionCondition = AlreadyJoined 
+             deriving (Show, Eq)
 
 data Modifier = OnlyOwner |
                 NotOwner 
@@ -102,7 +106,6 @@ data Parameter =   Days Int |
 
 data PayOption = All | 
                  Rest |
-                 Withdraw |
                  Partial Money 
                 deriving (Show, Eq, Ord)
 
@@ -169,7 +172,7 @@ evalC i c@(Until param c1) pst o st =
         (Amount x) -> (c1, [], st, pst {amountSize = x})
         (People p) -> (c1, [], st, pst {maxPeople = p})
 
-evalC i@(SetOwner address) c@(Initiate c1) pst o st = 
+evalC i@(SetOwner address) c@(Set (ContractOwner) c1) pst o st = 
     (c1, [OwnerSet address], st {owner = address} ,pst)
 
 evalC i c@(Function str c1) pst o st = evalC i c1 pst o st

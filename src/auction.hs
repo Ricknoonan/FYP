@@ -1,18 +1,11 @@
-module Solidity where
+module Auction where
 
 import Contract
 import ContractClass
 
-auction contructor 
-
-function to place bid 
-
-fucntion to withdraw 
-
-
 placeBid :: Contract 
 placeBid = 
-	(function "placeBid" (allow (NotOwner) (until (TimesUp) (cashIn (Higher) (addTo "bid")))))
+	(function "placeBid" (allow (NotOwner) (until (TimesUp) (cashIn (Higher "highestBid") (addTo "bid")))))
 
 withdraw :: Contract 
 withdraw = 
