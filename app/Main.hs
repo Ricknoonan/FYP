@@ -1,57 +1,36 @@
-module Main (
-        main
-    ) where
+module Main ( 
+	main) where 
 
 import Contract
 import ContractClass
-import Prelude hiding (until)
-import Betting 
-import CrowdFunding
+import Prelude hiding (until, interact)
+import Bank 
+import Lottery
+import ToSolidity 
+import Simulate
+import System.IO
 
-
-
-main :: Contract -> IO ()
-main c = do 
-    putStrLn 
-    loop bettingContract emptyPState emptyCState
-
-
-
-loop :: Contract -> ParamState -> ContractState -> IO ()
-loop c pst st = do
-    case c of 
-        (CashIn val c1) -> do   
-                                putStrLn "What is your wallet address? > "
-                                address <- getLine
-                                putStrLn (show address ++ " Commit " ++ show val ++ " >")
-                                money <- getLine
-                                let moneyIn = (read money :: Money) 
-                                let (nc, no, ns, nco) = run c (CashInp address moneyIn) pst st 
-                                putStrLn (show no ++ show ns)
-                                loop nc nco ns 
-
-        (Send (Winner p) c1) -> do 
-                                putStrLn "Enter decision > "
-                                decision <- getLine 
-                                let dec = (read decision :: Int)
-                                let (nc, no, ns, nco) = run c (Decision dec) pst st 
-                                putStrLn (show no)
-                                loop nc nco ns
-                                
-        (Initiate c1) -> do 
-            putStrLn "Initiate contract, enter owner address: >"
-            address <- getLine 
-            let (nc, no, ns, nco) = run c (SetOwner address) pst st 
-            putStrLn (show no)
-            loop nc nco ns
-        (Withdraw amount c1) -> do
-            putStrLn "Pick account to withdraw from: "
-            account <- getLine 
-            let acc = (read account :: Money) 
-
-
-        (End) -> putStrLn ("Contract finished")
-
-        c -> do 
-            let (nc, no, ns, nco) = run c (Empty) pst st 
-            loop nc nco ns 
+main :: IO ()
+main = do 
+	putStrLn "What contract would you like to load?> "
+	input1 <- getLine
+	case input1 of
+		("bank")-> do
+			putStrLn "What do you want to do?>"
+			putStrLn "[1] Simulate Contract"
+			putStrLn "[2] Generate Solidity"
+			input2 <- getLine
+			case input2 of
+				("1") -> simulate bank
+				("2") -> (toFile "Bank" bank) 
+		("lottery") -> do 
+			putStrLn "What do you want to do?>"
+			putStrLn "[1] Simulate Contract"
+			putStrLn "[2] Generate Solidity"
+			input2 <- getLine
+			case input2 of
+				("1") -> simulate lottery
+				("2") -> toFile "Lottery" lottery
+		_ -> do 
+			putStrLn "Invalid Entry"
+			main 

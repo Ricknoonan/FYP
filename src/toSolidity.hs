@@ -1,10 +1,10 @@
-module Solidity where
+module ToSolidity where
 
 import Contract
 import ContractClass
-import Prelude hiding (until, interact,return)
-import Bank
+import Bank 
 import Lottery 
+import Prelude hiding (until, interact,return)
 
 data SolTypes =   FunVar String |
                   StVar String |
@@ -42,6 +42,7 @@ sortStateTypes c =
         (CashIn (Equal m) c1) -> sortStateTypes c1
         (When (People p) c1) -> sortStateTypes c1
         (Send (Random All) c1 ) -> sortStateTypes c1
+        (Send (Winner All) c1) -> sortStateTypes c1
         (CashIn (NoLimit) c1) -> case c1 of 
         	                       (AddTo str c2) -> [(Mapping ("mapping (address => uint) private") (str))] : sortStateTypes c2
         	                       _ -> sortStateTypes c1 
@@ -133,7 +134,6 @@ sortTypes c s =
         	             [(ReturnExpr ("return " ++ (getStateType "map" s) ++"[msg.sender];"))] : 
         	             [(FunVar ("unit withdrawAmount"))] : 
         	             [(ReturnVar ("unit remainingBal"))] : sortTypes c1 s
-        (Return str c1) -> [(Expr ("return " ++ str ++ ";"))] : sortTypes c1 s
         (Until (Amount m) c1) -> [(Expr ("require (totalAmount < (this.balance + " ++ show m))] : sortTypes c1 s
 
         (Until (TimesUp) c1) -> [(Expr ("require (now < " ++ (getStateType "time" s)))] : sortTypes c1 s
@@ -281,22 +281,7 @@ toFile s c = writeFile (s ++ ".txt") (createContract c (stateTypesToSort c))
 getFunCon :: Contract -> String 
 getFunCon c = toString(createFunCon c (stateTypesToSort c))
 
-
-----Testing---
-testLottery = toFile "lottery" lottery
-
-testBank = toFile "bank" bank 
-
-
-testTypes = stateTypesToSort lottery
-
-
-{--
-_ -> [(Expr ("require (peopleCount < " ++ show p ++ ");"))] : 
-                                         [(Expr ("peopleCount++;"))] : sortTypes c1 s
-     --}
-
-
-
 c1 :: Contract
 c1 = (function "deposit" (cashIn (Equal 5) End))
+
+test = toFile "bank" bank

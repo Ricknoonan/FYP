@@ -5,12 +5,12 @@ import ContractClass
 import Prelude hiding (until, interact) 
 
 bank :: Contract 
-bank = (constructor (set (ContractOwner) (cashOut)))
-
-cashOut :: Contract
-cashOut = 
-    (function "cashOut" (withdraw deposit))
+bank = (constructor (set (ContractOwner) deposit))
 
 deposit :: Contract 
 deposit = 
-    (function "deposit" (cashIn (NoLimit) (addTo "balance" End )))
+    (function "deposit" (cashIn (NoLimit) (addTo "balance" cashOut )))
+
+cashOut :: Contract
+cashOut = 
+    (function "cashOut" (withdraw End))

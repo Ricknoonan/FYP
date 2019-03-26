@@ -1,0 +1,26 @@
+pragma solidity ^0.5.0;
+contract Contract {
+
+function selectWinner()public returns (address){
+if (peopleCount ==10) {
+address payable winner = participants[randomNumber()];
+winner.transfer(address(this).balance);
+}
+return winner;}
+function join()public payable {
+require(msg.value ==1.0);
+require (peopleCount < 10);
+require (!joinedAlready(msg.sender));
+people[peopleCount] = msg.sender;
+peopleCount++;
+}
+
+function joinedAlready(address payable participant) private view returns(bool) {
+for(uint i = 0; i < participants.length; i++) {
+if (participants[i] == participant) {
+return true;
+}
+}
+return false;
+}
+}

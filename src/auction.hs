@@ -5,13 +5,13 @@ import ContractClass
 
 placeBid :: Contract 
 placeBid = 
-	(function "placeBid" (allow (NotOwner) (until (TimesUp) (cashIn (Higher "highestBid") (addTo "bid")))))
+    (function "placeBid" (allow (NotOwner) (until (TimesUp) (cashIn (Higher "highestBid") (addTo "bid")))))
 
 withdraw :: Contract 
 withdraw = 
-	(function "withdraw" (allow (OnlyOwner) (when (TimesUp) (send (Owner All) placeBid))))
+    (function "withdraw" (allow (OnlyOwner) (when (TimesUp) (send (Owner All) placeBid))))
 
 createAuction :: Contract
 createAuction = 
-	(contructor (set (TimeLimit) (set (ContractOwner) withdraw)))
+	(contructor (set (TimeLimit 20) (set (ContractOwner) withdraw)))
 
