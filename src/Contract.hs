@@ -42,7 +42,6 @@ emptyPState :: ParamState
 emptyPState = ParamState {maxPeople = 0, amountSize = 0, duration = 0}
 
 data Contract = End |
-                Single Parameter |
                 When Parameter Contract| -- When observable is true, next action can happen
                 And Contract Contract|
                 Or Contract Contract |
@@ -139,15 +138,15 @@ evalC :: Input -> Contract -> ParamState -> OP -> ContractState -> (Contract, OP
 evalC i@(CashInp address money) c@(CashIn inpCon c1) pst o st 
     | evalInput inpCon money && evalParam c pst st i && ((maxPeople pst) /= 0)= (c, outputP, updateState, pst)
     | evalInput inpCon money && evalParam c pst st i && ((maxPeople pst) == 0) = (c1, outputP, updateState, pst)
-    | (size st + 1) == (maxPeople pst) = (c1, outputP, updateState, pst)
-    | not (evalParam c pst st i) || (size st == maxPeople pst) = (c1, outputF, st, pst)
+    | (commitSize st + 1) == (maxPeople pst) = (c1, outputP, updateState, pst)
+    | not (evalParam c pst st i) || (commitSize st == maxPeople pst) = (c1, outputF, st, pst)
     | otherwise = (c, outputF, st, pst)
         where
             newBal = evalValue (+) st money 
             comms = commits st
             outputP = [CommitPass (Commit address money)]
             outputF = [CommitFail (Commit address money)]
-            updateState = st {commits = Map.insert (index (maxPeople pst) st) (Commit address money) comms, etherBalance = newBal}
+            updateState = st {commits = Map.insert (cashInSize st) (Commit address money) comms, etherBalance = newBal}
 
 -- Infinite loop on fail 
 evalC i c@(When param c1) pst o st
@@ -166,13 +165,13 @@ evalC i c@(Send param c1) pst o st
 
 evalC i c@(CashBackAll c1) pst o st 
     | evalParam c pst st i = (c1, o, updateState, pst)
-    | (size st) > 0 = evalC i c pst (o ++ [no]) updateState
+    | (commitSize st) > 0 = evalC i c pst (o ++ [no]) updateState
     | otherwise = evalC i c1 pst o st
         where 
-            no = WithdrawPass (findAtIndex ([size st]) st)
-            newCommits = Map.delete (size st) (commits st)
+            no = WithdrawPass (findAtIndex ([commitSize st]) st)
+            newCommits = Map.delete (commitSize st) (commits st)
             currentBal = etherBalance st
-            refund = commitAtIndex (size st) st
+            refund = commitAtIndex (commitSize st) st
             updateState = st {commits = newCommits, etherBalance = (currentBal - refund)}
 
 evalC i c@(Until param c1) pst o st =
@@ -185,7 +184,7 @@ evalC i@(SetOwner address) c@(Set (ContractOwner) c1) pst o st =
     (c1, [OwnerSet address], st {owner = address} ,pst)
 
 evalC i@(WithdrawEther (Decision wal) (Amount amnt)) c@(Withdraw c1) pst o st 
-    | evalParam c pst st i && (size st) > 0  = (c1, outputP, updateState, pst)
+    | evalParam c pst st i && (commitSize st) > 0  = (c1, outputP, updateState, pst)
     | otherwise = (c, outputF, st, pst)
         where 
           wDraw = withdrawls st
@@ -193,7 +192,7 @@ evalC i@(WithdrawEther (Decision wal) (Amount amnt)) c@(Withdraw c1) pst o st
           outputP = [WithdrawPass [SendOut address amnt]] 
           outputF = [WithdrawFail [SendOut address amnt]]
           currentBal = etherBalance st
-          updateState = st {etherBalance = currentBal - amnt, withdrawls = Map.insert (index (maxPeople pst) st) (SendOut address amnt) wDraw}
+          updateState = st {etherBalance = currentBal - amnt, withdrawls = Map.insert (withdrawlsSize st) (SendOut address amnt) wDraw}
 
 evalC i c@(Function str c1) pst o st = (c1, [outputFun], st, pst) 
     where 
@@ -204,6 +203,8 @@ evalC i c@(Constructor c1) pst o st = (c1, [outputCon], st, pst)
       outputCon = (Message ("Constructor created" ))
 
 evalC i c@(Set param c1) pst o st = (c1, [], st, pst)
+    where 
+      outputSet = (Message (""))
 
 evalC i c@(AddTo str c1) pst o st = (c1, [], st, pst)
 
@@ -232,7 +233,7 @@ evalParam :: Contract -> ParamState -> ContractState -> Input -> Bool
 evalParam c pst const (CashInp address money)
     | (duration pst) /= 0 = at (Days (duration pst))
     | (amountSize pst) /= 0 = (etherBalance const + money) <= amountSize pst 
-    | (maxPeople pst) /= 0 = ((size const + 1) < maxPeople pst)
+    | (maxPeople pst) /= 0 = ((commitSize const + 1) < maxPeople pst)
     | otherwise = True
 
 evalParam (Send param c1) pst const (Decision dec)
@@ -287,13 +288,23 @@ O(log n). The expression (update f k map) updates the value x at k (if it is in 
  update f 7 (fromList [(5,"a"), (3,"b")]) == fromList [(3, "b"), (5, "a")]
  update f 3 (fromList [(5,"a"), (3,"b")]) == singleton 5 "a"
 --}
+
+withdrawlsSize :: ContractState -> Int
+withdrawlsSize s = ((Map.size (withdrawls s)) + 1)
+
+cashInSize :: ContractState -> Int
+cashInSize s = ((Map.size (commits s)) + 1)
+
 index :: Int -> ContractState -> Int 
 index p s
-    | Map.member p (commits s) = index (p-1) s
+    | Map.member p (commits s) = index (p) s
     | otherwise = p 
 
-size :: ContractState -> Int 
-size s = Map.size (commits s)
+commitSize :: ContractState -> Int 
+commitSize s = Map.size (commits s)
+
+withdrawSize :: ContractState -> Int 
+withdrawSize s = Map.size (withdrawls s)
 
 getMoneyCommit :: [Action] -> Money 
 getMoneyCommit [(Commit p m)] = m
@@ -312,6 +323,7 @@ findAtIndex :: [Int] -> ContractState -> [Action]
 findAtIndex [] s = [(Commit "No Commit" 0)]
 findAtIndex [i] s = [(Map.findWithDefault (Commit "No Commit" 0) (i) (commits s))]
 findAtIndex (i:is) s = (Map.findWithDefault (Commit "No Commit" 0) (i) (commits s)):findAtIndex is s
+
 
 highestInMap :: Map Int Action -> [Int]
 highestInMap m = go [] Nothing (Map.toList m)

@@ -276,7 +276,7 @@ createContract c s= "pragma solidity ^0.5.0;" ++ "\n" ++ "contract Contract {" +
                   
 
 toFile :: String -> Contract -> IO ()
-toFile s c = writeFile (s ++ ".txt") (createContract c (stateTypesToSort c))
+toFile s c = writeFile (s ++ "Solidity.txt") (createContract c (stateTypesToSort c))
 
 getFunCon :: Contract -> String 
 getFunCon c = toString(createFunCon c (stateTypesToSort c))

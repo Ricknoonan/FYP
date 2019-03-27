@@ -3,21 +3,29 @@ module Tests where
 import System.IO  
 import System.Directory  
 import Data.List
+import Data.Char
 import Contract
 
-main = do        
-    handle <- openFile "sampleContract.txt" ReadMode  
+main = do
+    putStrLn "What contract do you want to load? "
+    file <- getLine        
+    handle <- openFile (file ++ ".txt") ReadMode  
     (tempName, tempHandle) <- openTempFile "." "temp"  
     contents <- hGetContents handle  
-    let todoTasks = words contents     
-        --numberedTasks = zipWith (\n line -> show n ++ " - " ++ line) [0..] todoTasks     
+    let todoTasks = (map (map toLower) (words contents) )   
     putStrLn "Contract:"  
     putStr (show todoTasks)  
     hClose handle  
     hClose tempHandle 
 
 readDataTypes :: [String] -> Contract
-readDataTypes ("End":xs) = (read "End" :: Contract)
+readDataTypes ("end":xs) = End  
+readDataTypes ("function":x:xs) = (Function x (readDataTypes xs))
+readDataTypes ("constructor":xs) = (Constructor (readDataTypes xs))
+readDataTypes ("set":"contractowner":xs) = (Set (ContractOwner) (readDataTypes xs))
+readDataTypes ("cashin":"nolimit":xs) = (CashIn (NoLimit) (readDataTypes xs))
+readDataTypes ("addto":x:xs) = (AddTo x (readDataTypes xs))
+readDataTypes ("Withdraw": xs) = (Withdraw (readDataTypes xs)) 
 
 
 {--

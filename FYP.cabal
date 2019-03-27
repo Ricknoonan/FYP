@@ -24,6 +24,7 @@ library
                        Lottery
                        Simulate
                        ToSolidity
+                       ToContract
   build-depends:       base, transformers, containers, time, haskeline
   default-language:    Haskell2010
 
