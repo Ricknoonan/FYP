@@ -2,4 +2,4 @@ constructor set contractowner
 
 function "deposit" cashin nolimit addto "balance" 
 
-function "cashOut" withdraw 
+function "cashOut" withdraw

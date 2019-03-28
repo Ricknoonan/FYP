@@ -8,15 +8,11 @@ import Data.Map (Map, (!))
 import qualified Data.Map as Map
 import System.IO.Unsafe (unsafePerformIO)
 
-type Person = Address  
-
 type Money = Double 
-
-type Owner = Person
 
 type Address = String
 
-type Decision = Person 
+type Decision = Address 
 
 type OP = [Output]
 
@@ -24,7 +20,7 @@ data ContractState = ContractState {
                 commits :: Map.Map Int Action,
                 withdrawls :: Map.Map Int Action, 
                 etherBalance  :: Money,
-                owner :: Person
+                owner :: Address
              }
              deriving (Eq,Show,Ord)
 
@@ -73,7 +69,7 @@ data SendCondition = Winner PayOption |
                      Random PayOption |
                      ToOwner PayOption |
                      Beneficiary PayOption |
-                     Person PayOption
+                     Address PayOption
                 deriving (Show, Eq,Read)
 
 data FunctionCondition = AlreadyJoined 
@@ -91,8 +87,7 @@ data Output = Null |
               OwnerSet Address |
               WithdrawPass [Action] |
               WithdrawFail [Action] |
-              Message String |
-              ObNotReached 
+              Message String 
         deriving(Show,Read)
 
 data Parameter =   Days Int |
@@ -107,11 +102,11 @@ data Parameter =   Days Int |
 
 data PayOption = All | 
                  Rest |
-                 Partial Money 
+                 Partial Double 
                 deriving (Show, Eq, Ord,Read)
 
-data Action =  Commit Person Money |
-               SendOut Person Money 
+data Action =  Commit Address Money |
+               SendOut Address Money 
     deriving (Eq,Show,Ord,Read)
 
 data Input = CashInp Address Money |
@@ -121,19 +116,6 @@ data Input = CashInp Address Money |
              Empty
         deriving (Show, Eq, Ord,Read)
 
--- Takes a function, the current balance and the amount being committed and returns new balance
-evalValue :: (Money -> Money -> Money) -> ContractState -> Money -> Money 
-evalValue f s val = f (etherBalance s) val 
-
-payeesLength :: [Address] -> Double
-payeesLength payees = fromIntegral (length payees) 
-
-
-
-
-
-
--- TODO: Should move to next contract when contract is full not accept another input, fail and then move on
 evalC :: Input -> Contract -> ParamState -> OP -> ContractState -> (Contract, OP, ContractState, ParamState)
 evalC i@(CashInp address money) c@(CashIn inpCon c1) pst o st 
     | evalInput inpCon money && evalParam c pst st i && ((maxPeople pst) /= 0)= (c, outputP, updateState, pst)
@@ -148,20 +130,19 @@ evalC i@(CashInp address money) c@(CashIn inpCon c1) pst o st
             outputF = [CommitFail (Commit address money)]
             updateState = st {commits = Map.insert (cashInSize st) (Commit address money) comms, etherBalance = newBal}
 
--- Infinite loop on fail 
 evalC i c@(When param c1) pst o st
     | evalParam c pst st i = (c1, [], st, pst)
     | otherwise = (c, [], st, pst)
 
--- Needs to check if contract horizon is reached 
 evalC i c@(Send param c1) pst o st 
-    | length payees > 0 = (End, (loopPayees payees payAmount), updateState, pst)
+    | length payees > 0 = (c1, (loopPayees payees payAmount), updateState, pst)
     | otherwise = (c, [SendFail], updateState, pst)
         where
             payAmount = (etherBalance st)/(payeesLength payees)
             newBal = evalValue (-) st payAmount 
-            updateState = st {etherBalance = newBal}
+            updateState = st {etherBalance = newBal,  withdrawls = Map.insert (withdrawlsSize st) (SendOut (flattenAddress payees) payAmount) wDraw}
             payees = evalSend param st i 
+            wDraw = withdrawls st
 
 evalC i c@(CashBackAll c1) pst o st 
     | evalParam c pst st i = (c1, o, updateState, pst)
@@ -210,11 +191,7 @@ evalC i c@(AddTo str c1) pst o st = (c1, [], st, pst)
 
 evalC i c@(End) pst o st = (End, [], st, pst)
 
-
-
-
-
-
+evalC i c@(Unless funCon c1) pst o st = (c1, [], st, pst)
 
 
 run :: Contract -> Input -> ParamState -> ContractState -> (Contract, OP, ContractState, ParamState)
@@ -258,6 +235,7 @@ evalParam (Withdraw c1) pst const (WithdrawEther (Decision wal) (Amount amnt))
 evalSend :: SendCondition -> ContractState -> Input -> [Address]
 evalSend (Highest p) st (Decision d) = getAddress (findAtIndex (highestInMap (commits st)) st)
 evalSend (Winner All) st (Decision d) = getAddress (findAtIndex([d]) st)
+evalSend (Random All) st (Empty) = getAddress (findAtIndex([(sizeCommits st)]) st)
 evalSend _ st _ = ["No Address"]
 
 --TODO this needs to be changed to unix timestamps instead of hard dates
@@ -275,25 +253,17 @@ intialDays :: Parameter
 intialDays = Days 0
 
 --------------
-
-updateBalance:: Int -> [Action] -> Money -> ContractState -> Maybe Action
-updateBalance i a m const = 
-  if (findAtIndex [i] const) == a then Just (Commit (getOneAddress a) m) else Nothing
-
-{--
-O(log n). The expression (update f k map) updates the value x at k (if it is in the map). If (f x) is Nothing, the element is deleted. If it is (Just y), the key k is bound to the new value y.
-
- let f x = if x == "a" then Just "new a" else Nothing
- update f 5 (fromList [(5,"a"), (3,"b")]) == fromList [(3, "b"), (5, "new a")]
- update f 7 (fromList [(5,"a"), (3,"b")]) == fromList [(3, "b"), (5, "a")]
- update f 3 (fromList [(5,"a"), (3,"b")]) == singleton 5 "a"
---}
+flattenAddress :: [Address] -> Address
+flattenAddress [a] = a 
 
 withdrawlsSize :: ContractState -> Int
 withdrawlsSize s = ((Map.size (withdrawls s)) + 1)
 
 cashInSize :: ContractState -> Int
 cashInSize s = ((Map.size (commits s)) + 1)
+
+sizeCommits :: ContractState -> Int
+sizeCommits s = ((Map.size (commits s)))
 
 index :: Int -> ContractState -> Int 
 index p s
@@ -321,9 +291,8 @@ commitAtIndex ind s = getMoneyCommit (findAtIndex [ind] s)
 
 findAtIndex :: [Int] -> ContractState -> [Action]
 findAtIndex [] s = [(Commit "No Commit" 0)]
-findAtIndex [i] s = [(Map.findWithDefault (Commit "No Commit" 0) (i) (commits s))]
-findAtIndex (i:is) s = (Map.findWithDefault (Commit "No Commit" 0) (i) (commits s)):findAtIndex is s
-
+findAtIndex [i] s = [((commits s) ! i)]
+findAtIndex (i:is) s = ((commits s) ! i):findAtIndex is s
 
 highestInMap :: Map Int Action -> [Int]
 highestInMap m = go [] Nothing (Map.toList m)
@@ -338,3 +307,9 @@ highestInMap m = go [] Nothing (Map.toList m)
 loopPayees :: [String] -> Double -> OP
 loopPayees [x] payAmount = [SendSuccess (SendOut x payAmount)]
 loopPayees (x:xs) payAmount = SendSuccess (SendOut x payAmount) : loopPayees xs payAmount
+
+evalValue :: (Money -> Money -> Money) -> ContractState -> Money -> Money 
+evalValue f s val = f (etherBalance s) val 
+
+payeesLength :: [Address] -> Double
+payeesLength payees = fromIntegral (length payees)
