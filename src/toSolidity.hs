@@ -35,7 +35,7 @@ sortStateTypes c =
         (Until (Amount m) c1) -> [(Unit ("uint8 ") ("totalAmount"))] : sortStateTypes c1
         (Until (People p) c1) ->  case c1 of
                                     (Unless (AlreadyJoined) c2) -> [(List ("address payable " ++ "[" ++ show p ++ "]") ("people"))] : sortStateTypes c2
-                                    _ -> sortStateTypes c1
+                                    _ ->  [(Count ("unit") ("peopleCount"))] : sortStateTypes c1
         (Until (TimesUp) c1) -> [(Time ("uint public")("end"))] : sortStateTypes c1
         (Withdraw c1) -> sortStateTypes c1
         (Function str c1) -> sortStateTypes c1
@@ -52,15 +52,6 @@ sortStateTypes c =
         (Unless (AlreadyJoined ) c1) -> sortStateTypes c1
         (Constructor c1) -> sortStateTypes c1
         (End) -> []
-
-{--
-sortStateTypesCombos :: Contract -> [[StateTypes]]
-sortStateTypesCombos (Until (People p) (Unless (AlreadyJoined) c1)) = [(List ("address payable " ++ "[" ++ show p ++ "]") ("people"))] : sortStateTypesCombos c1
-sortStateTypesCombos (CashIn (Higher str1) (AddTo str2 c1)) = [(OtherAddress ("address public") (str1))] : 
-                                                              [(Mapping ("mapping(address => uint256) public") (str2))] : sortStateTypes c1
-sortStateTypesCombos (CashIn (NoLimit) (AddTo str c1)) = [(Mapping ("mapping (address => uint) private") (str))] : sortStateTypes c1
-sortStateTypesCombos _ = []
---}
 
 --Takes the identifer string and the sorted state types and returns the variable name to be used in the function bodies
 getStateType :: String -> [[StateTypes]] -> String
@@ -137,6 +128,7 @@ sortTypes c s =
         (Until (Amount m) c1) -> [(Expr ("require (totalAmount < (this.balance + " ++ show m))] : sortTypes c1 s
 
         (Until (TimesUp) c1) -> [(Expr ("require (now < " ++ (getStateType "time" s)))] : sortTypes c1 s
+        (Until (People p) c1) -> [(Expr ("require ( peopleCount < " ++ show p ++ ");"))] : [(Expr ("peopleCount++;"))] : sortTypes c1 s
 
         (When (Amount m) c1) -> [(IfExpr ("if (totalAmount ==" ++ show m ++ ") " ))] : sortTypes c1 s
         (When (People p) c1) -> [(IfExpr ("if (peopleCount ==" ++ show p ++ ") " ))] : sortTypes c1 s
@@ -179,6 +171,7 @@ getStVar ([OtherAddress str1 str2] : rest) = combineString str1 str2 ++ getStVar
 getStVar ([Mapping str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
 getStVar ([Time str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
 getStVar ([Unit str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
+getStVar ([Count str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
 getStVar _ = "" 
 
 --This function will take out he "nothings" and return the actul funtion 
@@ -210,6 +203,12 @@ createStandardFun ([(Expr ("require (!joinedAlready(msg.sender));"))] : rest) = 
                                                   ++ "\n" ++ "return true;"
                                                   ++ "\n" ++ "}" ++ "\n" ++ "}"
                                                   ++ "\n" ++ "return false;" ++ "\n" ++ "}"] : createStandardFun rest
+
+createStandardFun ([(Expr ("address payable winner = participants[randomNumber()];"))] : rest) = ["function randomNumber() private returns(uint) {"
+                                          ++ "\n" ++ "uint rand = uint(keccak256(abi.encodePacked(now, msg.sender, randNonce))) % 10;"
+                                          ++ "\n" ++ "randNonce++;"
+                                          ++ "\n" ++ "return rand;}"] : createStandardFun rest
+
 createStandardFun ([Expr str] : rest) = createStandardFun rest
 createStandardFun ([PayExpr str] : rest) = createStandardFun rest
 createStandardFun ([StVar str] : rest) = createStandardFun rest
@@ -220,6 +219,7 @@ createStandardFun ([ReturnExpr str] : rest) = createStandardFun rest
 createStandardFun ([Fun str] : rest) = createStandardFun rest
 createStandardFun ([Con] : rest) = createStandardFun rest
 createStandardFun _ = []
+
                                             
  -- Will the function affect state? i.e.[pure|constant|view|payable]
 isStateMutable :: [[SolTypes]] -> String 
@@ -284,4 +284,4 @@ getFunCon c = toString(createFunCon c (stateTypesToSort c))
 c1 :: Contract
 c1 = (function "deposit" (cashIn (Equal 5) End))
 
-test = toFile "bank" bank
+test = toFile "lotter" lottery

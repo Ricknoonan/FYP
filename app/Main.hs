@@ -11,13 +11,11 @@ import Simulate
 import ToContract
 
 import System.IO
-{--import qualified Data.Text    as Text
-import qualified Data.Text.IO as Text
-import System.Directory  --}
 import Data.List
 import Data.Char
 import Control.Exception
 
+main :: IO ()
 main = do
     putStrLn "What contract do you want to load? "
     fileName <- getLine
@@ -29,14 +27,18 @@ main = do
     putStrLn (show contractType)
     checkErrors contractType
     checkLogic contractList
+    choice fileName contractType contractList
+    hClose handle
+
+choice :: String -> Contract -> [String] -> IO ()
+choice fileName contractType contractList = do 
     putStrLn "What do you want to do?>"
     putStrLn "[1] Simulate Contract"
     putStrLn "[2] Generate Solidity"
     input2 <- getLine
     case input2 of
-        ("1") -> simulate contractType >> (toFile fileName contractType)
-        ("2") -> (toFile fileName contractType)
-    hClose handle
+        ("1") -> simulate contractType >> choice fileName contractType contractList
+        ("2") -> (toFile fileName contractType) >> putStrLn "Contract Generated Succesfully!"
 
 checkErrors :: Contract -> IO ()
 checkErrors c = do
