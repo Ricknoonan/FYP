@@ -13,7 +13,7 @@ setUpCrowdFunder =
 
 donate :: Contract
 donate = 
-    (function "donate" (until (TotalReached) (until (TimesUp) (cashIn (Min 0) withdrawOwner))))
+    (function "donate" (until (TotalReached) (until (TimesUp) (commitEther (Min 0) withdrawOwner))))
 
 withdrawOwner :: Contract
 withdrawOwner = 

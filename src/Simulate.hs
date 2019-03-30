@@ -39,8 +39,9 @@ loop c pst st = do
         (Send (Winner All) c1) -> do
             putStrLn "Simulating Send > "
             putStrLn "Enter decision > "
-            decision <- getLine 
-            let dec = (read decision :: Int)
+            address <- getLine
+            let dec = (read address :: Int)
+            contractMember dec c pst st
             let (nc, no, ns, nco) = run c (Decision dec) pst st 
             putStrLn ("Contract State after Send")
             prettyPrint no ns
@@ -54,10 +55,11 @@ loop c pst st = do
         (Withdraw c1) -> do 
             putStrLn "Simulating Withdraw > "
             putStrLn "Choose Wallet >"
-            wallet <- getLine 
+            address <- getLine
+            let wal = (read address :: Int)
+            contractMember wal c pst st
             putStrLn "Withdraw Amount >"
             amount <- getLine
-            let wal = (read wallet :: Int)
             let amnt = (read amount :: Money)
             let (nc, no, ns, nco) = run c (WithdrawEther (Decision wal) (Amount amnt)) pst st
             putStrLn ("Contract State after Withdraw: ")
@@ -125,6 +127,14 @@ getCommitAction n const = [(n, ((commits const) ! n))] : getCommitAction (n-1) c
 getWithdrawAction :: Int -> ContractState -> [[(Int, Action)]]
 getWithdrawAction 0 const = []
 getWithdrawAction n const = [(n, ((withdrawls const) ! n))] : getWithdrawAction (n-1) const
+
+contractMember :: Int -> Contract -> ParamState -> ContractState -> IO ()
+contractMember i c pst s
+    | not (Map.member i (commits s)) = do 
+        putStrLn "Wallet not a member of Contract"
+        loop c pst s
+    | otherwise = do 
+        putStrLn ("Wallet " ++ getOneAddress (findAtIndex [i] s) ++ " chosen")
 
 niceOutput :: OP -> String
 niceOutput [x] = (show x)

@@ -23,8 +23,8 @@ main = do
     contents <- hGetContents handle
     let contractList = map (map toLower) (words contents)
     let contractType = (readDataTypes contractList)
-    putStrLn (show contractList)
-    putStrLn (show contractType)
+    --putStrLn (show contractList)
+    --putStrLn (show contractType)
     checkErrors contractType
     checkLogic contractList
     choice fileName contractType contractList
@@ -51,13 +51,13 @@ checkErrors c = do
         (And c2 c1) -> checkErrors c1
         (Or c2 c1) -> checkErrors c1
         (Until p c1) -> checkErrors c1
-        (CashIn i c1) -> checkErrors c1
+        (CommitEther i c1) -> checkErrors c1
         (CashBackAll c1) -> checkErrors c1
         (Send s c1) -> checkErrors c1
         (Withdraw c1) -> checkErrors c1
         (Allow m c1) -> checkErrors c1
         (Function s c1) -> checkErrors c1
-        (Not c1) -> checkErrors c1
+        (IsNot c1) -> checkErrors c1
         (Set p c1) -> checkErrors c1
         (Constructor c1) -> checkErrors c1
         (AddTo s c1) -> checkErrors c1
@@ -67,9 +67,27 @@ checkErrors c = do
 
 checkLogic :: [String] -> IO () 
 checkLogic s 
-    | (checkWithdraw s) && (checkConstuctor s) && (checkPartialRest s) 
-        && (checkSend s)   = do 
-        putStrLn ("Contract Logically Correct")
+    | (not (checkWithdraw s)) = do 
+        putStrLn "Withdraw Logic not correct"
+        putStrLn "Make sure there is a CommitEther contract"
+        putStrLn "Make sure there is an AddTo contract"
+        main
+    | not (checkConstuctor s) = do 
+        putStrLn "Constructor Logic not correct"
+        putStrLn "Only Set is allowed in Constructor"
+        main
+    | not (checkPartialRest s) = do 
+        putStrLn "Partial PayOption Logic not correct"
+        putStrLn "If you are using Partil Pay Option, make sure there a Rest PayOption "
+        main
+    | not (checkSend s) = do 
+        putStrLn "Send Logic not correct "
+        putStrLn "Make sure there is a CommitEther Contract"
+        main
+    | not (checkCommitEther s) = do 
+        putStrLn "CommitEther Logic not correct "
+        putStrLn "Make sure there is a Withdraw or a Send contract"
+        main
     | otherwise = do 
-        putStrLn ("Contract Logic Incorrect")
-        main 
+        putStrLn ("Contract Logically Correct")
+        

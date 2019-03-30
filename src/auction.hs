@@ -2,16 +2,24 @@ module Auction where
 
 import Contract
 import ContractClass
+import Prelude hiding (until)
+
+endAuction :: Contract 
+endAuction = 
+    (function "endAuction" (when (TimesUp) (send (ToBeneficiary (Variable "highestBid")) (unless (AlreadyFinished) End))))
 
 placeBid :: Contract 
 placeBid = 
-    (function "placeBid" (allow (NotOwner) (until (TimesUp) (cashIn (Higher "highestBid") (addTo "bid")))))
+    (function "placeBid" (until (TimesUp) 
+        (commitEther (Higher "highestBid") (addTo "bid" endAuction))))
 
-withdraw :: Contract 
-withdraw = 
-    (function "withdraw" (allow (OnlyOwner) (when (TimesUp) (send (Owner All) placeBid))))
+takeCashOut :: Contract 
+takeCashOut = 
+    (function "withdraw" (send (Address All) (from "bid" placeBid)))
+    
+auction :: Contract
+auction = 
+    (constructor (set (TimeLimit) (set (Beneficiary) takeCashOut)))
 
-createAuction :: Contract
-createAuction = 
-	(contructor (set (TimeLimit 20) (set (ContractOwner) withdraw)))
+
 

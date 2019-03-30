@@ -21,18 +21,18 @@ readDataTypes ("set":x:xs) =
         ("totalamount") -> (Set (TotalAmount) (readDataTypes xs))
         _ -> (Error ("Incorrect Parameter for Set: " ++ x))
  
-readDataTypes ("cashin":x:y:xs) = 
+readDataTypes ("CommitEther":x:y:xs) = 
     case x of
-        ("nolimit") -> (CashIn (NoLimit) (readDataTypes (y:xs)))
+        ("nolimit") -> (CommitEther (NoLimit) (readDataTypes (y:xs)))
         ("equal") 
-            | ((readInt y)<0 ) -> (Error "Number must be greater than 0 for CashIn Equal")
-            | otherwise -> (CashIn (Equal (readMoney y)) (readDataTypes (xs)))
+            | ((readInt y)<0 ) -> (Error "Number must be greater than 0 for CommitEther Equal")
+            | otherwise -> (CommitEther (Equal (readMoney y)) (readDataTypes (xs)))
         ("min")
             | ((readInt y) <= 0) -> (Error "Number must be greater than or equal to 0")
-            | otherwise -> (CashIn (Min (readMoney y)) (readDataTypes (xs)))
+            | otherwise -> (CommitEther (Min (readMoney y)) (readDataTypes (xs)))
         ("max")
             | ((readInt y) <= 0) -> (Error "Number must be greater than or equal to 0")
-            | otherwise -> (CashIn (Max (readMoney y)) (readDataTypes (xs)))
+            | otherwise -> (CommitEther (Max (readMoney y)) (readDataTypes (xs)))
         _ -> (Error ("Incorrect Parameter for CashIn: " ++ x))
 
 readDataTypes ("when":x:y:xs) = 
@@ -113,9 +113,14 @@ readDataTypes ("addto":x:xs) =
         "" -> (Error ("AddTo must have a name"))
         _ -> (AddTo x (readDataTypes xs))
 
+readDataTypes ("from": x:xs) = 
+    case x of 
+        "" -> (Error ("From must have a name"))
+        _ -> (From x (readDataTypes xs))
+
 readDataTypes ("withdraw": xs) = (Withdraw (readDataTypes xs)) 
 
-readDataTypes ("not":xs) = (Not (readDataTypes xs))
+readDataTypes ("isnot":xs) = (IsNot (readDataTypes xs))
 
 readDataTypes ("unless":x:xs) =
     case x of 
@@ -131,12 +136,12 @@ readInt s = (read s :: Int)
 readDouble :: String -> Double 
 readDouble s = (read s :: Double)
 
-readMoney :: String -> Money 
-readMoney s = (read s :: Money)
+readMoney :: String -> Ether 
+readMoney s = (read s :: Ether)
 
 checkWithdraw :: [String] -> Bool 
 checkWithdraw (x:xs) 
-        | (isWithdraw (x:xs)) = (isAddTo (x:xs)) && (isCashIn (x:xs))
+        | (isWithdraw (x:xs)) = (isAddTo (x:xs)) && (isCommitEther (x:xs))
         | otherwise = True 
 
 checkConstuctor :: [String] -> Bool
@@ -164,9 +169,9 @@ checkSend (x:xs)
         | (isSend(x:xs)) = (isCashIn(x:xs))
         | otherwise = True
 
-checkCashin :: [String] -> Bool 
-checkCashin (x:xs) 
-        | (isCashIn (x:xs)) = ((isWithdraw (x:xs)) || (isSend (x:xs))) 
+checkCommitEther :: [String] -> Bool 
+checkCommitEther (x:xs) 
+        | (isCommitEther (x:xs)) = ((isWithdraw (x:xs)) || (isSend (x:xs))) 
         | otherwise = True
 
 checkAddTo :: [String] -> Bool 
@@ -197,10 +202,10 @@ isAddTo  [] = False
 isAddTo ("addto":xs) = True
 isAddTo (x:xs) = isAddTo xs 
 
-isCashIn :: [String] -> Bool
-isCashIn  [] = False 
-isCashIn ("cashin":xs) = True
-isCashIn (x:xs) = isCashIn xs
+isCommitEther :: [String] -> Bool
+isCommitEther  [] = False 
+isCommitEther ("commitether":xs) = True
+isCommitEther (x:xs) = isCommitEther xs
 
 isSet :: [String] -> Bool
 isSet  [] = False 
@@ -231,5 +236,8 @@ isConstructor (x:xs) = isConstructor xs
 -- Withdraw needs to have an addto and cashin
 -- set needs to be in a contstructor 
 -- if partial is used then there needs to be a rest
--- send needs to have a cashin 
--- addto needs to have a cashin 
+-- send needs to have a CommitEther
+-- addto needs to have a CommitEther
+
+--TODO
+-- owner needs to be set if anythingis happening with the owner

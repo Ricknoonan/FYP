@@ -1,0 +1,5 @@
+constructor set contractowner
+
+function "deposit" commitether nolimit addto "balance" 
+
+function "cashOut" withdraw

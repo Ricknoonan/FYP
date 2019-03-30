@@ -5,11 +5,11 @@ import ContractClass
 import Prelude hiding (until, interact) 
 
 bank :: Contract 
-bank = (constructor (set (ContractOwner) deposit))
-
+bank = (constructor (set (ContractOwner) deposit)) 
+            
 deposit :: Contract 
 deposit = 
-    (function "deposit" (cashIn (NoLimit) (addTo "balance" cashOut )))
+    (function "deposit" (commitEther (NoLimit) (addTo "balance" cashOut )))
 
 cashOut :: Contract
 cashOut = 

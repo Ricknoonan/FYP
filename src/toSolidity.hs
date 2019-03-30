@@ -4,6 +4,7 @@ import Contract
 import ContractClass
 import Bank 
 import Lottery 
+import Auction 
 import Prelude hiding (until, interact,return)
 
 data SolTypes =   FunVar String |
@@ -14,6 +15,7 @@ data SolTypes =   FunVar String |
                   IfExpr String |
                   ReturnExpr String|
                   Fun String |
+                  RequireExpr String |
                   Con 
                 deriving (Show)
 
@@ -23,7 +25,8 @@ data StateTypes = OwnerAddress String String|
                   Time String String|
                   Unit String String |
                   List String String |
-                  Count String String 
+                  Count String String |
+                  Bool String String
                 deriving (Show)
 
 -- Takes the contract and sorts into StateTypes with two strins; first being data type and the second being variable name. This is done so 
@@ -32,32 +35,58 @@ sortStateTypes :: Contract -> [[StateTypes]]
 sortStateTypes c = 
     case c of 
         (Set (ContractOwner) c1) -> [(OwnerAddress ("address") ("owner"))] : sortStateTypes c1
+        (Set (TimeLimit) c1) -> sortStateTypes c1
+        (Set (Beneficiary ) c1) -> [OtherAddress ("address payable public") ("beneficiary")] : sortStateTypes c1
+
         (Until (Amount m) c1) -> [(Unit ("uint8 ") ("totalAmount"))] : sortStateTypes c1
         (Until (People p) c1) ->  case c1 of
-                                    (Unless (AlreadyJoined) c2) -> [(List ("address payable " ++ "[" ++ show p ++ "]") ("people"))] : sortStateTypes c2
-                                    _ ->  [(Count ("unit") ("peopleCount"))] : sortStateTypes c1
+                                    (Unless (AlreadyJoined) c2) -> [(List ("address payable " ++ "[" ++ show p ++ "]") ("participants"))] : [(Count ("uint") ("peopleCount"))] : sortStateTypes c2
+                                    (_) ->  [(Count ("uint") ("peopleCount"))] : sortStateTypes c1
         (Until (TimesUp) c1) -> [(Time ("uint public")("end"))] : sortStateTypes c1
+
         (Withdraw c1) -> sortStateTypes c1
+
         (Function str c1) -> sortStateTypes c1
-        (CashIn (Equal m) c1) -> sortStateTypes c1
-        (When (People p) c1) -> sortStateTypes c1
-        (Send (Random All) c1 ) -> sortStateTypes c1
+
+        (Send (Random All) c1 ) -> [(Unit ("uint") ("randNonce"))] : sortStateTypes c1
         (Send (Winner All) c1) -> sortStateTypes c1
-        (CashIn (NoLimit) c1) -> case c1 of 
+        (Send (ToOwner All) c1) -> sortStateTypes c1 
+        (Send (ToBeneficiary (Variable str)) c1) -> sortStateTypes c1
+        (Send (Address All) c1) -> sortStateTypes c1
+
+        (CommitEther (NoLimit) c1) -> case c1 of 
                                    (AddTo str c2) -> [(Mapping ("mapping (address => uint) private") (str))] : sortStateTypes c2
-                                   _ -> sortStateTypes c1 
-        (CashIn (Higher str1) c1) -> case c1 of 
-                                        (AddTo str2 c2) -> [(OtherAddress ("address public") (str1))] : [(Mapping ("mapping(address => uint256) public") (str2))] : sortStateTypes c2                                                
-                                        --_ -> sortStateTypes c1
+                                   (_) -> sortStateTypes c1 
+        (CommitEther (Higher str1) c1) -> case c1 of 
+                                        (AddTo str2 c2) -> [(OtherAddress ("address public") (str1 ++ "Address"))] : 
+                                                           [(Mapping ("mapping(address => uint) public") (str2 ++ "s"))] : 
+                                                           [(Unit ("uint public") (str2 ++ "Highest"))] : sortStateTypes c2                                                
+                                        (_) -> sortStateTypes c1
+        (CommitEther (Equal m) c1) -> case c1 of 
+                                      (AddTo str c2) -> [(Mapping ("mapping (address => uint) private") (str))] : sortStateTypes c2
+                                      (_) -> sortStateTypes c1
+
         (Unless (AlreadyJoined ) c1) -> sortStateTypes c1
+
+        (Unless (AlreadyFinished) c1) -> [(Bool ("bool") ("ended"))] : sortStateTypes c1
+
         (Constructor c1) -> sortStateTypes c1
+
+        (Allow (NotOwner) c1) -> sortStateTypes c1
+        (Allow (OnlyOwner) c1) -> sortStateTypes c1
+
+        (When (TimesUp) c1) -> sortStateTypes c1
+        (When (People p) c1) -> sortStateTypes c1
+
+        (From str c1) -> sortStateTypes c1
+
         (End) -> []
 
 --Takes the identifer string and the sorted state types and returns the variable name to be used in the function bodies
 getStateType :: String -> [[StateTypes]] -> String
 getStateType "time" s = 
     case s of 
-        ([Time str1 str2] : rest) -> str2
+        ([Time str1 str2] : rest) -> str2 ++ ");"
         ([_] : rest) -> getStateType "time" rest
 getStateType "ota" s = 
     case s of 
@@ -87,52 +116,78 @@ stateTypesToSort c = sortTypes c (sortStateTypes c)
 sortTypes :: Contract -> [[StateTypes]] -> [[SolTypes]]
 sortTypes c s = 
     case c of 
-        (Constructor c1) -> [(Con )] : sortTypes c1 s
+        (Constructor c1) ->  [(Con )] : sortTypes c1 s
         (Function str c1) -> [(Fun (str))] : sortTypes c1 s
-        (CashIn (Equal m) c1) -> [(PayExpr ("require(msg.value ==" ++ show (m) ++ ");"))] : sortTypes c1 s
-        (CashIn (Min m) c1) -> [(PayExpr ("require(msg.value >" ++ show (m) ++ ");"))] : sortTypes c1 s
-        (CashIn (Max m) c1) -> [(PayExpr ("require(msg.value >" ++ show (m) ++ ");"))] : sortTypes c1 s
 
-        (Until (People p) (Unless (AlreadyJoined) c1)) -> [(Expr ("require (peopleCount < " ++ show p ++ ");"))] : 
-                                                          [(Expr ("require (!joinedAlready(msg.sender));"))] : 
-                                                          [(Expr ("people[peopleCount] = msg.sender;"))] : 
-                                                          [(Expr ("peopleCount++;"))] : sortTypes c1 s
-                                                                 
-        (CashIn (NoLimit) c1) -> case c1 of  
+
+        (CommitEther (Equal m) c1) -> [(PayExpr ("require(msg.value ==" ++ show (m) ++ ");"))] : sortTypes c1 s
+        (CommitEther (Min m) c1) ->   [(PayExpr ("require(msg.value >" ++ show (m) ++ ");"))] : sortTypes c1 s
+        (CommitEther (Max m) c1) ->   [(PayExpr ("require(msg.value >" ++ show (m) ++ ");"))] : sortTypes c1 s
+        (CommitEther (NoLimit) c1) -> case c1 of  
                                     (AddTo str c2) -> [(PayExpr ((getStateType "map" s) ++ "[msg.sender] += msg.value;"))] :
                                                       [(ReturnExpr ( "return " ++ (getStateType "map" s) ++ "[msg.sender];"))] :
                                                       [(ReturnVar ("uint"))] : sortTypes c2 s
-                                    _ -> sortTypes c1 s       
+                                    (_) -> sortTypes c1 s       
+        (CommitEther (Higher str1) c1) -> case c1 of 
+                                        (AddTo str2 c2) -> [(Expr ("require(msg.value > " ++ str2 ++ "Highest);"))] :
+                                                           [(IfExpr ("if (" ++ str2 ++ "Highest != 0)" ))] :
+                                                           [(Expr ("pendingReturns[" ++ (getStateType "ota" s) ++ "] += " ++ str2 ++ "Highest) };"))] :
+                                                           [(Expr ((getStateType "ota" s) ++ "= msg.sender;"))] : 
+                                                           [(Expr ((str2 ++ "Highest") ++ "= msg.value;"))] : sortTypes c2 s                                                  
+                                        (_) -> sortTypes c1 s
 
-        (CashIn (Higher str1) c1) -> case c1 of 
-                                        (AddTo str2 c2) -> [(PayExpr ("unit new" ++ str2 ++ "= (msg.value +" ++ str2 ++ "[msg.sender]"))] : 
-                                                           [(PayExpr ("require ((msg.value +" ++ str2 ++ "[msg.sender]) + msg.value >" ++ str1 ++ ";"))] :
-                                                           [(PayExpr (str2 ++ "= new" ++ str1))] : sortTypes c2 s
-                                        _ -> sortTypes c1 s 
+        (Until (People p) c1) -> case c1 of
+                                    (Unless (AlreadyJoined) c2) -> [(Expr ("require (peopleCount < " ++ show p ++ ");"))] :
+                                                                [(Expr ("require (!joinedAlready(msg.sender));"))] :
+                                                                [(Expr ("participants[peopleCount] = msg.sender;"))] :
+                                                                [(Expr ("peopleCount++;"))] : sortTypes c2 s
+                                    (_) ->                      [(Expr ("require ( peopleCount < " ++ show p ++ ");"))] : 
+                                                                [(Expr ("peopleCount++;"))] : sortTypes c1 s
+        (Until (Amount m) c1) -> [(Expr ("require (totalAmount < (this.balance + " ++ show m))] : sortTypes c1 s
+        (Until (TimesUp) c1) -> [(Expr ("require (now <= " ++ (getStateType "time" s)))] : sortTypes c1 s
+
+         
 
         (Set (ContractOwner)c1) -> [(Expr "owner = msg.sender;")] : sortTypes c1 s
+        (Set (TimeLimit) c1) -> [(Expr "end = now + time;")] : 
+                                [(FunVar "uint time")] : sortTypes c1 s
+        (Set (Beneficiary) c1) -> [(Expr "beneficiary = _beneficiary;")] : 
+                                  [(FunVar "address payable _beneficiary")] : sortTypes c1 s
         (Send (ToOwner All) c1) -> [(Expr "owner.transfer(this.balance);")] : sortTypes c1 s
-        (Send (Winner All) c1) -> [(Expr "owner.transfer(this.balance);")] : sortTypes c1 s
-        (Send (Address All) c1) -> [(Expr "addr.transfer(this.balance);")] : 
-                                  [(FunVar "address addr")] : sortTypes c1 s
-        (Send (Random All) c1) -> [(Expr "address payable winner = participants[randomNumber()];")] : 
-                                  [(Expr "winner.transfer(address(this).balance);")] : 
-                                  [(ReturnExpr "return winner;")] : 
-                                  [(ReturnVar "address")] : sortTypes c1 s
+        (Send (Winner All) c1) ->  [(Expr "owner.transfer(this.balance);")] : sortTypes c1 s
+        (Send (Address All) c1) -> case c1 of 
+                                       (From str c2) -> [(Expr ("uint amount =" ++ str ++ "[msg.sender];"))] : 
+                                                        [(IfExpr ("if (amount > 0)"))] : 
+                                                        [(Expr (str ++ "[msg.sender] = 0;"))] : 
+                                                        [(Expr ("msg.sender.transfer(amount);"))] : sortTypes c1 s
+                                       (_) -> [(Expr "addr.transfer(this.balance);")] : 
+                                              [(FunVar "address addr")] : sortTypes c1 s
+        (Send (Random All) c1) ->  [(Expr "address payable winner = participants[randomNumber()];")] : 
+                                   [(Expr "winner.transfer(address(this).balance);")] : 
+                                   [(ReturnExpr "return winner;")] : 
+                                   [(ReturnVar "address")] : sortTypes c1 s
+
+        (Send (ToBeneficiary (Variable str)) c1) -> [(PayExpr ("beneficiary.transfer(" ++ str ++");"))] : sortTypes c1 s
+
         (Withdraw c1) -> [(IfExpr ("if (withdrawAmount <=" ++ (getStateType "map" s) ++ "[msg.sender]) "))] :
                          [(Expr  ((getStateType "map" s) ++ "[msg.sender] -= withdrawAmount;"))] :
                          [(Expr ("msg.sender.transfer(withdrawAmount);"))] :
                          [(ReturnExpr ("return " ++ (getStateType "map" s) ++"[msg.sender];"))] : 
                          [(FunVar ("unit withdrawAmount"))] : 
                          [(ReturnVar ("unit remainingBal"))] : sortTypes c1 s
-        (Until (Amount m) c1) -> [(Expr ("require (totalAmount < (this.balance + " ++ show m))] : sortTypes c1 s
-
-        (Until (TimesUp) c1) -> [(Expr ("require (now < " ++ (getStateType "time" s)))] : sortTypes c1 s
-        (Until (People p) c1) -> [(Expr ("require ( peopleCount < " ++ show p ++ ");"))] : [(Expr ("peopleCount++;"))] : sortTypes c1 s
+        
 
         (When (Amount m) c1) -> [(IfExpr ("if (totalAmount ==" ++ show m ++ ") " ))] : sortTypes c1 s
         (When (People p) c1) -> [(IfExpr ("if (peopleCount ==" ++ show p ++ ") " ))] : sortTypes c1 s
+        (When (TimesUp) c1) -> sortTypes c1 s
+
         (Unless (AlreadyJoined) c1) -> [(Expr ("require (!joinedAlready(msg.sender));"))] : sortTypes c1 s
+        (Unless (AlreadyFinished) c1) -> [(Expr ("require (!ended);"))] :
+                                         [(Expr ("ended = true;"))] : sortTypes c1 s
+
+        (Allow (NotOwner) c1) -> [(Expr ("require (msg.sender) != owner;"))] : sortTypes c1 s
+        (Allow (OnlyOwner) c1) -> [(Expr ("require (msg.sender) == owner;"))] : sortTypes c1 s
+        (From str c1) -> sortTypes c1 s
         (End) -> []
 
 -- Soltypes sorted and then sorted into control flow. Determine whats in an if statement, whats in a while..
@@ -150,7 +205,7 @@ ifBody ([Expr str] : rest) = str ++ "\n" ++ ifBody rest
 ifBody ([StVar str] : rest) = ifBody rest
 ifBody ([FunVar str ] : rest) = ifBody rest
 ifBody ([ReturnVar str] : rest) = ifBody rest
-ifBody ([ReturnExpr str] : rest) = "}" ++ "\n" ++ str ++ createBody rest
+ifBody ([ReturnExpr str] : rest) = str ++ "\n" ++ "}" ++ createBody rest
 ifBody _ = ""
  
 -- Unwraps Expressions, stops unwrapping at fun or con denoted as _ 
@@ -162,7 +217,7 @@ createBody ([ReturnExpr str] : rest) = str ++ "\n" ++ createBody rest
 createBody ([StVar str]:rest) = createBody rest
 createBody ([FunVar str]:rest) = createBody rest
 createBody ([ReturnVar str]:rest) = createBody rest
-createBody _ = ""
+createBody _ = "\n"
 
 -- Recombines seperated state variables so that they can be printed correctly 
 getStVar :: [[StateTypes]] -> String
@@ -172,7 +227,9 @@ getStVar ([Mapping str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
 getStVar ([Time str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
 getStVar ([Unit str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
 getStVar ([Count str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
-getStVar _ = "" 
+getStVar ([List str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
+getStVar ([Bool str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
+getStVar _ = "\n" 
 
 --This function will take out he "nothings" and return the actul funtion 
 toString :: [[String]] -> String
@@ -282,6 +339,8 @@ getFunCon :: Contract -> String
 getFunCon c = toString(createFunCon c (stateTypesToSort c))
 
 c1 :: Contract
-c1 = (function "deposit" (cashIn (Equal 5) End))
+c1 = (function "deposit" (commitEther (Equal 5) End))
 
-test = toFile "lotter" lottery
+test = toFile "auctionTest" auction
+
+testTypes = stateTypesToSort auction

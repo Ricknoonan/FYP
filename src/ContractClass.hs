@@ -21,8 +21,8 @@ and = And
 or :: Contract -> Contract -> Contract
 or = Or
 
-cashIn :: InputCondition -> Contract -> Contract
-cashIn = CashIn
+commitEther :: InputCondition -> Contract -> Contract
+commitEther = CommitEther
 
 cashBackAll ::  Contract -> Contract
 cashBackAll = CashBackAll
@@ -47,8 +47,8 @@ function s c
 constructor :: Contract -> Contract
 constructor = Constructor
 
-not :: Contract -> Contract
-not = Not
+isnot :: Contract -> Contract
+isnot = IsNot
 
 allow :: Modifier -> Contract -> Contract
 allow = Allow
@@ -57,12 +57,16 @@ set :: Parameter -> Contract -> Contract
 set p c = 
     case p of 
         (TotalAmount) -> Set p c
-        (TimeLimit d) -> Set p c
+        (TimeLimit) -> Set p c
         (ContractOwner) -> Set p c
+        (Beneficiary) -> Set p c
         _ -> (Error "Incorrect Parameter for Contract Set")
 
 addTo :: String -> Contract -> Contract
 addTo = AddTo
+
+from :: String -> Contract -> Contract
+from = From
 
 withdraw :: Contract -> Contract
 withdraw = Withdraw

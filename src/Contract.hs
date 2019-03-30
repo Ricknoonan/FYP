@@ -8,7 +8,7 @@ import Data.Map (Map, (!))
 import qualified Data.Map as Map
 import System.IO.Unsafe (unsafePerformIO)
 
-type Money = Double 
+type Ether = Double 
 
 type Address = String
 
@@ -19,14 +19,14 @@ type OP = [Output]
 data ContractState = ContractState {
                 commits :: Map.Map Int Action,
                 withdrawls :: Map.Map Int Action, 
-                etherBalance  :: Money,
+                etherBalance  :: Ether,
                 owner :: Address
              }
              deriving (Eq,Show,Ord)
 
 data ParamState = ParamState {
                 maxPeople :: Int ,
-                amountSize :: Money, 
+                amountSize :: Ether, 
                 duration :: Int
               }
               deriving (Show)
@@ -42,37 +42,39 @@ data Contract = End |
                 And Contract Contract|
                 Or Contract Contract |
                 Until Parameter Contract | -- until a certain observable, the following contracts can be evaluated
-                CashIn InputCondition Contract| -- allows a person to commit x amount that is defined the in the contract
+                CommitEther InputCondition Contract| -- allows a person to commit x amount that is defined the in the contract
                 CashBackAll Contract |
                 Send SendCondition Contract |
                 Withdraw Contract |
                 Allow Modifier Contract |
                 Function String Contract |
-                Not Contract |
+                IsNot Contract |
                 Set Parameter Contract |
                 Constructor Contract |
                 AddTo String Contract |
+                From String Contract |
                 Unless FunctionCondition Contract |
                 Error String
         deriving (Show, Eq, Read)
 
-data InputCondition = Min Money |
-                      Max Money |
-                      Equal Money |
+data InputCondition = Min Ether |
+                      Max Ether |
+                      Equal Ether |
                       Higher String | 
-                      Lower |
+                      Lower String |
                       NoLimit
             deriving (Show, Eq,Read)
 
 data SendCondition = Winner PayOption |
-                     Highest PayOption|
                      Random PayOption |
                      ToOwner PayOption |
-                     Beneficiary PayOption |
+                     ToBeneficiary PayOption |
+                     Highest PayOption |
                      Address PayOption
                 deriving (Show, Eq,Read)
 
-data FunctionCondition = AlreadyJoined 
+data FunctionCondition = AlreadyJoined |
+                         AlreadyFinished
              deriving (Show, Eq,Read)
 
 data Modifier = OnlyOwner |
@@ -91,25 +93,27 @@ data Output = Null |
         deriving(Show,Read)
 
 data Parameter =   Days Int |
-                   Amount Money|
+                   Amount Ether|
                    TotalReached |
                    TimesUp |
                    People Int |
                    TotalAmount |
-                   TimeLimit Int |
-                   ContractOwner 
+                   TimeLimit |
+                   ContractOwner |
+                   Beneficiary
                 deriving (Show, Eq, Ord, Read)
 
 data PayOption = All | 
                  Rest |
-                 Partial Double 
-                deriving (Show, Eq, Ord,Read)
+                 Partial Double |
+                 Variable String 
+                deriving (Show, Eq,Read)
 
-data Action =  Commit Address Money |
-               SendOut Address Money 
+data Action =  Commit Address Ether |
+               SendOut Address Ether 
     deriving (Eq,Show,Ord,Read)
 
-data Input = CashInp Address Money |
+data Input = CashInp Address Ether |
              Decision Int |
              SetOwner Address |
              WithdrawEther Input Parameter |
@@ -117,7 +121,7 @@ data Input = CashInp Address Money |
         deriving (Show, Eq, Ord,Read)
 
 evalC :: Input -> Contract -> ParamState -> OP -> ContractState -> (Contract, OP, ContractState, ParamState)
-evalC i@(CashInp address money) c@(CashIn inpCon c1) pst o st 
+evalC i@(CashInp address money) c@(CommitEther inpCon c1) pst o st 
     | evalInput inpCon money && evalParam c pst st i && ((maxPeople pst) /= 0)= (c, outputP, updateState, pst)
     | evalInput inpCon money && evalParam c pst st i && ((maxPeople pst) == 0) = (c1, outputP, updateState, pst)
     | (commitSize st + 1) == (maxPeople pst) = (c1, outputP, updateState, pst)
@@ -195,12 +199,12 @@ evalC i c@(Unless funCon c1) pst o st = (c1, [], st, pst)
 
 
 run :: Contract -> Input -> ParamState -> ContractState -> (Contract, OP, ContractState, ParamState)
-run c@(CashIn val c1) inp@(CashInp address money) pst s = evalC inp c pst [] s
+run c@(CommitEther val c1) inp@(CashInp address money) pst s = evalC inp c pst [] s
 run c@(Send address c1) inp@(Decision d) pst s = evalC inp c pst [] s
 run c@(Withdraw c1) inp@(Decision d) pst s = evalC inp c pst [] s
 run c inp pst s = evalC inp c pst [] s
 
-evalInput :: InputCondition -> Money -> Bool
+evalInput :: InputCondition -> Ether -> Bool
 evalInput (Min m) inp = (inp > m )
 evalInput (Max m) inp = (inp < m )
 evalInput (Equal m) inp = (inp == m)
@@ -228,7 +232,7 @@ evalParam (CashBackAll c1) pst const i
     | otherwise = True
 
 evalParam (Withdraw c1) pst const (WithdrawEther (Decision wal) (Amount amnt))
-    | ((commitAtIndex wal const) /= 0) = (commitAtIndex wal const > amnt)
+    | ((commitAtIndex wal const) /= 0) = (commitAtIndex wal const >= amnt)
     | otherwise = True
 
 --TODO Handle address that did not make a committment i.e Beneficiary
@@ -276,7 +280,7 @@ commitSize s = Map.size (commits s)
 withdrawSize :: ContractState -> Int 
 withdrawSize s = Map.size (withdrawls s)
 
-getMoneyCommit :: [Action] -> Money 
+getMoneyCommit :: [Action] -> Ether 
 getMoneyCommit [(Commit p m)] = m
 
 getOneAddress :: [Action] -> Address
@@ -286,7 +290,7 @@ getAddress :: [Action] -> [Address]
 getAddress [] = []
 getAddress (Commit p m:rest) = p:getAddress rest
 
-commitAtIndex :: Int -> ContractState -> Money
+commitAtIndex :: Int -> ContractState -> Ether
 commitAtIndex ind s = getMoneyCommit (findAtIndex [ind] s)
 
 findAtIndex :: [Int] -> ContractState -> [Action]
@@ -308,7 +312,7 @@ loopPayees :: [String] -> Double -> OP
 loopPayees [x] payAmount = [SendSuccess (SendOut x payAmount)]
 loopPayees (x:xs) payAmount = SendSuccess (SendOut x payAmount) : loopPayees xs payAmount
 
-evalValue :: (Money -> Money -> Money) -> ContractState -> Money -> Money 
+evalValue :: (Ether -> Ether -> Ether) -> ContractState -> Ether -> Ether 
 evalValue f s val = f (etherBalance s) val 
 
 payeesLength :: [Address] -> Double
