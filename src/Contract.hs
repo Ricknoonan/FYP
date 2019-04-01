@@ -53,7 +53,7 @@ data Contract = End |
                 Constructor Contract |
                 AddTo String Contract |
                 From String Contract |
-                Unless FunctionCondition Contract |
+                Unless CheckState Contract |
                 Error String
         deriving (Show, Eq, Read)
 
@@ -73,24 +73,13 @@ data SendCondition = Winner PayOption |
                      Address PayOption
                 deriving (Show, Eq,Read)
 
-data FunctionCondition = AlreadyJoined |
-                         AlreadyFinished
+data CheckState = AlreadyJoined |
+                  AlreadyFinished
              deriving (Show, Eq,Read)
 
 data Modifier = OnlyOwner |
                 NotOwner 
             deriving (Show, Eq, Read)
-
-data Output = Null |
-              CommitFail Action |
-              CommitPass Action |
-              SendFail |
-              SendSuccess Action |
-              OwnerSet Address |
-              WithdrawPass [Action] |
-              WithdrawFail [Action] |
-              Message String 
-        deriving(Show,Read)
 
 data Parameter =   Days Int |
                    Amount Ether|
@@ -105,9 +94,20 @@ data Parameter =   Days Int |
 
 data PayOption = All | 
                  Rest |
-                 Partial Double |
-                 Variable String 
+                 AmountIn String |
+                 Partial Double 
                 deriving (Show, Eq,Read)
+
+data Output = Null |
+              CommitFail Action |
+              CommitPass Action |
+              SendFail |
+              SendSuccess Action |
+              OwnerSet Address |
+              WithdrawPass [Action] |
+              WithdrawFail [Action] |
+              Message String 
+        deriving(Show,Read)
 
 data Action =  Commit Address Ether |
                SendOut Address Ether 
@@ -134,9 +134,10 @@ evalC i@(CashInp address money) c@(CommitEther inpCon c1) pst o st
             outputF = [CommitFail (Commit address money)]
             updateState = st {commits = Map.insert (cashInSize st) (Commit address money) comms, etherBalance = newBal}
 
-evalC i c@(When param c1) pst o st
-    | evalParam c pst st i = (c1, [], st, pst)
-    | otherwise = (c, [], st, pst)
+evalC i c@(When param c1) pst o st = (c1, [], st, pst)
+    where 
+        output = (Message ("When " ++ (show param) ++ "is true, the following actions can happen"))
+
 
 evalC i c@(Send param c1) pst o st 
     | length payees > 0 = (c1, (loopPayees payees payAmount), updateState, pst)
@@ -164,6 +165,7 @@ evalC i c@(Until param c1) pst o st =
         (Days d) -> (c1, [], st, pst {duration = d})
         (Amount x) -> (c1, [], st, pst {amountSize = x})
         (People p) -> (c1, [], st, pst {maxPeople = p})
+        (TimesUp) -> (c1, [], st, pst)
 
 evalC i@(SetOwner address) c@(Set (ContractOwner) c1) pst o st = 
     (c1, [OwnerSet address], st {owner = address} ,pst)
@@ -195,8 +197,9 @@ evalC i c@(AddTo str c1) pst o st = (c1, [], st, pst)
 
 evalC i c@(End) pst o st = (End, [], st, pst)
 
-evalC i c@(Unless funCon c1) pst o st = (c1, [], st, pst)
+evalC i c@(Unless checkst c1) pst o st = (c1, [], st, pst)
 
+evalC i c@(From str c1) pst o st = (c1, [], st, pst)
 
 run :: Contract -> Input -> ParamState -> ContractState -> (Contract, OP, ContractState, ParamState)
 run c@(CommitEther val c1) inp@(CashInp address money) pst s = evalC inp c pst [] s
@@ -204,11 +207,14 @@ run c@(Send address c1) inp@(Decision d) pst s = evalC inp c pst [] s
 run c@(Withdraw c1) inp@(Decision d) pst s = evalC inp c pst [] s
 run c inp pst s = evalC inp c pst [] s
 
+
+--TODO implement higher
 evalInput :: InputCondition -> Ether -> Bool
 evalInput (Min m) inp = (inp > m )
 evalInput (Max m) inp = (inp < m )
 evalInput (Equal m) inp = (inp == m)
 evalInput (NoLimit) inp = True
+evalInput (Higher str) inp =True
 
 evalParam :: Contract -> ParamState -> ContractState -> Input -> Bool
 evalParam c pst const (CashInp address money)
@@ -235,14 +241,15 @@ evalParam (Withdraw c1) pst const (WithdrawEther (Decision wal) (Amount amnt))
     | ((commitAtIndex wal const) /= 0) = (commitAtIndex wal const >= amnt)
     | otherwise = True
 
---TODO Handle address that did not make a committment i.e Beneficiary
+--TODO implement beneficiary & address
 evalSend :: SendCondition -> ContractState -> Input -> [Address]
 evalSend (Highest p) st (Decision d) = getAddress (findAtIndex (highestInMap (commits st)) st)
 evalSend (Winner All) st (Decision d) = getAddress (findAtIndex([d]) st)
 evalSend (Random All) st (Empty) = getAddress (findAtIndex([(sizeCommits st)]) st)
+evalSend (ToBeneficiary (AmountIn str)) st (Empty) = getAddress (findAtIndex([(sizeCommits st)]) st)
+evalSend (Address All) st (Empty) = getAddress (findAtIndex([(sizeCommits st)]) st)
 evalSend _ st _ = ["No Address"]
 
---TODO this needs to be changed to unix timestamps instead of hard dates
 ---------------
 sameDate :: Parameter -> Parameter -> Bool
 sameDate (Days inContract) (Days now) 

@@ -71,5 +71,5 @@ from = From
 withdraw :: Contract -> Contract
 withdraw = Withdraw
 
-unless :: FunctionCondition -> Contract -> Contract
+unless :: CheckState -> Contract -> Contract
 unless = Unless

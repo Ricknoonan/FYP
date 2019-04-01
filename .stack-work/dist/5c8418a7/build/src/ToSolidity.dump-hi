@@ -1,0 +1,921 @@
+
+==================== FINAL INTERFACE ====================
+2019-03-31 22:25:56.7273716 UTC
+
+interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:ToSolidity 8022
+  interface hash: 9d12c4ae7c6e64ef5a4170b1d96a3778
+  ABI hash: 37e0211be01bae37793f3309f93b5ade
+  export-list hash: 659cba79845dfeab042bd727a60658b7
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: 116d747c6d2286eaf4ade378327fec2c
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  ToSolidity.combineString
+  ToSolidity.commitEtherSolidity
+  ToSolidity.createBody
+  ToSolidity.createContract
+  ToSolidity.createFunCon
+  ToSolidity.createStandardFun
+  ToSolidity.getFunCon
+  ToSolidity.getParameters
+  ToSolidity.getReturns
+  ToSolidity.getStVar
+  ToSolidity.getStateType
+  ToSolidity.ifBody
+  ToSolidity.isParameter
+  ToSolidity.isPubPriv
+  ToSolidity.isStateMutable
+  ToSolidity.sendAllSolidity
+  ToSolidity.sortStateTypes
+  ToSolidity.sortTypes
+  ToSolidity.stateTypesToSort
+  ToSolidity.test
+  ToSolidity.testTypes
+  ToSolidity.toFile
+  ToSolidity.toString
+  ToSolidity.SolTypes{ToSolidity.Con ToSolidity.Expr ToSolidity.Fun ToSolidity.FunVar ToSolidity.IfExpr ToSolidity.PayExpr ToSolidity.RequireExpr ToSolidity.ReturnExpr ToSolidity.ReturnVar ToSolidity.StVar}
+  ToSolidity.StateTypes{ToSolidity.Bool ToSolidity.Count ToSolidity.List ToSolidity.Mapping ToSolidity.OtherAddress ToSolidity.OwnerAddress ToSolidity.Time ToSolidity.Unit}
+module dependencies: Auction Bank Contract ContractClass Lottery
+package dependencies: Win32-2.5.4.1 array-0.5.2.0 base-4.10.1.0
+                      containers-0.5.10.2 deepseq-1.4.3.0 ghc-prim-0.5.1.1
+                      integer-gmp-1.0.1.0 time-1.8.0.2
+orphans: time-1.8.0.2:Data.Time.Format.Parse
+         time-1.8.0.2:Data.Time.LocalTime.Internal.ZonedTime
+         time-1.8.0.2:Data.Time.LocalTime.Internal.LocalTime
+         time-1.8.0.2:Data.Time.Calendar.Gregorian base-4.10.1.0:GHC.Float
+         base-4.10.1.0:GHC.Base
+family instance modules: base-4.10.1.0:Control.Applicative
+                         base-4.10.1.0:Data.Complex base-4.10.1.0:Data.Either
+                         base-4.10.1.0:Data.Functor.Compose base-4.10.1.0:Data.Functor.Const
+                         base-4.10.1.0:Data.Functor.Identity
+                         base-4.10.1.0:Data.Functor.Product base-4.10.1.0:Data.Functor.Sum
+                         base-4.10.1.0:Data.List.NonEmpty base-4.10.1.0:Data.Monoid
+                         base-4.10.1.0:Data.Semigroup base-4.10.1.0:Data.Type.Equality
+                         base-4.10.1.0:Data.Version base-4.10.1.0:Data.Void
+                         base-4.10.1.0:GHC.Exts base-4.10.1.0:GHC.Generics
+                         base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
+                         base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
+                         containers-0.5.10.2:Data.Set.Internal
+import  -/  Auction 7f2b79921618545d196b90acc60ebf2c
+  exports: 2d23523b168327bb9e63db2342213c96
+  auction 12d2a0c3848daca71c1a2bc9192d6ae3
+import  -/  Bank 9c2b10f68989d28f82c74b6aa4132129
+  exports: 2bb9ce32a13b07ac4ebca95c8d8fe2c3
+import  -/  Contract 052b857231e1e8bd02168375a4da7231
+  exports: b6b4648aa44fcd1a15c39c94f9c09bc7
+  AddTo 16a4ab257d0ac0e23a16dc86c22a0ef6
+  Address 274cce099d647331940d67e560707969
+  All 7ed62f24e01111c319fcab1b5619f4c7
+  Allow 8df762a3b86b8d5ae8193f2f50e6d0a9
+  AlreadyFinished f1e60aced5724c11770392685320875d
+  AlreadyJoined aeedf90b74334a296594eef2c59c7f5b
+  Amount 341537ce0e00a778849a9c7693f44f64
+  AmountIn 42b4879f0298b537d382f2840bdd4917
+  Beneficiary eb11561124df885f4b3461cdb529790f
+  CommitEther 5b77c1558142d855f930d294dab693e9
+  Constructor 99fe41f1b0fc9b6aa31d1cbb0e06ed90
+  Contract 6a273a1536fb3d1fc790e24ac714826d
+  ContractOwner 4cc38e0c26ad3eff8ac162cc56cf12ea
+  End fb5e134afd8a0aae3eed01476f1becc6
+  Equal 95e0a0066af32998c0cf43396d04c5f7
+  Ether 0b21adb2a89b504e89e7a017ffaa2bf4
+  From 58b042125e3e48e8481018dc3bef4902
+  Function 4e599cfb54a2849bddf328a3f736995e
+  Higher 0f671eff55f2b25e820c5d4c414d96e6
+  Max c603297e7bdc865c0c8c6676020f4b66
+  Min ea48a0d8d0dee2400a7ff82ae76c9809
+  NoLimit 8d8c332b294747195083f67458a45487
+  NotOwner 4fb714e045475aa5e7004e6908b46008
+  OnlyOwner b5f21beda96b70866421a37ed76ed402
+  People 58fa935abece96f6a2aeac16f6845fe2
+  Random 9d823bffe8ffeab5658ef82f7465f55a
+  Send 28d2aafad88ccc1671895cb86529485e
+  Set c1f42170922b3443ea424b5783f82bca
+  TimeLimit 026d60b25bf41af7b4a95e86076d6c0f
+  TimesUp 599c001e496166b967040765c4c7fc8f
+  ToBeneficiary 04143c1d13559f0ebba25b6b1d0b087f
+  ToOwner 6311757d6519f2898a047f11d3f937d5
+  Unless c573235331b9383f2ce8592f28846d00
+  Until e79ecca91a56d0fec1147be4486db3c3
+  When 790e695a1022b48ea3a3e121921a3368
+  Winner 02c1e25e37e3f641368a838ec33573b7
+  Withdraw 4f78ed566180045f6ae2f547ed29a830
+import  -/  ContractClass c019de4150eee4fa1bd790841434c04b
+  exports: f8618b225029ed238f0e2e77b83b442c
+import  -/  Lottery 4ade900613a2ea49e9f624c692de4cbc
+  exports: 4105ffcb240e5efe3e2d010ef884dd56
+import  -/  base-4.10.1.0:GHC.Base 8f949d675e49677c272f02ab7a85fe18
+import  -/  base-4.10.1.0:GHC.Num bee60808f8127e4cda82dd422aa1c6c0
+import  -/  base-4.10.1.0:GHC.Show 927ef590f679632bf94869e8018e5b48
+import  -/  base-4.10.1.0:Prelude a93a9400cc0c816c2ee5f39399baa7a0
+import  -/  base-4.10.1.0:System.IO 1fb8f1d116df69c8750950ac088a90e6
+import  -/  ghc-prim-0.5.1.1:GHC.Classes 64ad5910d03ab188ab9b4adef7487b1e
+import  -/  ghc-prim-0.5.1.1:GHC.Types b1fd0716441595db508c1a74387bf394
+97debe6b139cd076d39b4bebd5382fd1
+  $fShowSolTypes :: GHC.Show.Show ToSolidity.SolTypes
+  DFunId
+  {- Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ ToSolidity.SolTypes
+                  ToSolidity.$fShowSolTypes_$cshowsPrec
+                  ToSolidity.$fShowSolTypes_$cshow
+                  ToSolidity.$fShowSolTypes_$cshowList -}
+97debe6b139cd076d39b4bebd5382fd1
+  $fShowSolTypes1 :: ToSolidity.SolTypes -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (ToSolidity.$fShowSolTypes_$cshowsPrec
+                   ToSolidity.$fShowSolTypes2) -}
+82f79fb67d969b79366c5071421b9fd0
+  $fShowSolTypes2 :: GHC.Types.Int
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 0#) -}
+97debe6b139cd076d39b4bebd5382fd1
+  $fShowSolTypes_$cshow :: ToSolidity.SolTypes -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: ToSolidity.SolTypes) ->
+                 ToSolidity.$fShowSolTypes_$cshowsPrec
+                   ToSolidity.$fShowSolTypes2
+                   x
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+97debe6b139cd076d39b4bebd5382fd1
+  $fShowSolTypes_$cshowList ::
+    [ToSolidity.SolTypes] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__
+                   @ ToSolidity.SolTypes
+                   ToSolidity.$fShowSolTypes1) -}
+97debe6b139cd076d39b4bebd5382fd1
+  $fShowSolTypes_$cshowsPrec ::
+    GHC.Types.Int -> ToSolidity.SolTypes -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <L,1*U(U)><S,1*U><L,U> -}
+1437c4a40e4dda7c2bdea842f665361b
+  $fShowStateTypes :: GHC.Show.Show ToSolidity.StateTypes
+  DFunId
+  {- Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ ToSolidity.StateTypes
+                  ToSolidity.$fShowStateTypes_$cshowsPrec
+                  ToSolidity.$fShowStateTypes_$cshow
+                  ToSolidity.$fShowStateTypes_$cshowList -}
+1437c4a40e4dda7c2bdea842f665361b
+  $fShowStateTypes1 :: ToSolidity.StateTypes -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*U><L,U>,
+     Unfolding: (\ (w :: ToSolidity.StateTypes)
+                   (w1 :: GHC.Base.String) ->
+                 ToSolidity.$w$cshowsPrec 0# w w1) -}
+1437c4a40e4dda7c2bdea842f665361b
+  $fShowStateTypes_$cshow :: ToSolidity.StateTypes -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: ToSolidity.StateTypes) ->
+                 ToSolidity.$fShowStateTypes_$cshowsPrec
+                   ToSolidity.$fShowSolTypes2
+                   x
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+1437c4a40e4dda7c2bdea842f665361b
+  $fShowStateTypes_$cshowList ::
+    [ToSolidity.StateTypes] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__
+                   @ ToSolidity.StateTypes
+                   ToSolidity.$fShowStateTypes1) -}
+1437c4a40e4dda7c2bdea842f665361b
+  $fShowStateTypes_$cshowsPrec ::
+    GHC.Types.Int -> ToSolidity.StateTypes -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <S(S),1*U(U)><S,1*U><L,U>, Inline: [0],
+     Unfolding: InlineRule (3, True, False)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: ToSolidity.StateTypes)
+                   (w2 :: GHC.Base.String) ->
+                 case w of ww { GHC.Types.I# ww1 ->
+                 ToSolidity.$w$cshowsPrec ww1 w1 w2 }) -}
+9aa1ca7c4c623640c43573b55462e7b1
+  $tc'Bool :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   15487187053737472804##
+                   18427562444137963773##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'Bool2
+                   0#
+                   ToSolidity.$tc'Bool1) -}
+5f75ea644ef99a7486da38e24d138e35
+  $tc'Bool1 :: GHC.Types.KindRep
+  {- HasNoCafRefs, Strictness: m4, Inline: [~] -}
+648cb31999ce31aaf7f43126475e614b
+  $tc'Bool2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'Bool3) -}
+49cefd204e0d9e3e21af42e9463d407b
+  $tc'Bool3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Bool"#) -}
+3baa84b5986f658efa6793facbe0e993
+  $tc'Con :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   8001285734892885578##
+                   10499172220966270255##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'Con2
+                   0#
+                   ToSolidity.$tc'Con1) -}
+ebc95bccb53dca1a9e39f0c7a2c77444
+  $tc'Con1 :: GHC.Types.KindRep
+  {- HasNoCafRefs, Strictness: m1, Inline: [~] -}
+1a1dfe5d5cbe3e2340a9dc46b1a5e672
+  $tc'Con2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'Con3) -}
+901dbe1fbefebae9adb713a1748c7113
+  $tc'Con3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Con"#) -}
+9be6a1504a8db9a27237ffe957506503
+  $tc'Count :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   11106437992890579263##
+                   3185502585975564261##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'Count1
+                   0#
+                   ToSolidity.$tc'Bool1) -}
+431a5a2567bb5c39810e2eb775bb94ae
+  $tc'Count1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'Count2) -}
+15949a09a166ee57aba01e45beecf5bf
+  $tc'Count2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Count"#) -}
+093976802e8ede1cb68253c319850f2e
+  $tc'Expr :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   12989460188772410069##
+                   8229901733199845570##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'Expr2
+                   0#
+                   ToSolidity.$tc'Expr1) -}
+8a4811fa5ec40b87d6468028bc2c823a
+  $tc'Expr1 :: GHC.Types.KindRep
+  {- HasNoCafRefs, Strictness: m4, Inline: [~] -}
+1e5b73a99a7a6cee8479d35fbeedc3b1
+  $tc'Expr2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'Expr3) -}
+65e23b96631c1fa097b0f72cf0c4f6bb
+  $tc'Expr3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Expr"#) -}
+e5aff1f0741a149528c60c32bf0fb0a3
+  $tc'Fun :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   3005659216064055147##
+                   15876052231748536215##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'Fun1
+                   0#
+                   ToSolidity.$tc'Expr1) -}
+45ef0a6686d9c77b0e3e9cf7759e1198
+  $tc'Fun1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'Fun2) -}
+416f107200311d1d696c9d303e32d366
+  $tc'Fun2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Fun"#) -}
+c8dc3ec6ce96716b75ac2bf3f8ddbada
+  $tc'FunVar :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   15389565212882048830##
+                   9737103607180437273##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'FunVar1
+                   0#
+                   ToSolidity.$tc'Expr1) -}
+50c8fd64ba44f1df327fe69237779e28
+  $tc'FunVar1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'FunVar2) -}
+da242e50a428770b4e5eeae6768a0c86
+  $tc'FunVar2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'FunVar"#) -}
+be60c671b667e4ff4d3a61e70d63f507
+  $tc'IfExpr :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   1105840646411503481##
+                   17237029279978502140##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'IfExpr1
+                   0#
+                   ToSolidity.$tc'Expr1) -}
+377eef32604860fbad7285d590ac2543
+  $tc'IfExpr1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'IfExpr2) -}
+38819cc9aeac7e840b71dd1c040225a6
+  $tc'IfExpr2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'IfExpr"#) -}
+8b6f3ff2dce3296cb56fe01cd14af304
+  $tc'List :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   15671731271403914627##
+                   17770291354912894320##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'List1
+                   0#
+                   ToSolidity.$tc'Bool1) -}
+64900efdb5a5f39fa53ff79e3340d22a
+  $tc'List1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'List2) -}
+f54fed95d863f394221251a3bdb771b4
+  $tc'List2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'List"#) -}
+181b819ee3b6ad54bd56c9444dea161c
+  $tc'Mapping :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   4947952507582452911##
+                   18038211412471867263##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'Mapping1
+                   0#
+                   ToSolidity.$tc'Bool1) -}
+d95e32960ac72bec3177edbaab8d7865
+  $tc'Mapping1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'Mapping2) -}
+8610902458ccc574f04bb7692f5c8b64
+  $tc'Mapping2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Mapping"#) -}
+d649bc2d115197866eb7df722ef30b37
+  $tc'OtherAddress :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   14961264717433449154##
+                   14989425138611147707##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'OtherAddress1
+                   0#
+                   ToSolidity.$tc'Bool1) -}
+7141af6455072ee32fbc1590936278e3
+  $tc'OtherAddress1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'OtherAddress2) -}
+f2609ebd71212c819f3bf3b2e9ec1ce9
+  $tc'OtherAddress2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'OtherAddress"#) -}
+058e8314af34c002d9c0a0e9d5f85a06
+  $tc'OwnerAddress :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   18110306004181380825##
+                   12469193248271904944##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'OwnerAddress1
+                   0#
+                   ToSolidity.$tc'Bool1) -}
+598a5c7623c7caff5a4216d5eaafe6fa
+  $tc'OwnerAddress1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'OwnerAddress2) -}
+695586a730050b6895f81307bb8455c3
+  $tc'OwnerAddress2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'OwnerAddress"#) -}
+30bd01e46580b874d3f835ae825daea4
+  $tc'PayExpr :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   10725231817781827073##
+                   9627403597495042247##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'PayExpr1
+                   0#
+                   ToSolidity.$tc'Expr1) -}
+5940c59233ab8b63ca115786abb64032
+  $tc'PayExpr1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'PayExpr2) -}
+50c00d78b69bc6a2ec889d35d6bcca6e
+  $tc'PayExpr2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'PayExpr"#) -}
+dd5f1c557193e9183725f0e6712e77fb
+  $tc'RequireExpr :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   17420469690884239023##
+                   1979938486903463585##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'RequireExpr1
+                   0#
+                   ToSolidity.$tc'Expr1) -}
+6fb989fe7c5b4e74300359dc918a80be
+  $tc'RequireExpr1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'RequireExpr2) -}
+c89e109a0dec5ec7f3e2e7ae6ef747cf
+  $tc'RequireExpr2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'RequireExpr"#) -}
+4a1cc510cf8d366d7bcb572dfbf219f6
+  $tc'ReturnExpr :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   990024576455160000##
+                   15299703564269337758##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'ReturnExpr1
+                   0#
+                   ToSolidity.$tc'Expr1) -}
+214cfe298e7ac3ed763c5b1bfe5a7548
+  $tc'ReturnExpr1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'ReturnExpr2) -}
+0a4c160a21f2862b00e1b3abd922bd1d
+  $tc'ReturnExpr2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'ReturnExpr"#) -}
+6445739e5d7aab7ef094f195af924a38
+  $tc'ReturnVar :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   14905625532773632697##
+                   17044702501927150324##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'ReturnVar1
+                   0#
+                   ToSolidity.$tc'Expr1) -}
+471d95a473aec340529ff0366efb9523
+  $tc'ReturnVar1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'ReturnVar2) -}
+0b7815878874b6fd37f8429c3e4f6fb9
+  $tc'ReturnVar2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'ReturnVar"#) -}
+34ddf83974ae246f82d42a775e93067c
+  $tc'StVar :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   13370678767831167275##
+                   1571481792537946795##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'StVar1
+                   0#
+                   ToSolidity.$tc'Expr1) -}
+8c7c4e608095a8fe691816fe0f692526
+  $tc'StVar1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'StVar2) -}
+e7785532234bdfb478b808874549039b
+  $tc'StVar2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'StVar"#) -}
+b6e5d4d1933e7624c62f850e238a557e
+  $tc'Time :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   2086450293162684872##
+                   12677587284612593476##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'Time1
+                   0#
+                   ToSolidity.$tc'Bool1) -}
+1bb35fd46789f285024cef0e60521599
+  $tc'Time1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'Time2) -}
+5c983deb71e5c56a62b9748aaace19dd
+  $tc'Time2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Time"#) -}
+62804aca8d31e513ce9512c1fd8819e7
+  $tc'Unit :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   14679562206174797623##
+                   15233881346990292362##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'Unit1
+                   0#
+                   ToSolidity.$tc'Bool1) -}
+f22556ff5e4938f45dd892b710ebfc69
+  $tc'Unit1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'Unit2) -}
+f9ae82549d56608d7021985df9d68b4d
+  $tc'Unit2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'Unit"#) -}
+455572cf0d97a42f421fa86f400945f7
+  $tcSolTypes :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   16630986677957223776##
+                   13837501709655571703##
+                   ToSolidity.$trModule
+                   ToSolidity.$tcSolTypes1
+                   0#
+                   GHC.Types.krep$*) -}
+02770a2f40b9a955bfdfa6b62f616bea
+  $tcSolTypes1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tcSolTypes2) -}
+9d0c50fa7cb84c8813da9bf420568942
+  $tcSolTypes2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("SolTypes"#) -}
+59dc014c5557fa78fec469454cd9a0c8
+  $tcStateTypes :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   2819579390909866904##
+                   651590070094262515##
+                   ToSolidity.$trModule
+                   ToSolidity.$tcStateTypes1
+                   0#
+                   GHC.Types.krep$*) -}
+7f025d95c4eed8c22f9a4b58752a7b46
+  $tcStateTypes1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tcStateTypes2) -}
+5f05b490bf04eea2263c2c1e529894e0
+  $tcStateTypes2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("StateTypes"#) -}
+5446adee8aaaa1f514afc47162febdae
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   ToSolidity.$trModule3
+                   ToSolidity.$trModule1) -}
+43813f1cb014dff30a103661f8a9665e
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$trModule2) -}
+e436b5425013940468b238c23ecde4a2
+  $trModule2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("ToSolidity"#) -}
+d2714deedbe43c2f1ab88f163fa2e800
+  $trModule3 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$trModule4) -}
+f3d4410ecfd848f3a837881ffed44522
+  $trModule4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("FYP-0.1.0.0-DB97z4OHGdmISridARSpDG"#) -}
+1437c4a40e4dda7c2bdea842f665361b
+  $w$cshowsPrec ::
+    GHC.Prim.Int#
+    -> ToSolidity.StateTypes -> GHC.Base.String -> GHC.Base.String
+  {- Arity: 3, Strictness: <S,U><S,1*U><L,U>, Inline: [0] -}
+31f3a49575f43f7c4248be6bef762809
+  $wcreateFunCon :: [[ToSolidity.SolTypes]] -> [[GHC.Base.String]]
+  {- Arity: 1, Strictness: <S,1*U>, Inline: [0] -}
+97debe6b139cd076d39b4bebd5382fd1
+  data SolTypes
+    = FunVar GHC.Base.String
+    | StVar GHC.Base.String
+    | ReturnVar GHC.Base.String
+    | Expr GHC.Base.String
+    | PayExpr GHC.Base.String
+    | IfExpr GHC.Base.String
+    | ReturnExpr GHC.Base.String
+    | Fun GHC.Base.String
+    | RequireExpr GHC.Base.String
+    | Con
+1437c4a40e4dda7c2bdea842f665361b
+  data StateTypes
+    = OwnerAddress GHC.Base.String GHC.Base.String
+    | OtherAddress GHC.Base.String GHC.Base.String
+    | Mapping GHC.Base.String GHC.Base.String
+    | Time GHC.Base.String GHC.Base.String
+    | Unit GHC.Base.String GHC.Base.String
+    | List GHC.Base.String GHC.Base.String
+    | Count GHC.Base.String GHC.Base.String
+    | Bool GHC.Base.String GHC.Base.String
+73cf541a729fa3cf4ca8606d5353ba9c
+  combineString ::
+    GHC.Base.String -> GHC.Base.String -> GHC.Base.String
+  {- Arity: 2, Strictness: <S,1*U><L,1*U>,
+     Unfolding: (\ (str1 :: GHC.Base.String)
+                   (str2 :: GHC.Base.String) ->
+                 GHC.Base.++
+                   @ GHC.Types.Char
+                   str1
+                   (GHC.CString.unpackAppendCString#
+                      ToSolidity.combineString3
+                      (GHC.Base.++ @ GHC.Types.Char str2 ToSolidity.combineString1))) -}
+2ab86f48335b76915155fa983a8ef443
+  combineString1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   ToSolidity.combineString2) -}
+19a65a2b9cdc6c3bc04884c5eb02571c
+  combineString2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: (";\n"#) -}
+99cd2343ddd5fd932cfb0a5223fbb888
+  combineString3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: (" "#) -}
+8dcfab79263da372349d4450b7d50d00
+  commitEtherSolidity ::
+    GHC.Base.String -> Contract.Ether -> GHC.Base.String
+  {- Arity: 2, Strictness: <S,U><L,1*U(U)>,
+     Unfolding: (\ (ds :: [GHC.Types.Char]) (m :: Contract.Ether) ->
+                 let {
+                   fail :: GHC.Prim.Void# -> GHC.Base.String
+                     <join 1> {- Arity: 1, Strictness: <L,A> -}
+                   = \ (ds1 :: GHC.Prim.Void#)[OneShot] ->
+                     case GHC.Base.eqString ds ToSolidity.commitEtherSolidity7 of wild {
+                       GHC.Types.False -> ToSolidity.commitEtherSolidity6
+                       GHC.Types.True
+                       -> GHC.CString.unpackAppendCString#
+                            ToSolidity.commitEtherSolidity5
+                            (case m of ww { GHC.Types.D# ww1 ->
+                             GHC.Base.++
+                               @ GHC.Types.Char
+                               (GHC.Float.$w$sshowSignedFloat
+                                  GHC.Float.$fShowDouble2
+                                  GHC.Float.minExpt
+                                  ww1
+                                  (GHC.Types.[] @ GHC.Types.Char))
+                               ToSolidity.commitEtherSolidity3 }) }
+                 } in
+                 case ds of wild {
+                   [] -> fail GHC.Prim.void#
+                   : ds1 ds2
+                   -> case ds1 of wild1 { GHC.Types.C# ds3 ->
+                      case ds3 of ds4 {
+                        DEFAULT -> fail GHC.Prim.void#
+                        '<'#
+                        -> case ds2 of wild2 {
+                             []
+                             -> GHC.CString.unpackAppendCString#
+                                  ToSolidity.commitEtherSolidity2
+                                  (case m of ww { GHC.Types.D# ww1 ->
+                                   GHC.Base.++
+                                     @ GHC.Types.Char
+                                     (GHC.Float.$w$sshowSignedFloat
+                                        GHC.Float.$fShowDouble2
+                                        GHC.Float.minExpt
+                                        ww1
+                                        (GHC.Types.[] @ GHC.Types.Char))
+                                     ToSolidity.commitEtherSolidity3 })
+                             : ipv ipv1 -> fail GHC.Prim.void# }
+                        '>'#
+                        -> case ds2 of wild2 {
+                             []
+                             -> GHC.CString.unpackAppendCString#
+                                  ToSolidity.commitEtherSolidity1
+                                  (case m of ww { GHC.Types.D# ww1 ->
+                                   GHC.Base.++
+                                     @ GHC.Types.Char
+                                     (GHC.Float.$w$sshowSignedFloat
+                                        GHC.Float.$fShowDouble2
+                                        GHC.Float.minExpt
+                                        ww1
+                                        (GHC.Types.[] @ GHC.Types.Char))
+                                     ToSolidity.commitEtherSolidity3 })
+                             : ipv ipv1 -> fail GHC.Prim.void# } } } }) -}
+c3f7513ba3e3ad5c6907678e0afa2776
+  commitEtherSolidity1 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("require(msg.value >"#) -}
+865acc4376577b156be91670732cc7a0
+  commitEtherSolidity2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("require(msg.value <"#) -}
+88e078b722b8826f36ddcdacf4aeb206
+  commitEtherSolidity3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   ToSolidity.commitEtherSolidity4) -}
+6afecb12cfea7c7394d32f1bf6835fba
+  commitEtherSolidity4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: (");"#) -}
+123d04c870819524c23ea4425eb54f00
+  commitEtherSolidity5 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("require(msg.value =="#) -}
+545879c9023783fe92d0595246b5ce19
+  commitEtherSolidity6 :: GHC.Base.String
+  {- Strictness: x -}
+5749330bab284edcdce3310c828211aa
+  commitEtherSolidity7 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   ToSolidity.commitEtherSolidity8) -}
+0c2934015d9a0e5d712c2612842b8081
+  commitEtherSolidity8 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("=="#) -}
+b80cbda384fb05db798eaf7d1ff9ea07
+  createBody :: [[ToSolidity.SolTypes]] -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U> -}
+9195928eff1e2d1f5631c8be6e49933a
+  createContract ::
+    Contract.Contract -> [[ToSolidity.SolTypes]] -> GHC.Base.String
+  {- Arity: 2, Strictness: <L,U><L,1*U>,
+     Unfolding: (\ (c :: Contract.Contract)
+                   (s :: [[ToSolidity.SolTypes]]) ->
+                 GHC.CString.unpackAppendCString#
+                   ToSolidity.createContract4
+                   (GHC.Base.++
+                      @ GHC.Types.Char
+                      (ToSolidity.getStVar (ToSolidity.sortStateTypes c))
+                      (GHC.CString.unpackAppendCString#
+                         ToSolidity.createContract3
+                         (GHC.Base.++
+                            @ GHC.Types.Char
+                            (ToSolidity.toString
+                               (ToSolidity.$wcreateFunCon
+                                  (ToSolidity.sortTypes c (ToSolidity.sortStateTypes c))))
+                            (GHC.CString.unpackAppendCString#
+                               ToSolidity.createContract3
+                               (GHC.Base.++
+                                  @ GHC.Types.Char
+                                  (ToSolidity.toString (ToSolidity.createStandardFun s))
+                                  ToSolidity.createContract1)))))) -}
+b9b1d65fb41b12ad5c780926f9b4447a
+  createContract1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   ToSolidity.createContract2) -}
+124880226160b0db781c2f1c5ffb2ea0
+  createContract2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("\n\
+                 \}"#) -}
+4c13df3f78e79b11c860bbd40698b5db
+  createContract3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("\n"#) -}
+3c6cf2c162d2e6f2ecf6f4e215fff7e3
+  createContract4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("pragma solidity ^0.5.0;\n\
+                 \contract Contract {\n"#) -}
+8cfe799461963230dd06b7ca7a8b641c
+  createFunCon ::
+    Contract.Contract -> [[ToSolidity.SolTypes]] -> [[GHC.Base.String]]
+  {- Arity: 2, Strictness: <L,A><S,1*U>, Inline: [0],
+     Unfolding: InlineRule (2, True, True)
+                (\ (w :: Contract.Contract) (w1 :: [[ToSolidity.SolTypes]]) ->
+                 ToSolidity.$wcreateFunCon w1) -}
+f66cfc2b7b0eb510be0ef54fce7b67fa
+  createStandardFun :: [[ToSolidity.SolTypes]] -> [[GHC.Base.String]]
+  {- Arity: 1, Strictness: <S,1*U> -}
+a205e3137d8be1dde35eeb16571441b6
+  getFunCon :: Contract.Contract -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (c :: Contract.Contract) ->
+                 ToSolidity.toString
+                   (ToSolidity.createFunCon
+                      c
+                      (ToSolidity.sortTypes c (ToSolidity.sortStateTypes c)))) -}
+d0add543dd690f35e96440c051850064
+  getParameters ::
+    [[ToSolidity.SolTypes]] -> GHC.Types.Int -> GHC.Base.String
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,1*U(U)> -}
+f3d9975a78d1e2fd1c415ff909e6d371
+  getReturns :: [[ToSolidity.SolTypes]] -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U> -}
+cad790a228d81b14f08f19f21a7d826f
+  getStVar :: [[ToSolidity.StateTypes]] -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U> -}
+cd46af1a3863868661eab12d8cbb9b13
+  getStateType ::
+    GHC.Base.String -> [[ToSolidity.StateTypes]] -> GHC.Base.String
+  {- Arity: 2, Strictness: <S,U><S,1*U> -}
+dba14c411d836a3f265c61ba7c2102e5
+  ifBody :: [[ToSolidity.SolTypes]] -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U> -}
+874176124fe9b523fe402fcd0da2eac4
+  isParameter :: [[ToSolidity.SolTypes]] -> GHC.Base.String
+  {- Arity: 1, Strictness: <L,1*U>,
+     Unfolding: (\ (s :: [[ToSolidity.SolTypes]]) ->
+                 GHC.CString.unpackAppendCString#
+                   ToSolidity.isParameter3
+                   (GHC.Base.++
+                      @ GHC.Types.Char
+                      (ToSolidity.getParameters s ToSolidity.$fShowSolTypes2)
+                      ToSolidity.isParameter1)) -}
+ba3f1b77a62d15a9cb4dbb161a4bdea0
+  isParameter1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   ToSolidity.isParameter2) -}
+d21d17d1534e84a2421a8fe3741aa960
+  isParameter2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: (")"#) -}
+1d0900af719bf660b7f406374cd27316
+  isParameter3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("("#) -}
+0314e52fe1b3fb9a394054150db60d13
+  isPubPriv :: Contract.Contract -> GHC.Types.Int -> GHC.Base.String
+  {- Arity: 2, Strictness: <L,A><S(S),1*U(1*U)>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (ds :: Contract.Contract) (ds1 :: GHC.Types.Int) ->
+                 case ds1 of wild { GHC.Types.I# ds2 ->
+                 case ds2 of ds3 {
+                   DEFAULT -> ToSolidity.isPubPriv3
+                   0# -> ToSolidity.isPubPriv1 } }) -}
+06e1dd7dc1f8cf2667e73746f4444bbd
+  isPubPriv1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# ToSolidity.isPubPriv2) -}
+5b884f204e2ca332497f2a235041f53c
+  isPubPriv2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("public "#) -}
+13e4ad5e1a386fe92fc0ddad7d72de4a
+  isPubPriv3 :: GHC.Base.String
+  {- Strictness: x -}
+1229911d679815fd67446f0fcc327479
+  isStateMutable :: [[ToSolidity.SolTypes]] -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U> -}
+087f8ab1f7a33784beb7e41294fa934d
+  sendAllSolidity :: GHC.Base.String
+  {- Unfolding: (GHC.CString.unpackCString#
+                   ToSolidity.sendAllSolidity1) -}
+90f0cd3974208a33db605aa021c31f91
+  sendAllSolidity1 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("owner.transfer(this.balance);"#) -}
+b5d7073fb6515d07ea954ca155c004df
+  sortStateTypes :: Contract.Contract -> [[ToSolidity.StateTypes]]
+  {- Arity: 1, Strictness: <S,1*U> -}
+aa80b781d630fd4e2b78279b39d2e3e9
+  sortTypes ::
+    Contract.Contract
+    -> [[ToSolidity.StateTypes]] -> [[ToSolidity.SolTypes]]
+  {- Arity: 2, Strictness: <S,1*U><L,U> -}
+404c253216315f4c3c6ce68ec4d6087b
+  stateTypesToSort :: Contract.Contract -> [[ToSolidity.SolTypes]]
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (c :: Contract.Contract) ->
+                 ToSolidity.sortTypes c (ToSolidity.sortStateTypes c)) -}
+95eed15116503886957a44f96fdbf96d
+  test :: GHC.Types.IO ()
+  {- Arity: 1,
+     Unfolding: InlineRule (0, True, True)
+                ToSolidity.test1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
+c8f15129c37b636c4c96716f7c1530ff
+  test1 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 1,
+     Unfolding: (ToSolidity.test4 ToSolidity.test2 Auction.auction) -}
+b1cad9d6d351c76e7a13f0ee1eedb9ef
+  test2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# ToSolidity.test3) -}
+94e293ec33268ef84b11ca6ae553c0f1
+  test3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("auctionTest"#) -}
+91cd75a31b123e1e64a3956cf56aa9b7
+  test4 ::
+    GHC.Base.String
+    -> Contract.Contract
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 3, Strictness: <L,1*U><L,U><S,U>,
+     Unfolding: (\ (s :: GHC.Base.String)
+                   (c :: Contract.Contract)
+                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 System.IO.appendFile2
+                   @ ()
+                   (GHC.Base.++ @ GHC.Types.Char s ToSolidity.test5)
+                   GHC.IO.IOMode.WriteMode
+                   (\ (hdl :: GHC.IO.Handle.Types.Handle)[OneShot] ->
+                    GHC.IO.Handle.Text.hPutStr2
+                      hdl
+                      (ToSolidity.createContract c (ToSolidity.stateTypesToSort c))
+                      GHC.Types.False)
+                     `cast`
+                   (<GHC.IO.Handle.Types.Handle>_R
+                    ->_R Sym (GHC.Types.N:IO[0] <()>_R))
+                   eta) -}
+a7b6b8a0628ef6c1aacc0fa5647bb903
+  test5 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# ToSolidity.test6) -}
+3d4e322fcdc0c3811900b5cd7eaea09e
+  test6 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Solidity.sol"#) -}
+f14306efea021031da08de7680a558ff
+  testTypes :: [[ToSolidity.SolTypes]]
+  {- Unfolding: (ToSolidity.sortTypes
+                   Auction.auction
+                   ToSolidity.testTypes1) -}
+9d3ab2545798ff76aa2acd3e310c7101
+  testTypes1 :: [[ToSolidity.StateTypes]]
+  {- Unfolding: (ToSolidity.sortStateTypes Auction.auction) -}
+7553a2ab691ceed896c0fb1849949d0c
+  toFile :: GHC.Base.String -> Contract.Contract -> GHC.Types.IO ()
+  {- Arity: 3, Strictness: <L,1*U><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                ToSolidity.test4
+                  `cast`
+                (<GHC.Base.String>_R
+                 ->_R <Contract.Contract>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
+f77bb8dd2a24df999c0813015e2b9293
+  toString :: [[GHC.Base.String]] -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U> -}
+instance GHC.Show.Show [ToSolidity.SolTypes]
+  = ToSolidity.$fShowSolTypes
+instance GHC.Show.Show [ToSolidity.StateTypes]
+  = ToSolidity.$fShowStateTypes
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

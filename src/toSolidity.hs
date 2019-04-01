@@ -50,8 +50,9 @@ sortStateTypes c =
 
         (Send (Random All) c1 ) -> [(Unit ("uint") ("randNonce"))] : sortStateTypes c1
         (Send (Winner All) c1) -> sortStateTypes c1
+        (Send (Winner ((AmountIn str))) c1) -> sortStateTypes c1
         (Send (ToOwner All) c1) -> sortStateTypes c1 
-        (Send (ToBeneficiary (Variable str)) c1) -> sortStateTypes c1
+        (Send (ToBeneficiary (AmountIn str)) c1) -> sortStateTypes c1
         (Send (Address All) c1) -> sortStateTypes c1
 
         (CommitEther (NoLimit) c1) -> case c1 of 
@@ -120,9 +121,9 @@ sortTypes c s =
         (Function str c1) -> [(Fun (str))] : sortTypes c1 s
 
 
-        (CommitEther (Equal m) c1) -> [(PayExpr ("require(msg.value ==" ++ show (m) ++ ");"))] : sortTypes c1 s
-        (CommitEther (Min m) c1) ->   [(PayExpr ("require(msg.value >" ++ show (m) ++ ");"))] : sortTypes c1 s
-        (CommitEther (Max m) c1) ->   [(PayExpr ("require(msg.value >" ++ show (m) ++ ");"))] : sortTypes c1 s
+        (CommitEther (Equal m) c1) -> [(PayExpr (commitEtherSolidity "==" m))] : sortTypes c1 s
+        (CommitEther (Min m) c1) ->   [(PayExpr (commitEtherSolidity ">" m))] : sortTypes c1 s
+        (CommitEther (Max m) c1) ->   [(PayExpr (commitEtherSolidity "<" m))] : sortTypes c1 s
         (CommitEther (NoLimit) c1) -> case c1 of  
                                     (AddTo str c2) -> [(PayExpr ((getStateType "map" s) ++ "[msg.sender] += msg.value;"))] :
                                                       [(ReturnExpr ( "return " ++ (getStateType "map" s) ++ "[msg.sender];"))] :
@@ -153,8 +154,8 @@ sortTypes c s =
                                 [(FunVar "uint time")] : sortTypes c1 s
         (Set (Beneficiary) c1) -> [(Expr "beneficiary = _beneficiary;")] : 
                                   [(FunVar "address payable _beneficiary")] : sortTypes c1 s
-        (Send (ToOwner All) c1) -> [(Expr "owner.transfer(this.balance);")] : sortTypes c1 s
-        (Send (Winner All) c1) ->  [(Expr "owner.transfer(this.balance);")] : sortTypes c1 s
+        (Send (ToOwner All) c1) -> [(Expr sendAllSolidity)] : sortTypes c1 s
+        (Send (Winner All) c1) ->  [(Expr sendAllSolidity)] : sortTypes c1 s
         (Send (Address All) c1) -> case c1 of 
                                        (From str c2) -> [(Expr ("uint amount =" ++ str ++ "[msg.sender];"))] : 
                                                         [(IfExpr ("if (amount > 0)"))] : 
@@ -167,7 +168,7 @@ sortTypes c s =
                                    [(ReturnExpr "return winner;")] : 
                                    [(ReturnVar "address")] : sortTypes c1 s
 
-        (Send (ToBeneficiary (Variable str)) c1) -> [(PayExpr ("beneficiary.transfer(" ++ str ++");"))] : sortTypes c1 s
+        (Send (ToBeneficiary (AmountIn str)) c1) -> [(PayExpr ("beneficiary.transfer(" ++ str ++");"))] : sortTypes c1 s
 
         (Withdraw c1) -> [(IfExpr ("if (withdrawAmount <=" ++ (getStateType "map" s) ++ "[msg.sender]) "))] :
                          [(Expr  ((getStateType "map" s) ++ "[msg.sender] -= withdrawAmount;"))] :
@@ -280,7 +281,7 @@ createStandardFun _ = []
                                             
  -- Will the function affect state? i.e.[pure|constant|view|payable]
 isStateMutable :: [[SolTypes]] -> String 
-isStateMutable ([PayExpr str] : rest) = "payable " ++ isStateMutable rest 
+isStateMutable ([PayExpr str] : rest) = "payable "
 isStateMutable ([ReturnVar str] : rest) = isStateMutable rest
 isStateMutable ([Expr str] : rest) = isStateMutable rest 
 isStateMutable ([StVar str] : rest) = isStateMutable rest 
@@ -319,10 +320,8 @@ getParameters _ n = ""
 
 --What determines if a function is private? 
 isPubPriv :: Contract -> Int -> String
-isPubPriv (Function str c1) n = isPubPriv c1 (n+1)
-isPubPriv _ 0 = isPubPriv c1 0
-isPubPriv _ 1 = "public "
-isPubPriv _ 2 = ""
+isPubPriv _ 0 = "public "
+
 
 -- Creates the contract as a whole, first getting state variables and then fun/con
 createContract :: Contract -> [[SolTypes]] -> String 
@@ -333,14 +332,19 @@ createContract c s= "pragma solidity ^0.5.0;" ++ "\n" ++ "contract Contract {" +
                   
 
 toFile :: String -> Contract -> IO ()
-toFile s c = writeFile (s ++ "Solidity.txt") (createContract c (stateTypesToSort c))
+toFile s c = writeFile (s ++ "Solidity.sol") (createContract c (stateTypesToSort c))
 
 getFunCon :: Contract -> String 
 getFunCon c = toString(createFunCon c (stateTypesToSort c))
 
-c1 :: Contract
-c1 = (function "deposit" (commitEther (Equal 5) End))
-
 test = toFile "auctionTest" auction
 
 testTypes = stateTypesToSort auction
+
+commitEtherSolidity :: String -> Ether -> String
+commitEtherSolidity "<" m = ("require(msg.value <" ++ show (m) ++ ");")
+commitEtherSolidity ">" m = ("require(msg.value >" ++ show (m) ++ ");")
+commitEtherSolidity "==" m = ("require(msg.value ==" ++ show (m) ++ ");")
+
+sendAllSolidity :: String
+sendAllSolidity = ("owner.transfer(this.balance);")

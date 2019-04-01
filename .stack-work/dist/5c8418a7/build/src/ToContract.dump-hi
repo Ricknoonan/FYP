@@ -1,0 +1,326 @@
+
+==================== FINAL INTERFACE ====================
+2019-03-31 22:28:30.4864146 UTC
+
+interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:ToContract 8022
+  interface hash: b060344a25c4602bbc4c3c6e85f9e87c
+  ABI hash: 0fa4392bcc6a1cad60341aa3cf9f65d6
+  export-list hash: bb08da3308aec040f66956574d551df6
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: 116d747c6d2286eaf4ade378327fec2c
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  ToContract.checkAddTo
+  ToContract.checkAddToHelper
+  ToContract.checkCommitEther
+  ToContract.checkConstuctor
+  ToContract.checkPartialRest
+  ToContract.checkSend
+  ToContract.checkWithdraw
+  ToContract.getString
+  ToContract.isAddTo
+  ToContract.isCommitEther
+  ToContract.isConstructor
+  ToContract.isPartial
+  ToContract.isRest
+  ToContract.isSend
+  ToContract.isSet
+  ToContract.isWithdraw
+  ToContract.patialError
+  ToContract.readDataTypes
+  ToContract.readDouble
+  ToContract.readInt
+  ToContract.readMoney
+module dependencies: Auction Bank Contract ContractClass Lottery
+                     Simulate ToSolidity
+package dependencies: Win32-2.5.4.1 array-0.5.2.0 base-4.10.1.0
+                      containers-0.5.10.2 deepseq-1.4.3.0 ghc-prim-0.5.1.1
+                      integer-gmp-1.0.1.0 time-1.8.0.2
+orphans: time-1.8.0.2:Data.Time.Format.Parse
+         time-1.8.0.2:Data.Time.LocalTime.Internal.ZonedTime
+         time-1.8.0.2:Data.Time.LocalTime.Internal.LocalTime
+         time-1.8.0.2:Data.Time.Calendar.Gregorian base-4.10.1.0:GHC.Float
+         base-4.10.1.0:GHC.Base
+family instance modules: base-4.10.1.0:Control.Applicative
+                         base-4.10.1.0:Data.Complex base-4.10.1.0:Data.Either
+                         base-4.10.1.0:Data.Functor.Compose base-4.10.1.0:Data.Functor.Const
+                         base-4.10.1.0:Data.Functor.Identity
+                         base-4.10.1.0:Data.Functor.Product base-4.10.1.0:Data.Functor.Sum
+                         base-4.10.1.0:Data.List.NonEmpty base-4.10.1.0:Data.Monoid
+                         base-4.10.1.0:Data.Semigroup base-4.10.1.0:Data.Type.Equality
+                         base-4.10.1.0:Data.Version base-4.10.1.0:Data.Void
+                         base-4.10.1.0:GHC.Exts base-4.10.1.0:GHC.Generics
+                         base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
+                         base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
+                         containers-0.5.10.2:Data.Set.Internal
+import  -/  Contract 052b857231e1e8bd02168375a4da7231
+  exports: b6b4648aa44fcd1a15c39c94f9c09bc7
+  AddTo 16a4ab257d0ac0e23a16dc86c22a0ef6
+  Address 274cce099d647331940d67e560707969
+  All 7ed62f24e01111c319fcab1b5619f4c7
+  AlreadyFinished f1e60aced5724c11770392685320875d
+  AlreadyJoined aeedf90b74334a296594eef2c59c7f5b
+  Amount 341537ce0e00a778849a9c7693f44f64
+  AmountIn 42b4879f0298b537d382f2840bdd4917
+  Beneficiary eb11561124df885f4b3461cdb529790f
+  CommitEther 5b77c1558142d855f930d294dab693e9
+  Constructor 99fe41f1b0fc9b6aa31d1cbb0e06ed90
+  Contract 6a273a1536fb3d1fc790e24ac714826d
+  ContractOwner 4cc38e0c26ad3eff8ac162cc56cf12ea
+  End fb5e134afd8a0aae3eed01476f1becc6
+  Equal 95e0a0066af32998c0cf43396d04c5f7
+  Error 1257c0ab9194e583a7cf3e0c28a925b4
+  Ether 0b21adb2a89b504e89e7a017ffaa2bf4
+  From 58b042125e3e48e8481018dc3bef4902
+  Function 4e599cfb54a2849bddf328a3f736995e
+  Higher 0f671eff55f2b25e820c5d4c414d96e6
+  IsNot c4b347568fe64bac16259fe0d2d2a87c
+  Max c603297e7bdc865c0c8c6676020f4b66
+  Min ea48a0d8d0dee2400a7ff82ae76c9809
+  NoLimit 8d8c332b294747195083f67458a45487
+  Partial e2ab183c66ceac33454ad415753eac7a
+  People 58fa935abece96f6a2aeac16f6845fe2
+  Random 9d823bffe8ffeab5658ef82f7465f55a
+  Rest 6c18654e3cec54a993986507415b0049
+  Send 28d2aafad88ccc1671895cb86529485e
+  Set c1f42170922b3443ea424b5783f82bca
+  TimesUp 599c001e496166b967040765c4c7fc8f
+  ToBeneficiary 04143c1d13559f0ebba25b6b1d0b087f
+  ToOwner 6311757d6519f2898a047f11d3f937d5
+  TotalAmount b86eb609ab784c4d51bd731741f18eb3
+  TotalReached 6b8ef10f5ac1fcaae270c76f7b82c226
+  Unless c573235331b9383f2ce8592f28846d00
+  Until e79ecca91a56d0fec1147be4486db3c3
+  When 790e695a1022b48ea3a3e121921a3368
+  Winner 02c1e25e37e3f641368a838ec33573b7
+  Withdraw 4f78ed566180045f6ae2f547ed29a830
+import  -/  ContractClass c019de4150eee4fa1bd790841434c04b
+  exports: f8618b225029ed238f0e2e77b83b442c
+import  -/  Simulate c189417d4276a34a2ee29aa626a71f5a
+  exports: 59ad3d3aac96b61961602e6f1072fcd5
+import  -/  ToSolidity 37e0211be01bae37793f3309f93b5ade
+  exports: 659cba79845dfeab042bd727a60658b7
+import  -/  base-4.10.1.0:GHC.Base 8f949d675e49677c272f02ab7a85fe18
+import  -/  base-4.10.1.0:Prelude a93a9400cc0c816c2ee5f39399baa7a0
+import  -/  base-4.10.1.0:Text.Read c150617dda21a009ed26981626bd21d7
+import  -/  ghc-prim-0.5.1.1:GHC.Classes 64ad5910d03ab188ab9b4adef7487b1e
+fcbd710aa25f067fbce1838ce24a04be
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   ToContract.$trModule3
+                   ToContract.$trModule1) -}
+04fd0171fa80f623dead0c48a765d42d
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToContract.$trModule2) -}
+19a7c6ce81a54ec78d169e5363d96957
+  $trModule2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("ToContract"#) -}
+ecbdbb234f6ae191294cee37188d87c8
+  $trModule3 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToContract.$trModule4) -}
+6f2d5f0a19792b5b3ecd8f3cc7ba9896
+  $trModule4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("FYP-0.1.0.0-DB97z4OHGdmISridARSpDG"#) -}
+f9f603c83b4fc7660f3cf074e2fd5358
+  checkAddTo :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U> -}
+7af2a96d0a94f21839ca3cd4c62bf0f2
+  checkAddToHelper :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U> -}
+238d426d2df26c652a84af7b48597772
+  checkCommitEther :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (ds :: [GHC.Base.String]) ->
+                 case ds of wild {
+                   [] -> ToContract.checkCommitEther1
+                   : x xs
+                   -> case ToContract.isCommitEther wild of wild1 {
+                        GHC.Types.False -> GHC.Types.True
+                        GHC.Types.True
+                        -> case ToContract.isWithdraw wild of wild2 {
+                             GHC.Types.False -> ToContract.isSend wild
+                             GHC.Types.True -> GHC.Types.True } } }) -}
+e7dc922e97790060a22eb61560aaf247
+  checkCommitEther1 :: GHC.Types.Bool
+  {- Strictness: x -}
+3e98a14e1d3eb20ea4407169af6827cc
+  checkConstuctor :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U> -}
+cea5955908d6aaa9a22cac4f3080ab45
+  checkPartialRest :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (ds :: [GHC.Base.String]) ->
+                 case ds of wild {
+                   [] -> ToContract.checkPartialRest1
+                   : x xs
+                   -> case ToContract.isPartial wild of wild1 {
+                        GHC.Types.False -> GHC.Types.True
+                        GHC.Types.True -> ToContract.isRest wild } }) -}
+18e4d3213e479755969da7aa3e837ad8
+  checkPartialRest1 :: GHC.Types.Bool
+  {- Strictness: x -}
+f3fac9941e4edf7e25213f50b5c088d6
+  checkSend :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (ds :: [GHC.Base.String]) ->
+                 case ds of wild {
+                   [] -> ToContract.checkSend1
+                   : x xs
+                   -> case ToContract.isSend wild of wild1 {
+                        GHC.Types.False -> GHC.Types.True
+                        GHC.Types.True -> ToContract.isCommitEther wild } }) -}
+54add1fe8c3d8138d105f718684627f9
+  checkSend1 :: GHC.Types.Bool
+  {- Strictness: x -}
+5567aac9a4468ceaa638bc47808c8de0
+  checkWithdraw :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (ds :: [GHC.Base.String]) ->
+                 case ds of wild {
+                   [] -> ToContract.checkWithdraw1
+                   : x xs
+                   -> case ToContract.isWithdraw wild of wild1 {
+                        GHC.Types.False -> GHC.Types.True
+                        GHC.Types.True
+                        -> case ToContract.isAddTo wild of wild2 {
+                             GHC.Types.False -> GHC.Types.False
+                             GHC.Types.True -> ToContract.isCommitEther wild } } }) -}
+a79ef7138ce195d9354a12ea5fa963f0
+  checkWithdraw1 :: GHC.Types.Bool
+  {- Strictness: x -}
+42c3c55f8561adfa51a9269412cc98ce
+  getString :: [GHC.Base.String] -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: [GHC.Base.String]) ->
+                 case ds of wild { [] -> ToContract.getString1 : x xs -> x }) -}
+e3ab944105da64db1adb66bd778438a0
+  getString1 :: GHC.Base.String
+  {- Strictness: x -}
+a3095ecce798ff199d3c576851c7f02e
+  isAddTo :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U> -}
+41097f6b0c118fcb614d4778d30dc6f4
+  isCommitEther :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U> -}
+0241ec2f79177e5eb50e9bc6a7e79d4e
+  isConstructor :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U> -}
+9e4601455a520d973d2725cfd1f8e679
+  isPartial :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U> -}
+d74b7a63455f58bffb70bf7eea6c5f6e
+  isRest :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U> -}
+5e9a9299514ecf4dd82859f627efe472
+  isSend :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U> -}
+a03426cba7bcdfcb247d9ffc7474dc96
+  isSet :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U> -}
+15b963ba01b09cae8e096ec7bde429d0
+  isWithdraw :: [GHC.Base.String] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U> -}
+265f6789c47e5639fc52b0b20ad14087
+  patialError :: Contract.Contract
+  {- Strictness: m18,
+     Unfolding: (Contract.Error ToContract.patialError1) -}
+75798f76f163ddd58cdfd366b7c84c43
+  patialError1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   ToContract.patialError2) -}
+feceab3261052086827eb0d8462b12cd
+  patialError2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Number must be 0 < x > 1 for Partial"#) -}
+99e5ece20cd5d8560ee05a359d00a09d
+  readDataTypes :: [GHC.Base.String] -> Contract.Contract
+  {- Arity: 1, Strictness: <S,1*U> -}
+fa951e9c968416a34aedc52400cc7522
+  readDouble :: [GHC.Base.String] -> GHC.Types.Double
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (ds :: [GHC.Base.String]) ->
+                 case ds of wild {
+                   [] -> ToContract.readDouble4
+                   : x xs
+                   -> case Text.Read.readEither8
+                             @ GHC.Types.Double
+                             (Text.ParserCombinators.ReadP.run
+                                @ GHC.Types.Double
+                                ToContract.readDouble3
+                                x) of wild1 {
+                        [] -> ToContract.readDouble2
+                        : x1 ds1
+                        -> case ds1 of wild2 {
+                             [] -> x1 : ipv ipv1 -> ToContract.readDouble1 } } }) -}
+cf91e9332306f6ed7496fc5912132429
+  readDouble1 :: Contract.Ether
+  {- Strictness: x -}
+b92f792e446e37a907df7e2578cc871c
+  readDouble2 :: Contract.Ether
+  {- Strictness: x -}
+74152491619b9bf7e28e300a7618ae0f
+  readDouble3 :: Text.ParserCombinators.ReadP.P Contract.Ether
+  {- Unfolding: (GHC.Read.$fReadDouble_$sreadNumber
+                   GHC.Read.$fReadDouble_$sconvertFrac
+                   Text.ParserCombinators.ReadPrec.minPrec
+                   @ Contract.Ether
+                   (Text.Read.readEither7 @ Contract.Ether)) -}
+b01d85a087d2f1d0fdeb43b279d763df
+  readDouble4 :: GHC.Types.Double
+  {- Strictness: x -}
+1b44bf25570bab2021114b14110624ae
+  readInt :: GHC.Base.String -> GHC.Types.Int
+  {- Arity: 1, Strictness: <L,U>,
+     Unfolding: (\ (s :: GHC.Base.String) ->
+                 case Text.Read.readEither8
+                        @ GHC.Types.Int
+                        (Text.ParserCombinators.ReadP.run
+                           @ GHC.Types.Int
+                           ToContract.readInt3
+                           s) of wild {
+                   [] -> ToContract.readInt2
+                   : x ds
+                   -> case ds of wild1 {
+                        [] -> x : ipv ipv1 -> ToContract.readInt1 } }) -}
+645f3655cfec0579e12a936a0def6579
+  readInt1 :: GHC.Types.Int
+  {- Strictness: x -}
+b0161d2e256e0d21be41f14ccf03f361
+  readInt2 :: GHC.Types.Int
+  {- Strictness: x -}
+adf114ead5cf9ead0028516772ef9124
+  readInt3 :: Text.ParserCombinators.ReadP.P GHC.Types.Int
+  {- Unfolding: (GHC.Read.$fReadInt_$sreadNumber
+                   GHC.Read.$fReadInt2
+                   Text.ParserCombinators.ReadPrec.minPrec
+                   @ GHC.Types.Int
+                   (Text.Read.readEither7 @ GHC.Types.Int)) -}
+ee930224eee61cd4928e511146274d30
+  readMoney :: GHC.Base.String -> Contract.Ether
+  {- Arity: 1, Strictness: <L,U>,
+     Unfolding: (\ (s :: GHC.Base.String) ->
+                 case Text.Read.readEither8
+                        @ Contract.Ether
+                        (Text.ParserCombinators.ReadP.run
+                           @ Contract.Ether
+                           ToContract.readDouble3
+                           s) of wild {
+                   [] -> ToContract.readDouble2
+                   : x ds
+                   -> case ds of wild1 {
+                        [] -> x : ipv ipv1 -> ToContract.readDouble1 } }) -}
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

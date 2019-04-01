@@ -13,24 +13,35 @@ simulate c = do
 loop :: Contract -> ParamState -> ContractState -> IO ()
 loop c pst st = do
     case c of 
-        (CashIn (Equal val) c1) -> do
-            putStrLn "Simulating CashIn > "   
+        (CommitEther (Equal val) c1) -> do
+            putStrLn "Simulating CommitEther > "   
             putStrLn "What is your wallet address? > "
             address <- getLine
             putStrLn (show address ++ " Commit " ++ show val ++ " >")
             money <- getLine
-            let moneyIn = (read money :: Money) 
+            let moneyIn = (read money :: Ether) 
             let (nc, no, ns, nco) = run c (CashInp address moneyIn) pst st
             putStrLn ("Contract State after CashIn: ") 
             prettyPrint no ns
             loop nc nco ns 
-        (CashIn (NoLimit) c1) -> do
-            putStrLn "Simulating CashIn > "   
+        (CommitEther (NoLimit) c1) -> do
+            putStrLn "Simulating CommitEther > "   
             putStrLn "What is your wallet address? > "
             address <- getLine
             putStrLn (show address ++ " Commit Any Amount >")
             money <- getLine
-            let moneyIn = (read money :: Money) 
+            let moneyIn = (read money :: Ether) 
+            let (nc, no, ns, nco) = run c (CashInp address moneyIn) pst st 
+            putStrLn ("Contract State after CashIn: ")
+            prettyPrint no ns
+            loop nc nco ns 
+        (CommitEther (Higher str) c1) -> do
+            putStrLn "Simulating CommitEther > "   
+            putStrLn "What is your wallet address? > "
+            address <- getLine
+            putStrLn (show address ++ " Commit Any Amount >")
+            money <- getLine
+            let moneyIn = (read money :: Ether) 
             let (nc, no, ns, nco) = run c (CashInp address moneyIn) pst st 
             putStrLn ("Contract State after CashIn: ")
             prettyPrint no ns
@@ -60,7 +71,7 @@ loop c pst st = do
             contractMember wal c pst st
             putStrLn "Withdraw Amount >"
             amount <- getLine
-            let amnt = (read amount :: Money)
+            let amnt = (read amount :: Ether)
             let (nc, no, ns, nco) = run c (WithdrawEther (Decision wal) (Amount amnt)) pst st
             putStrLn ("Contract State after Withdraw: ")
             prettyPrint no ns
@@ -116,7 +127,7 @@ prettyPrint :: OP -> ContractState -> IO ()
 prettyPrint o const = do 
                       putStrLn ("Output: " ++ show o) 
                       putStrLn ("Commits: "++ show(getCommitAction (commitSize const) const))
-                      putStrLn ("Money Out: " ++ show (getWithdrawAction (withdrawSize const) const))
+                      putStrLn ("Ether Out: " ++ show (getWithdrawAction (withdrawSize const) const))
                       putStrLn ("Contract Balance: " ++ show (etherBalance const))
                       putStrLn ("Owner: " ++ show (owner const))
 

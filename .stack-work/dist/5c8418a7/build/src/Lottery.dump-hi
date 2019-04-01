@@ -1,0 +1,172 @@
+
+==================== FINAL INTERFACE ====================
+2019-03-31 18:44:52.3317602 UTC
+
+interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:Lottery 8022
+  interface hash: ad76f2a8397697ce7bdac8554b384e7d
+  ABI hash: 4ade900613a2ea49e9f624c692de4cbc
+  export-list hash: 4105ffcb240e5efe3e2d010ef884dd56
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: 116d747c6d2286eaf4ade378327fec2c
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Lottery.join
+  Lottery.lottery
+  Lottery.selectWinner
+module dependencies: Contract ContractClass
+package dependencies: Win32-2.5.4.1 array-0.5.2.0 base-4.10.1.0
+                      containers-0.5.10.2 deepseq-1.4.3.0 ghc-prim-0.5.1.1
+                      integer-gmp-1.0.1.0 time-1.8.0.2
+orphans: time-1.8.0.2:Data.Time.Format.Parse
+         time-1.8.0.2:Data.Time.LocalTime.Internal.ZonedTime
+         time-1.8.0.2:Data.Time.LocalTime.Internal.LocalTime
+         time-1.8.0.2:Data.Time.Calendar.Gregorian base-4.10.1.0:GHC.Float
+         base-4.10.1.0:GHC.Base
+family instance modules: base-4.10.1.0:Control.Applicative
+                         base-4.10.1.0:Data.Complex base-4.10.1.0:Data.Either
+                         base-4.10.1.0:Data.Functor.Compose base-4.10.1.0:Data.Functor.Const
+                         base-4.10.1.0:Data.Functor.Identity
+                         base-4.10.1.0:Data.Functor.Product base-4.10.1.0:Data.Functor.Sum
+                         base-4.10.1.0:Data.List.NonEmpty base-4.10.1.0:Data.Monoid
+                         base-4.10.1.0:Data.Semigroup base-4.10.1.0:Data.Type.Equality
+                         base-4.10.1.0:Data.Version base-4.10.1.0:Data.Void
+                         base-4.10.1.0:GHC.Exts base-4.10.1.0:GHC.Generics
+                         base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
+                         base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
+                         containers-0.5.10.2:Data.Set.Internal
+import  -/  Contract 6a6dd0dbefeb36c6654d5815abf98c95
+  exports: b6b4648aa44fcd1a15c39c94f9c09bc7
+  All 7ed62f24e01111c319fcab1b5619f4c7
+  AlreadyJoined aeedf90b74334a296594eef2c59c7f5b
+  Contract 6a273a1536fb3d1fc790e24ac714826d
+  ContractOwner 4cc38e0c26ad3eff8ac162cc56cf12ea
+  End fb5e134afd8a0aae3eed01476f1becc6
+  Equal 95e0a0066af32998c0cf43396d04c5f7
+  People 58fa935abece96f6a2aeac16f6845fe2
+  Random 9d823bffe8ffeab5658ef82f7465f55a
+import  -/  ContractClass c019de4150eee4fa1bd790841434c04b
+  exports: f8618b225029ed238f0e2e77b83b442c
+  commitEther cf6afc8ca078b0feb82e9156ab4db610
+  constructor 28d3459dc94b6e90db0e02c249bd4df4
+  function eadd38a47e039e87bf903e6709f5b4f7
+  send 87a27eda10d1946b5c0375f8b7b14285
+  set fd12ee1189eace91e8702c09686b380d
+  unless 995558223913aa54262e6bcf07804daa
+  until 49f2764be0ae98ed41e8e15a9dda3840
+  when 39e8bc159535b1e87abbde23e8f58441
+import  -/  base-4.10.1.0:Prelude a93a9400cc0c816c2ee5f39399baa7a0
+3c838faba2c9800df7368d08131e5a41
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   Lottery.$trModule3
+                   Lottery.$trModule1) -}
+6bcc2afd9aa60b1c3edd29e7e332b3cd
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lottery.$trModule2) -}
+dab82137df4eebd62e64ac9d321531dc
+  $trModule2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Lottery"#) -}
+105636360034a47a564411a021fafc0b
+  $trModule3 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Lottery.$trModule4) -}
+40e50c52039371bc20dcde02b1b3c06d
+  $trModule4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("FYP-0.1.0.0-DB97z4OHGdmISridARSpDG"#) -}
+49dc1a687aa2270884c95c38f1b3fc53
+  join :: Contract.Contract
+  {- Unfolding: (case GHC.Base.eqString
+                        Lottery.join_s
+                        (GHC.Types.[] @ GHC.Types.Char) of wild {
+                   GHC.Types.False -> Lottery.join1
+                   GHC.Types.True -> ContractClass.function1 }) -}
+a066cbca44215292081b0c8344e352a1
+  join1 :: Contract.Contract
+  {- Strictness: m11,
+     Unfolding: (Contract.Function Lottery.join_s Lottery.join2) -}
+9bcb4439aba03eae8aa7e36c46ca1564
+  join2 :: Contract.Contract
+  {- HasNoCafRefs, Strictness: m6,
+     Unfolding: (Contract.CommitEther Lottery.join7 Lottery.join3) -}
+5bca42b48f4c986a0c934b8253829bec
+  join3 :: Contract.Contract
+  {- HasNoCafRefs, Strictness: m5,
+     Unfolding: (Contract.Until Lottery.join5 Lottery.join4) -}
+1ced99aaeb13ce7031134d84453e5ada
+  join4 :: Contract.Contract
+  {- HasNoCafRefs, Strictness: m17,
+     Unfolding: (Contract.Unless Contract.AlreadyJoined Contract.End) -}
+826b8b90066bf584202861c3a1501cea
+  join5 :: Contract.Parameter
+  {- HasNoCafRefs, Strictness: m5,
+     Unfolding: (Contract.People Lottery.join6) -}
+b2d73a2e54a0dbc37a24afc52430fa57
+  join6 :: GHC.Types.Int
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 10#) -}
+c120cab66691116054c44e25a4b49607
+  join7 :: Contract.InputCondition
+  {- HasNoCafRefs, Strictness: m3,
+     Unfolding: (Contract.Equal Lottery.join8) -}
+45bec03a43a2a96058d3c140342d4d68
+  join8 :: GHC.Types.Double
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.D# 1.0##) -}
+c1974189e3a6a0b9f634a9728b3c4c09
+  join9 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("join"#) -}
+975843a301e71fe9ce46d6dbb08596df
+  join_s :: GHC.Base.String
+  {- Unfolding: (GHC.CString.unpackCString# Lottery.join9) -}
+d0ae53b39d85d506febe4158f1e395a0
+  lottery :: Contract.Contract
+  {- Strictness: m14,
+     Unfolding: (Contract.Constructor Lottery.lottery1) -}
+db169070bc5b121c2b7528720ec73321
+  lottery1 :: Contract.Contract
+  {- Strictness: m13,
+     Unfolding: (Contract.Set
+                   Contract.ContractOwner
+                   Lottery.selectWinner) -}
+54622f79852d685db70b015aab0b2aa0
+  selectWinner :: Contract.Contract
+  {- Unfolding: (case GHC.Base.eqString
+                        Lottery.selectWinner_s
+                        (GHC.Types.[] @ GHC.Types.Char) of wild {
+                   GHC.Types.False -> Lottery.selectWinner1
+                   GHC.Types.True -> ContractClass.function1 }) -}
+32ce5ed190b95f2d407e3cfd202090e0
+  selectWinner1 :: Contract.Contract
+  {- Strictness: m11,
+     Unfolding: (Contract.Function
+                   Lottery.selectWinner_s
+                   Lottery.selectWinner2) -}
+efd230992f1748f8abdb28508e9b9ebb
+  selectWinner2 :: Contract.Contract
+  {- Strictness: m2,
+     Unfolding: (Contract.When Lottery.join5 Lottery.selectWinner3) -}
+6433a246fd84d20e0d4c1a62969feca8
+  selectWinner3 :: Contract.Contract
+  {- Strictness: m8,
+     Unfolding: (Contract.Send Lottery.selectWinner4 Lottery.join) -}
+c483095feb8762a78605dedb95c38a87
+  selectWinner4 :: Contract.SendCondition
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (Contract.Random Contract.All) -}
+907774059343eaf2f044d3903ce6eaf7
+  selectWinner5 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("selectWinner"#) -}
+7c7d4bfa97aaf4845ce981bad7839fa0
+  selectWinner_s :: GHC.Base.String
+  {- Unfolding: (GHC.CString.unpackCString# Lottery.selectWinner5) -}
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

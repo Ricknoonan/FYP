@@ -23,8 +23,8 @@ main = do
     contents <- hGetContents handle
     let contractList = map (map toLower) (words contents)
     let contractType = (readDataTypes contractList)
-    --putStrLn (show contractList)
-    --putStrLn (show contractType)
+    putStrLn (show contractList)
+    putStrLn (show contractType)
     checkErrors contractType
     checkLogic contractList
     choice fileName contractType contractList
@@ -62,6 +62,7 @@ checkErrors c = do
         (Constructor c1) -> checkErrors c1
         (AddTo s c1) -> checkErrors c1
         (Unless fc c1) -> checkErrors c1
+        (From str c1) -> checkErrors c1
         (End)-> do 
             putStrLn "Contract Types Correct" 
 

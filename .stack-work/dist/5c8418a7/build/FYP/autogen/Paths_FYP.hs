@@ -30,7 +30,7 @@ version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "C:\\Users\\richi\\FYP\\.stack-work\\install\\b7328101\\bin"
-libdir     = "C:\\Users\\richi\\FYP\\.stack-work\\install\\b7328101\\lib\\x86_64-windows-ghc-8.2.2\\FYP-0.1.0.0-705zuSaoS7tOjTc7pROvA-FYP"
+libdir     = "C:\\Users\\richi\\FYP\\.stack-work\\install\\b7328101\\lib\\x86_64-windows-ghc-8.2.2\\FYP-0.1.0.0-KWKyzRjoczEDCIMftWJG30-FYP"
 dynlibdir  = "C:\\Users\\richi\\FYP\\.stack-work\\install\\b7328101\\lib\\x86_64-windows-ghc-8.2.2"
 datadir    = "C:\\Users\\richi\\FYP\\.stack-work\\install\\b7328101\\share\\x86_64-windows-ghc-8.2.2\\FYP-0.1.0.0"
 libexecdir = "C:\\Users\\richi\\FYP\\.stack-work\\install\\b7328101\\libexec\\x86_64-windows-ghc-8.2.2\\FYP-0.1.0.0"

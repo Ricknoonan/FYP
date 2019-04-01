@@ -6,7 +6,7 @@ import Prelude hiding (until)
 
 endAuction :: Contract 
 endAuction = 
-    (function "endAuction" (when (TimesUp) (send (ToBeneficiary (Variable "highestBid")) (unless (AlreadyFinished) End))))
+    (function "endAuction" (when (TimesUp) (send (ToBeneficiary (AmountIn "highestBid")) (unless (AlreadyFinished) End))))
 
 placeBid :: Contract 
 placeBid = 
