@@ -1,9 +1,9 @@
 
 ==================== FINAL INTERFACE ====================
-2019-03-31 18:44:51.376241 UTC
+2019-04-02 22:38:56.5124237 UTC
 
 interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:Bank 8022
-  interface hash: 6de757913e69eb92bce48dc9437f4eda
+  interface hash: a0904e7cf514c826b350e143dd28f8b5
   ABI hash: 9c2b10f68989d28f82c74b6aa4132129
   export-list hash: 2bb9ce32a13b07ac4ebca95c8d8fe2c3
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
@@ -36,8 +36,8 @@ family instance modules: base-4.10.1.0:Control.Applicative
                          base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
                          base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
                          containers-0.5.10.2:Data.Set.Internal
-import  -/  Contract 6a6dd0dbefeb36c6654d5815abf98c95
-  exports: b6b4648aa44fcd1a15c39c94f9c09bc7
+import  -/  Contract 3adff78d8d624d3cc0276069af32a818
+  exports: 6627bdebaae646ad278a48bf11de3eed
   Contract 6a273a1536fb3d1fc790e24ac714826d
   ContractOwner 4cc38e0c26ad3eff8ac162cc56cf12ea
   End fb5e134afd8a0aae3eed01476f1becc6

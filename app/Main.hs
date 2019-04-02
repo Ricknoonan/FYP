@@ -32,13 +32,16 @@ main = do
 
 choice :: String -> Contract -> [String] -> IO ()
 choice fileName contractType contractList = do 
+    putStrLn ("Contract " ++ fileName ++ " loaded" )
     putStrLn "What do you want to do?>"
     putStrLn "[1] Simulate Contract"
     putStrLn "[2] Generate Solidity"
+    putStrLn "[3] Load a different contract"
     input2 <- getLine
     case input2 of
         ("1") -> simulate contractType >> choice fileName contractType contractList
         ("2") -> (toFile fileName contractType) >> putStrLn "Contract Generated Succesfully!"
+        ("3") -> main 
 
 checkErrors :: Contract -> IO ()
 checkErrors c = do

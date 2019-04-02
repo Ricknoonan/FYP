@@ -1,9 +1,9 @@
 
 ==================== FINAL INTERFACE ====================
-2019-03-31 18:44:50.7907755 UTC
+2019-04-02 22:38:55.882474 UTC
 
 interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:ContractClass 8022
-  interface hash: 1542125c87ee09f5607ea8f0171ac053
+  interface hash: f854414358baef2758784131460e96af
   ABI hash: c019de4150eee4fa1bd790841434c04b
   export-list hash: f8618b225029ed238f0e2e77b83b442c
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
@@ -50,8 +50,8 @@ family instance modules: base-4.10.1.0:Control.Applicative
                          base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
                          base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
                          containers-0.5.10.2:Data.Set.Internal
-import  -/  Contract 6a6dd0dbefeb36c6654d5815abf98c95
-  exports: b6b4648aa44fcd1a15c39c94f9c09bc7
+import  -/  Contract 3adff78d8d624d3cc0276069af32a818
+  exports: 6627bdebaae646ad278a48bf11de3eed
   AddTo 16a4ab257d0ac0e23a16dc86c22a0ef6
   Allow 8df762a3b86b8d5ae8193f2f50e6d0a9
   Amount 341537ce0e00a778849a9c7693f44f64

@@ -1,9 +1,9 @@
 
 ==================== FINAL INTERFACE ====================
-2019-03-31 22:49:51.5405981 UTC
+2019-04-02 22:44:43.9646833 UTC
 
 interface main:Main 8022
-  interface hash: 399f308b3678fec645c53a1d092a5b25
+  interface hash: 184578532a8662bbd526b900878c1f4c
   ABI hash: d31cd0ec65f1e272b6152421432e3566
   export-list hash: 0b95850ab7d5e80d2b9659e574a97b00
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
@@ -35,10 +35,10 @@ family instance modules: base-4.10.1.0:Control.Applicative
                          base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
                          containers-0.5.10.2:Data.Set.Internal
 import  -/  FYP-0.1.0.0:Bank 9c2b10f68989d28f82c74b6aa4132129
-import  -/  FYP-0.1.0.0:Contract 83ad5bb7368a294f0954856738c24f93
+import  -/  FYP-0.1.0.0:Contract 3adff78d8d624d3cc0276069af32a818
 import  -/  FYP-0.1.0.0:ContractClass c019de4150eee4fa1bd790841434c04b
 import  -/  FYP-0.1.0.0:Lottery 4ade900613a2ea49e9f624c692de4cbc
-import  -/  FYP-0.1.0.0:Simulate c189417d4276a34a2ee29aa626a71f5a
+import  -/  FYP-0.1.0.0:Simulate abf60e6668a276b72fa385bd0e96def5
 import  -/  FYP-0.1.0.0:ToContract 0fa4392bcc6a1cad60341aa3cf9f65d6
 import  -/  FYP-0.1.0.0:ToSolidity 37e0211be01bae37793f3309f93b5ade
 import  -/  base-4.10.1.0:Control.Exception 10a93951a12b353c5e2f1a6633fdc96a

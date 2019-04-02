@@ -20,7 +20,8 @@ data ContractState = ContractState {
                 commits :: Map.Map Int Action,
                 withdrawls :: Map.Map Int Action, 
                 etherBalance  :: Ether,
-                owner :: Address
+                owner :: Address,
+                beneficiary :: Address
              }
              deriving (Eq,Show,Ord)
 
@@ -32,7 +33,7 @@ data ParamState = ParamState {
               deriving (Show)
 
 emptyCState :: ContractState
-emptyCState = ContractState {commits = Map.empty, withdrawls = Map.empty, etherBalance = 0, owner = "No Owner"}
+emptyCState = ContractState {commits = Map.empty, withdrawls = Map.empty, etherBalance = 0, owner = "No Owner", beneficiary = "No Beneficiary"}
 
 emptyPState :: ParamState 
 emptyPState = ParamState {maxPeople = 0, amountSize = 0, duration = 0}
@@ -104,6 +105,7 @@ data Output = Null |
               SendFail |
               SendSuccess Action |
               OwnerSet Address |
+              BeneficiarySet Address |
               WithdrawPass [Action] |
               WithdrawFail [Action] |
               Message String 
@@ -116,14 +118,15 @@ data Action =  Commit Address Ether |
 data Input = CashInp Address Ether |
              Decision Int |
              SetOwner Address |
+             SetBeneficary Address|
              WithdrawEther Input Parameter |
              Empty
         deriving (Show, Eq, Ord,Read)
 
 evalC :: Input -> Contract -> ParamState -> OP -> ContractState -> (Contract, OP, ContractState, ParamState)
 evalC i@(CashInp address money) c@(CommitEther inpCon c1) pst o st 
-    | evalInput inpCon money && evalParam c pst st i && ((maxPeople pst) /= 0)= (c, outputP, updateState, pst)
-    | evalInput inpCon money && evalParam c pst st i && ((maxPeople pst) == 0) = (c1, outputP, updateState, pst)
+    | evalInput inpCon st money && evalParam c pst st i && ((maxPeople pst) /= 0)= (c, outputP, updateState, pst)
+    | evalInput inpCon st money && evalParam c pst st i && ((maxPeople pst) == 0) = (c1, outputP, updateState, pst)
     | (commitSize st + 1) == (maxPeople pst) = (c1, outputP, updateState, pst)
     | not (evalParam c pst st i) || (commitSize st == maxPeople pst) = (c1, outputF, st, pst)
     | otherwise = (c, outputF, st, pst)
@@ -145,7 +148,7 @@ evalC i c@(Send param c1) pst o st
         where
             payAmount = (etherBalance st)/(payeesLength payees)
             newBal = evalValue (-) st payAmount 
-            updateState = st {etherBalance = newBal,  withdrawls = Map.insert (withdrawlsSize st) (SendOut (flattenAddress payees) payAmount) wDraw}
+            updateState = st {etherBalance = newBal,  withdrawls = Map.insert (withdrawlsSize st) (SendOut (flatten payees) payAmount) wDraw}
             payees = evalSend param st i 
             wDraw = withdrawls st
 
@@ -170,6 +173,9 @@ evalC i c@(Until param c1) pst o st =
 evalC i@(SetOwner address) c@(Set (ContractOwner) c1) pst o st = 
     (c1, [OwnerSet address], st {owner = address} ,pst)
 
+evalC i@(SetBeneficary address) c@(Set (Beneficiary) c1) pst o st = 
+    (c1, [BeneficiarySet address], st {beneficiary = address} ,pst)
+
 evalC i@(WithdrawEther (Decision wal) (Amount amnt)) c@(Withdraw c1) pst o st 
     | evalParam c pst st i && (commitSize st) > 0  = (c1, outputP, updateState, pst)
     | otherwise = (c, outputF, st, pst)
@@ -189,10 +195,6 @@ evalC i c@(Constructor c1) pst o st = (c1, [outputCon], st, pst)
     where 
       outputCon = (Message ("Constructor created" ))
 
-evalC i c@(Set param c1) pst o st = (c1, [], st, pst)
-    where 
-      outputSet = (Message (""))
-
 evalC i c@(AddTo str c1) pst o st = (c1, [], st, pst)
 
 evalC i c@(End) pst o st = (End, [], st, pst)
@@ -207,14 +209,14 @@ run c@(Send address c1) inp@(Decision d) pst s = evalC inp c pst [] s
 run c@(Withdraw c1) inp@(Decision d) pst s = evalC inp c pst [] s
 run c inp pst s = evalC inp c pst [] s
 
-
---TODO implement higher
-evalInput :: InputCondition -> Ether -> Bool
-evalInput (Min m) inp = (inp > m )
-evalInput (Max m) inp = (inp < m )
-evalInput (Equal m) inp = (inp == m)
-evalInput (NoLimit) inp = True
-evalInput (Higher str) inp =True
+evalInput :: InputCondition -> ContractState -> Ether -> Bool
+evalInput (Min m) const inp = (inp >= m )
+evalInput (Max m) const inp = (inp <= m )
+evalInput (Equal m) const inp = (inp == m)
+evalInput (NoLimit) const inp = True
+evalInput (Higher str) const inp 
+    | (inp > (commitAtIndex(flatten(highestInMap (commits const)))const)) = True
+    | otherwise = False
 
 evalParam :: Contract -> ParamState -> ContractState -> Input -> Bool
 evalParam c pst const (CashInp address money)
@@ -246,7 +248,7 @@ evalSend :: SendCondition -> ContractState -> Input -> [Address]
 evalSend (Highest p) st (Decision d) = getAddress (findAtIndex (highestInMap (commits st)) st)
 evalSend (Winner All) st (Decision d) = getAddress (findAtIndex([d]) st)
 evalSend (Random All) st (Empty) = getAddress (findAtIndex([(sizeCommits st)]) st)
-evalSend (ToBeneficiary (AmountIn str)) st (Empty) = getAddress (findAtIndex([(sizeCommits st)]) st)
+evalSend (ToBeneficiary (AmountIn str)) st (Empty) = [beneficiary st]
 evalSend (Address All) st (Empty) = getAddress (findAtIndex([(sizeCommits st)]) st)
 evalSend _ st _ = ["No Address"]
 
@@ -264,8 +266,8 @@ intialDays :: Parameter
 intialDays = Days 0
 
 --------------
-flattenAddress :: [Address] -> Address
-flattenAddress [a] = a 
+flatten :: [a] -> a
+flatten [a] = a 
 
 withdrawlsSize :: ContractState -> Int
 withdrawlsSize s = ((Map.size (withdrawls s)) + 1)

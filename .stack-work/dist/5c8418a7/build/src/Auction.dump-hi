@@ -1,9 +1,9 @@
 
 ==================== FINAL INTERFACE ====================
-2019-03-31 18:44:51.8620261 UTC
+2019-04-02 22:38:56.9809451 UTC
 
 interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:Auction 8022
-  interface hash: 98b93d90e5b0e2bbdbcafcb4a2531c89
+  interface hash: c76bafa6c1bbd6d4eb795bb376b8ef6b
   ABI hash: 7f2b79921618545d196b90acc60ebf2c
   export-list hash: 2d23523b168327bb9e63db2342213c96
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
@@ -37,8 +37,8 @@ family instance modules: base-4.10.1.0:Control.Applicative
                          base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
                          base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
                          containers-0.5.10.2:Data.Set.Internal
-import  -/  Contract 6a6dd0dbefeb36c6654d5815abf98c95
-  exports: b6b4648aa44fcd1a15c39c94f9c09bc7
+import  -/  Contract 3adff78d8d624d3cc0276069af32a818
+  exports: 6627bdebaae646ad278a48bf11de3eed
   Address 274cce099d647331940d67e560707969
   All 7ed62f24e01111c319fcab1b5619f4c7
   AlreadyFinished f1e60aced5724c11770392685320875d

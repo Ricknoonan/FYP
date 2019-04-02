@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2019-03-31 22:46:13.0326035 UTC
+2019-04-02 22:44:40.5913598 UTC
 
 interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:Simulate 8022
-  interface hash: 50d62f3426d22df71001335ec86a027d
-  ABI hash: c189417d4276a34a2ee29aa626a71f5a
-  export-list hash: 59ad3d3aac96b61961602e6f1072fcd5
+  interface hash: ba43b33b6f3b9f51aab3f81f29921d4c
+  ABI hash: abf60e6668a276b72fa385bd0e96def5
+  export-list hash: f14883f128629940d4c0dac6b54bc48e
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 116d747c6d2286eaf4ade378327fec2c
   sig of: Nothing
@@ -14,7 +14,11 @@ interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:Simulate 8022
 exports:
   Simulate.contractMember
   Simulate.getCommitAction
+  Simulate.getCommitActionHelper
+  Simulate.getCommitOutput
+  Simulate.getSendOutput
   Simulate.getWithdrawAction
+  Simulate.getWithdrawActionHelper
   Simulate.loop
   Simulate.niceOutput
   Simulate.prettyPrint
@@ -40,50 +44,58 @@ family instance modules: base-4.10.1.0:Control.Applicative
                          base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
                          base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
                          containers-0.5.10.2:Data.Set.Internal
-import  -/  Contract e87f8a17e88bea02504bd22ffaaabd7d
-  exports: b6b4648aa44fcd1a15c39c94f9c09bc7
+import  -/  Contract 3adff78d8d624d3cc0276069af32a818
+  exports: 6627bdebaae646ad278a48bf11de3eed
   Action 573acde020f1111cee41e244e1529314
+  AddTo 16a4ab257d0ac0e23a16dc86c22a0ef6
   All 7ed62f24e01111c319fcab1b5619f4c7
   AlreadyJoined aeedf90b74334a296594eef2c59c7f5b
   Amount 341537ce0e00a778849a9c7693f44f64
-  CashInp 20e80fa84b0154cd1b410eb011262147
+  AmountIn 42b4879f0298b537d382f2840bdd4917
+  Beneficiary eb11561124df885f4b3461cdb529790f
+  CashInp 0bbd77e8f29361b92b3908de7f1d4f09
   CommitEther 5b77c1558142d855f930d294dab693e9
   Constructor 99fe41f1b0fc9b6aa31d1cbb0e06ed90
   Contract 6a273a1536fb3d1fc790e24ac714826d
   ContractOwner 4cc38e0c26ad3eff8ac162cc56cf12ea
-  ContractState fe9d7ac5a2a7939cae96ce2fc95cfd63
-  Decision 89a2789ac65b7080e76e1f5870345ef1
-  Empty a7e4f64bb76cec1625380b2190f605a3
+  ContractState d993594dcad27f3fe0cb1d7871ebbe0e
+  Decision 996599e3d4623ced631d6754e8ded36c
+  Empty 2a4ca97bf158ec44c34386498fc8b3f4
   End fb5e134afd8a0aae3eed01476f1becc6
   Equal 95e0a0066af32998c0cf43396d04c5f7
   Ether 0b21adb2a89b504e89e7a017ffaa2bf4
   Function 4e599cfb54a2849bddf328a3f736995e
   Higher 0f671eff55f2b25e820c5d4c414d96e6
+  Max c603297e7bdc865c0c8c6676020f4b66
+  Min ea48a0d8d0dee2400a7ff82ae76c9809
   NoLimit 8d8c332b294747195083f67458a45487
-  OP da3cc62e23b152f9fc31649c2de23c80
-  ParamState 09433aa7a3d98457bf49215fb7c5a334
+  OP 19caed1a49e6925229036d4da0f1ef3d
+  Output fa247b76781f0c901173b12215a6771f
+  ParamState 5038f5929ca2fe72716b18a20a8dd14a
   People 58fa935abece96f6a2aeac16f6845fe2
   Random 9d823bffe8ffeab5658ef82f7465f55a
   Send 28d2aafad88ccc1671895cb86529485e
   Set c1f42170922b3443ea424b5783f82bca
-  SetOwner bfde1885e4ff2f2456b6518e71b8e615
+  SetBeneficary cdbeb3f905e56f1e50ba8a83997343ca
+  SetOwner 9a9bc3449aa41aef9f5b3df0faa9c533
+  ToBeneficiary 04143c1d13559f0ebba25b6b1d0b087f
   Unless c573235331b9383f2ce8592f28846d00
   Until e79ecca91a56d0fec1147be4486db3c3
   When 790e695a1022b48ea3a3e121921a3368
   Winner 02c1e25e37e3f641368a838ec33573b7
   Withdraw 4f78ed566180045f6ae2f547ed29a830
-  WithdrawEther d32d0afd653c72d7f011abe4cadaadbe
-  commitSize 2291da802164fee4f1b2dc946ebdf097
-  commits fe9d7ac5a2a7939cae96ce2fc95cfd63
-  emptyCState 881085dc36f16f8c0471e0d4f4f227d2
-  emptyPState c19314117817e5a5df0c123bdcc6ef7c
-  etherBalance fe9d7ac5a2a7939cae96ce2fc95cfd63
-  findAtIndex 9ba3ee4d07f7d5002b3cf5a080378100
+  WithdrawEther 3dba3e0dbe9948feac071c43053d2476
+  commits d993594dcad27f3fe0cb1d7871ebbe0e
+  emptyCState e3e5ece2677bed7ac50c1cb811870ecf
+  emptyPState 0a16d5a2688e85c31df1e5fc074d30ba
+  etherBalance d993594dcad27f3fe0cb1d7871ebbe0e
+  findAtIndex d2b58392d2c862e22f194bb862693132
   getOneAddress 6200b2f415afbbab0c7798468cab7df5
-  owner fe9d7ac5a2a7939cae96ce2fc95cfd63
-  run 8b0b055561b79dfc63d39e02e9e4cf05
-  withdrawSize 9bcd8cc8c1ce0c8082730cb6b123c5b5
-  withdrawls fe9d7ac5a2a7939cae96ce2fc95cfd63
+  owner d993594dcad27f3fe0cb1d7871ebbe0e
+  run 5eb32a0026b1bb77bdb7b0cb3b362bf8
+  sizeCommits 4689edf0ad39b85249c536c7145fc54d
+  withdrawSize 0d9846020151632be4a9719a4e7d7e50
+  withdrawls d993594dcad27f3fe0cb1d7871ebbe0e
 import  -/  ContractClass c019de4150eee4fa1bd790841434c04b
   exports: f8618b225029ed238f0e2e77b83b442c
 import  -/  base-4.10.1.0:GHC.Base 8f949d675e49677c272f02ab7a85fe18
@@ -96,6 +108,16 @@ import  -/  containers-0.5.10.2:Data.Map 2fb7598042a709bea8ff3ef551374c87
 import  -/  containers-0.5.10.2:Data.Map.Internal 765cdf2fdf1dcff75ecb49b5edcb6b02
 import  -/  ghc-prim-0.5.1.1:GHC.Classes 64ad5910d03ab188ab9b4adef7487b1e
 import  -/  ghc-prim-0.5.1.1:GHC.Types b1fd0716441595db508c1a74387bf394
+10c75022bb2c848455f8192cc416c03a
+  $sfind1 ::
+    GHC.Types.Int -> Data.Map.Internal.Map GHC.Types.Int a -> a
+  {- Arity: 2, Strictness: <S(S),1*U(U)><S,1*U>, Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a
+                   (w :: GHC.Types.Int)
+                   (w1 :: Data.Map.Internal.Map GHC.Types.Int a) ->
+                 case w of ww { GHC.Types.I# ww1 ->
+                 Simulate.$wpoly_go13 @ a ww1 w1 }) -}
 c91da77c2c0c8810db443ecbd2b15e99
   $trModule :: GHC.Types.Module
   {- HasNoCafRefs, Strictness: m,
@@ -117,7 +139,7 @@ e7d1e1829fde28cad4ea9bd2f9d8311a
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("FYP-0.1.0.0-DB97z4OHGdmISridARSpDG"#) -}
-044689f40bab410cac98dec09d389da3
+50612d02402d684e4e69d65111b6d42b
   $wcontractMember ::
     GHC.Prim.Int#
     -> Contract.Contract
@@ -126,10 +148,11 @@ e7d1e1829fde28cad4ea9bd2f9d8311a
     -> Data.Map.Internal.Map GHC.Types.Int Contract.Action
     -> Contract.Ether
     -> Contract.Address
+    -> Contract.Address
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
-  {- Arity: 8,
-     Strictness: <S,U><L,U><L,U(U(U),U(U),U(U))><S,U><L,U><L,U(U)><L,U><S,U>,
+  {- Arity: 9,
+     Strictness: <S,U><L,U><L,U(U(U),U(U),U(U))><S,U><L,U><L,U(U)><L,U><L,U><S,U>,
      Inline: [0],
      Unfolding: (\ (ww :: GHC.Prim.Int#)
                    (w :: Contract.Contract)
@@ -138,6 +161,7 @@ e7d1e1829fde28cad4ea9bd2f9d8311a
                    (ww2 :: Data.Map.Internal.Map GHC.Types.Int Contract.Action)
                    (ww3 :: Contract.Ether)
                    (ww4 :: Contract.Address)
+                   (ww5 :: Contract.Address)
                    (w2 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case Simulate.$wpoly_go1 @ Contract.Action ww ww1 of wild {
                    GHC.Types.False
@@ -149,7 +173,7 @@ e7d1e1829fde28cad4ea9bd2f9d8311a
                       Simulate.contractMember5
                         w
                         w1
-                        (Contract.ContractState ww1 ww2 ww3 ww4)
+                        (Contract.ContractState ww1 ww2 ww3 ww4 ww5)
                         ipv }
                    GHC.Types.True
                    -> GHC.IO.Handle.Text.hPutStr2
@@ -165,25 +189,24 @@ e7d1e1829fde28cad4ea9bd2f9d8311a
                                       ww1
                                       ww2
                                       ww3
-                                      ww4) of ww5 { (#,#) ww6 ww7 ->
-                            case ww6 of wild1 {
+                                      ww4
+                                      ww5) of ww6 { (#,#) ww7 ww8 ->
+                            case ww7 of wild1 {
                               Contract.Commit p m
-                              -> case ww7 of wild2 {
+                              -> case ww8 of wild2 {
                                    [] -> GHC.Base.++ @ GHC.Types.Char p Simulate.contractMember2
                                    : ipv ipv1 -> Contract.getOneAddress1 }
                               Contract.SendOut ipv ipv1 -> Contract.getOneAddress1 } }))
                         GHC.Types.True
                         w2 }) -}
-bb73ac60f26f5c21a82cef1a186f4766
-  $wgetCommitAction ::
-    GHC.Prim.Int#
-    -> Contract.ContractState -> [[(GHC.Types.Int, Contract.Action)]]
-  {- Arity: 2, Strictness: <S,1*U><L,U(U,A,A,A)>, Inline: [0] -}
-52be137dc689c11936de939184cfaab8
-  $wgetWithdrawAction ::
-    GHC.Prim.Int#
-    -> Contract.ContractState -> [[(GHC.Types.Int, Contract.Action)]]
-  {- Arity: 2, Strictness: <S,1*U><L,U(A,U,A,A)>, Inline: [0] -}
+2a2883997db3d3d5e0c0dd91e9115d0a
+  $wgetCommitActionHelper ::
+    GHC.Prim.Int# -> Contract.ContractState -> [GHC.Types.Char]
+  {- Arity: 2, Strictness: <S,1*U><L,U(U,A,A,A,A)>, Inline: [0] -}
+5e0b8c36d0eb6dabbb386fd3b3e246cc
+  $wgetWithdrawActionHelper ::
+    GHC.Prim.Int# -> Contract.ContractState -> [GHC.Types.Char]
+  {- Arity: 2, Strictness: <S,1*U><L,U(A,U,A,A,A)>, Inline: [0] -}
 4d7703042440494dbbf85e5dd34382a5
   $wpoly_go1 ::
     GHC.Prim.Int#
@@ -193,7 +216,7 @@ bb73ac60f26f5c21a82cef1a186f4766
   $wpoly_go13 ::
     GHC.Prim.Int# -> Data.Map.Internal.Map GHC.Types.Int a -> a
   {- Arity: 2, Strictness: <S,U><S,1*U>, Inline: [0] -}
-e9ebf7564cac52e768e85e76c1abb113
+97db47c9d2cac17d0a679248e801c9fe
   contractMember ::
     GHC.Types.Int
     -> Contract.Contract
@@ -201,7 +224,7 @@ e9ebf7564cac52e768e85e76c1abb113
     -> Contract.ContractState
     -> GHC.Types.IO ()
   {- Arity: 5,
-     Strictness: <S(S),1*U(U)><L,U><L,U(U(U),U(U),U(U))><S(SLLL),1*U(U,U,U(U),U)><S,U>,
+     Strictness: <S(S),1*U(U)><L,U><L,U(U(U),U(U),U(U))><S(SLLLL),1*U(U,U,U(U),U,U)><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Simulate.contractMember1
                   `cast`
@@ -210,7 +233,7 @@ e9ebf7564cac52e768e85e76c1abb113
                  ->_R <Contract.ParamState>_R
                  ->_R <Contract.ContractState>_R
                  ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-4e03a1fbee1001a7b819ddeb3d271ff2
+f8aaae7622e89e18cd92c754c9af8aa9
   contractMember1 ::
     GHC.Types.Int
     -> Contract.Contract
@@ -219,7 +242,7 @@ e9ebf7564cac52e768e85e76c1abb113
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 5,
-     Strictness: <S(S),1*U(U)><L,U><L,U(U(U),U(U),U(U))><S(SLLL),1*U(U,U,U(U),U)><S,U>,
+     Strictness: <S(S),1*U(U)><L,U><L,U(U(U),U(U),U(U))><S(SLLLL),1*U(U,U,U(U),U,U)><S,U>,
      Inline: [0],
      Unfolding: InlineRule (5, True, False)
                 (\ (w :: GHC.Types.Int)
@@ -228,8 +251,8 @@ e9ebf7564cac52e768e85e76c1abb113
                    (w3 :: Contract.ContractState)
                    (w4 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case w of ww { GHC.Types.I# ww1 ->
-                 case w3 of ww2 { Contract.ContractState ww3 ww4 ww5 ww6 ->
-                 Simulate.$wcontractMember ww1 w1 w2 ww3 ww4 ww5 ww6 w4 } }) -}
+                 case w3 of ww2 { Contract.ContractState ww3 ww4 ww5 ww6 ww7 ->
+                 Simulate.$wcontractMember ww1 w1 w2 ww3 ww4 ww5 ww6 ww7 w4 } }) -}
 c4a0177e1a00db00d7384913ea72b18e
   contractMember2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
@@ -240,7 +263,7 @@ c4a0177e1a00db00d7384913ea72b18e
 a31d71a36949ad58e3861888a5769b87
   contractMember4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Wallet "#) -}
-255020869ffee7ce75bfa5766c677452
+87c28e6ffe16fadb653371d029804b4d
   contractMember5 ::
     Contract.Contract
     -> Contract.ParamState
@@ -248,7 +271,7 @@ a31d71a36949ad58e3861888a5769b87
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 4,
-     Strictness: <S,U><L,U(U(U),U(U),U(U))><L,U(U,U,U(U),U)><S,U> -}
+     Strictness: <S,U><L,U(U(U),U(U),U(U))><L,U(U,U,U(U),U,U)><S,U> -}
 53ed0321ef2ff0002f3e6ccf15970a3d
   contractMember6 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
@@ -256,32 +279,76 @@ a31d71a36949ad58e3861888a5769b87
 f5d1f48048d5c22915a765d87e633088
   contractMember7 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Wallet not a member of Contract"#) -}
-c699100e9f066129f11aea66500c7a13
+89a1bf370d7d77a32aff7b49b73cad58
   getCommitAction ::
     GHC.Types.Int
-    -> Contract.ContractState -> [[(GHC.Types.Int, Contract.Action)]]
-  {- Arity: 2, Strictness: <S(S),1*U(1*U)><L,U(U,A,A,A)>,
+    -> Contract.ContractState -> (GHC.Types.Int, Contract.Action)
+  {- Arity: 2, Strictness: <L,U(U)><L,1*U(1*U,A,A,A,A)>m,
+     Unfolding: InlineRule (2, True, False)
+                (\ (n :: GHC.Types.Int) (const :: Contract.ContractState) ->
+                 (n,
+                  case const of wild { Contract.ContractState ds1 ds2 ds3 ds4 ds5 ->
+                  Simulate.$sfind1 @ Contract.Action n ds1 })) -}
+c452a597ecf333c07dad13e559388855
+  getCommitActionHelper ::
+    GHC.Types.Int -> Contract.ContractState -> GHC.Base.String
+  {- Arity: 2, Strictness: <S(S),1*U(1*U)><L,U(U,A,A,A,A)>,
      Inline: [0],
      Unfolding: InlineRule (2, True, False)
                 (\ (w :: GHC.Types.Int) (w1 :: Contract.ContractState) ->
                  case w of ww { GHC.Types.I# ww1 ->
-                 Simulate.$wgetCommitAction ww1 w1 }) -}
-b98744fd5bc58441bf6ea0ff49330812
+                 Simulate.$wgetCommitActionHelper ww1 w1 }) -}
+ea19403b33273faa62862d66cdc21c6a
+  getCommitOutput :: Contract.ContractState -> GHC.Base.String
+  {- Arity: 1, Strictness: <S(SLLLL),1*U(U,A,A,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (const :: Contract.ContractState) ->
+                 case const of wild { Contract.ContractState ds ds1 ds2 ds3 ds4 ->
+                 case ds of wild1 {
+                   Data.Map.Internal.Bin dt ds5 ds6 ds7 ds8
+                   -> Simulate.getCommitActionHelper (GHC.Types.I# dt) wild
+                   Data.Map.Internal.Tip
+                   -> Simulate.getCommitActionHelper
+                        Contract.$fShowAction4
+                        wild } }) -}
+4fbe9f51ebfb0c252826118d41257033
+  getSendOutput :: Contract.ContractState -> GHC.Base.String
+  {- Arity: 1, Strictness: <S(LSLLL),1*U(A,U,A,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (const :: Contract.ContractState) ->
+                 case const of wild { Contract.ContractState ds ds1 ds2 ds3 ds4 ->
+                 case ds1 of wild1 {
+                   Data.Map.Internal.Bin dt ds5 ds6 ds7 ds8
+                   -> Simulate.getWithdrawActionHelper (GHC.Types.I# dt) wild
+                   Data.Map.Internal.Tip
+                   -> Simulate.getWithdrawActionHelper
+                        Contract.$fShowAction4
+                        wild } }) -}
+09aa7311fb7e10d41510fcf0edc70ef1
   getWithdrawAction ::
     GHC.Types.Int
-    -> Contract.ContractState -> [[(GHC.Types.Int, Contract.Action)]]
-  {- Arity: 2, Strictness: <S(S),1*U(1*U)><L,U(A,U,A,A)>,
+    -> Contract.ContractState -> (GHC.Types.Int, Contract.Action)
+  {- Arity: 2, Strictness: <L,U(U)><L,1*U(A,1*U,A,A,A)>m,
+     Unfolding: InlineRule (2, True, False)
+                (\ (n :: GHC.Types.Int) (const :: Contract.ContractState) ->
+                 (n,
+                  case const of wild { Contract.ContractState ds1 ds2 ds3 ds4 ds5 ->
+                  Simulate.$sfind1 @ Contract.Action n ds2 })) -}
+309a42cda51dde73e1fb8b5cba89dfd5
+  getWithdrawActionHelper ::
+    GHC.Types.Int -> Contract.ContractState -> GHC.Base.String
+  {- Arity: 2, Strictness: <S(S),1*U(1*U)><L,U(A,U,A,A,A)>,
      Inline: [0],
      Unfolding: InlineRule (2, True, False)
                 (\ (w :: GHC.Types.Int) (w1 :: Contract.ContractState) ->
                  case w of ww { GHC.Types.I# ww1 ->
-                 Simulate.$wgetWithdrawAction ww1 w1 }) -}
-d84ace9bb1b11206651f6ed7960cad27
+                 Simulate.$wgetWithdrawActionHelper ww1 w1 }) -}
+f97a01e6a0ecbb18eff8b03ee5558baf
   loop ::
     Contract.Contract
     -> Contract.ParamState -> Contract.ContractState -> GHC.Types.IO ()
   {- Arity: 4,
-     Strictness: <S,U><L,U(U(U),U(U),U(U))><L,U(U,U,U(U),U)><S,U>,
+     Strictness: <S,U><L,U(U(U),U(U),U(U))><L,U(U,U,U(U),U,U)><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Simulate.contractMember5
                   `cast`
@@ -289,55 +356,79 @@ d84ace9bb1b11206651f6ed7960cad27
                  ->_R <Contract.ParamState>_R
                  ->_R <Contract.ContractState>_R
                  ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-c8521bc8476f1e5d94779d1528f78067
-  niceOutput :: Contract.OP -> GHC.Base.String
+15411b52e0268b9da3af5c85450a834f
+  niceOutput :: Contract.OP -> Contract.Output
   {- Arity: 1, Strictness: <S,1*U>,
-     Unfolding: (\ (ds :: [Contract.Output]) ->
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: [Contract.Output]) ->
                  case ds of wild {
-                   [] -> Simulate.niceOutput1
+                   []
+                   -> Control.Exception.Base.patError
+                        @ 'GHC.Types.LiftedRep
+                        @ Contract.Output
+                        Simulate.niceOutput1
                    : x ds1
                    -> case ds1 of wild1 {
-                        [] -> Contract.$fShowOutput_$cshow x
-                        : ipv ipv1 -> Simulate.niceOutput1 } }) -}
-6027fa95b99caa4cce511aa538723bb4
-  niceOutput1 :: GHC.Base.String
-  {- Strictness: x -}
-ba48086d490d4ef2cd90407e5e651b68
+                        [] -> x
+                        : ipv ipv1
+                        -> Control.Exception.Base.patError
+                             @ 'GHC.Types.LiftedRep
+                             @ Contract.Output
+                             Simulate.niceOutput1 } }) -}
+4183c77d0da5c6d0af2980f96631800b
+  niceOutput1 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("src\\Simulate.hs:220:1-18|function niceOutput"#) -}
+a14492285f4ba0897acc3a0573bcb21f
   prettyPrint ::
     Contract.OP -> Contract.ContractState -> GHC.Types.IO ()
-  {- Arity: 3, Strictness: <L,1*U><L,U(U,U,1*U(U),1*U)><S,U>,
+  {- Arity: 3, Strictness: <L,1*U><L,U(U,U,1*U(U),1*U,A)><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Simulate.prettyPrint1
                   `cast`
                 (<Contract.OP>_R
                  ->_R <Contract.ContractState>_R
                  ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-97bb967af7d40e7d520a1108c4ca81c6
+a8b4b29afce50fe7e52301059d4ce323
   prettyPrint1 ::
     Contract.OP
     -> Contract.ContractState
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
-  {- Arity: 3, Strictness: <L,1*U><L,U(U,U,1*U(U),1*U)><S,U> -}
-c451de72a8f3fd29f8351c0153bac167
+  {- Arity: 3, Strictness: <L,1*U><L,U(U,U,1*U(U),1*U,A)><S,U> -}
+74d2fa1a1f7d9dcacbb3fd808b117939
   simulate :: Contract.Contract -> GHC.Types.IO ()
-  {- Arity: 2, Strictness: <L,U>,
+  {- Arity: 2, Strictness: <L,U><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Simulate.simulate1
                   `cast`
                 (<Contract.Contract>_R ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-c1e8585e73582e5464ede1cf9576d1fb
+0ff5c98e2f7ede3dad23cb3145f03ad6
   simulate1 ::
     Contract.Contract
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
-  {- Arity: 2, Strictness: <L,U>,
-     Unfolding: InlineRule (1, True, False)
-                (\ (c :: Contract.Contract) ->
+  {- Arity: 2, Strictness: <L,U><S,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (c :: Contract.Contract)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Simulate.simulate2
+                        GHC.Types.True
+                        s of ds1 { (#,#) ipv ipv1 ->
                  Simulate.contractMember5
                    c
                    Contract.emptyPState
-                   Contract.emptyCState) -}
+                   Contract.emptyCState
+                   ipv }) -}
+a16854199dbd56961241218cef807bec
+  simulate2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Simulate.simulate3) -}
+6c5f28f1d31a75061cc23e2488c77e3b
+  simulate3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Press any key to step through contract"#) -}
 vectorised variables:
 vectorised tycons:
 vectorised reused tycons:

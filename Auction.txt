@@ -1,7 +1,7 @@
 constructor = set timelimit set beneficiary 
 
-function placeBid = until timesup commitether higher highestBid addto bid 
+function "placeBid" = until timesup commitether higher "highestBid" addto "bid" 
 
-function endAuction = when timesup send beneficiary amountin highestBid unless alreadyfinished
+function "endAuction" = when timesup send beneficiary amountin "highestBid" unless alreadyfinished
 
-function withdraw = send address all from bid 
+function withdraw = "send" address all from "bid" 

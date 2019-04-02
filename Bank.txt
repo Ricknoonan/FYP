@@ -1,14 +1,5 @@
-constructor = set contractowner
+constructor = set contractowner set beneficiary 
 
-function "deposit" = commitether nolimit addto "balance" 
+function "deposit" = Until people 2 Commitether min 5 Addto "balance" 
 
-function "cashOut" = withdraw
-
-
-function endAuction = when timesup send beneficiary amountin highestBid unless alreadyfinished
-
-constructor = set timelimit set beneficiary 
-
-function withdraw = send address all from bid 
-
-commitether higher highestBid addto bid 
+function "cashOut" = Send beneficiary amountin balance
