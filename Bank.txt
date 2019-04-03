@@ -1,5 +1,0 @@
-constructor = set contractowner set beneficiary 
-
-function "deposit" = Until people 2 Commitether min 5 Addto "balance" 
-
-function "cashOut" = Send beneficiary amountin balance

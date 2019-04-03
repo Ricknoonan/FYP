@@ -19,9 +19,10 @@ main :: IO ()
 main = do
     putStrLn "What contract do you want to load? "
     fileName <- getLine
-    handle <- openFile (fileName ++ ".txt") ReadMode
+    handle <- openFile ("examples\\" ++ fileName ++ ".txt") ReadMode
     contents <- hGetContents handle
-    let contractList = map (map toLower) (words contents)
+    let cleanedContents = removePunc contents
+    let contractList = map (map toLower) (toWords cleanedContents)
     let contractType = (readDataTypes contractList)
     putStrLn (show contractList)
     putStrLn (show contractType)
@@ -94,4 +95,10 @@ checkLogic s
         main
     | otherwise = do 
         putStrLn ("Contract Logically Correct")
+
+removePunc :: String -> String
+removePunc xs = [ x | x <- xs, not (x `elem` "(),.?!-:;\"\'") ]
+
+toWords :: String -> [String]
+toWords s = filter (\w -> w `notElem` ["they", "are", "an", "can", "there", "the","for"]) (words s)
         

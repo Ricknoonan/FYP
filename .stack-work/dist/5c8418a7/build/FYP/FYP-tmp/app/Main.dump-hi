@@ -1,9 +1,9 @@
 
 ==================== FINAL INTERFACE ====================
-2019-04-02 22:44:43.9646833 UTC
+2019-04-03 21:28:44.7639586 UTC
 
 interface main:Main 8022
-  interface hash: 184578532a8662bbd526b900878c1f4c
+  interface hash: ef60e7d8d0a7c42c56e3fe893f68860a
   ABI hash: d31cd0ec65f1e272b6152421432e3566
   export-list hash: 0b95850ab7d5e80d2b9659e574a97b00
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
@@ -34,15 +34,16 @@ family instance modules: base-4.10.1.0:Control.Applicative
                          base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
                          base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
                          containers-0.5.10.2:Data.Set.Internal
-import  -/  FYP-0.1.0.0:Bank 9c2b10f68989d28f82c74b6aa4132129
-import  -/  FYP-0.1.0.0:Contract 3adff78d8d624d3cc0276069af32a818
-import  -/  FYP-0.1.0.0:ContractClass c019de4150eee4fa1bd790841434c04b
-import  -/  FYP-0.1.0.0:Lottery 4ade900613a2ea49e9f624c692de4cbc
-import  -/  FYP-0.1.0.0:Simulate abf60e6668a276b72fa385bd0e96def5
-import  -/  FYP-0.1.0.0:ToContract 0fa4392bcc6a1cad60341aa3cf9f65d6
-import  -/  FYP-0.1.0.0:ToSolidity 37e0211be01bae37793f3309f93b5ade
+import  -/  FYP-0.1.0.0:Bank 6d4a13ff71d5e3685a522b64c6d4f4ee
+import  -/  FYP-0.1.0.0:Contract 825040171bf0f5fba9e4be553cd25cfc
+import  -/  FYP-0.1.0.0:ContractClass 05cba93360fc1b4e99f4dda6413fd294
+import  -/  FYP-0.1.0.0:Lottery cd688746840c21c8ad1da1cb77c5bfff
+import  -/  FYP-0.1.0.0:Simulate 3b6fcf0ac75ef8c6d0723b537c0d8f1e
+import  -/  FYP-0.1.0.0:ToContract d0e999aa97ba452fb5c2dec3b425232a
+import  -/  FYP-0.1.0.0:ToSolidity dd2136a8b752811c29ba490670ae19ee
 import  -/  base-4.10.1.0:Control.Exception 10a93951a12b353c5e2f1a6633fdc96a
 import  -/  base-4.10.1.0:Data.Char 9dba16913a6ef0862b65389e7f361a31
+import  -/  base-4.10.1.0:Data.Foldable 4349255461f1285ad885cd2301205c36
 import  -/  base-4.10.1.0:Data.List e5312e282ad78d8152090e079f862b53
 import  -/  base-4.10.1.0:Data.OldList fdea655c7bec488a3994df222c677ab7
 import  -/  base-4.10.1.0:GHC.Base 8f949d675e49677c272f02ab7a85fe18
@@ -50,6 +51,7 @@ import  -/  base-4.10.1.0:GHC.IO.Handle 391ceb6d91f1abc8070b011d0825f2f9
 import  -/  base-4.10.1.0:GHC.IO.Handle.FD e37be95060115cf3912d557210ba8488
 import  -/  base-4.10.1.0:GHC.IO.Handle.Text b2f5ed91c7694db103b50674fb2ca757
 import  -/  base-4.10.1.0:GHC.IO.IOMode 6e3f8b9a5ffe7a8ffe4aa3ebb54ea96b
+import  -/  base-4.10.1.0:GHC.List 1bb0adf79553530dc898796596e53188
 import  -/  base-4.10.1.0:GHC.Show 927ef590f679632bf94869e8018e5b48
 import  -/  base-4.10.1.0:GHC.Unicode 7cf9b8b35309e220f8e4073dcd6dbd74
 import  -/  base-4.10.1.0:Prelude a93a9400cc0c816c2ee5f39399baa7a0

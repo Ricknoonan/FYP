@@ -5,15 +5,21 @@ import ContractClass
 import Prelude hiding (until)
 
 bettingContract :: Contract
-bettingContract 
-	      = until (Date (2018,12,13)) 
-	            (cashIn 20 1 
-	                (cashIn 30 2 
-	                    (time (Date (2018,12,14))
-	                        (pay 1 2 40 End)	                        
-	                    End)
-	                End)                           	
-	            End)
-	        End
+bettingContract = 
+    (constructor(initiate (finalize)))
 
-c1 = evalAll(bettingContract)
+join :: Contract
+join = 
+    (function "join" (until (People 2) (cashIn (Equal 5) (addTo (Person) "bet" End)))) 
+   
+finalize :: Contract
+finalize = 
+    (function "finalize" (when (Amount 10) (send (Person All) (join))))
+
+--(constructor (initiate (funtion "finalize" (when (Amount 10) (send (Winner All) (funtion "join" (until (People 2) (cashIn (Equal 5) End ))))))))
+
+
+
+
+
+

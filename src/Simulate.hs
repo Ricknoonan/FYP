@@ -62,7 +62,7 @@ loop c pst st = do
             putStrLn ("Contract State after CommitEther: ")
             prettyPrint no ns
             loop nc nco ns 
-        (CommitEther (Higher str) c1) -> do
+        (CommitEther (HigherThan str) c1) -> do
             wait <- getLine
             putStrLn "Simulating CommitEther > "   
             putStrLn "What is your address? (Provide any string) > "
@@ -83,6 +83,18 @@ loop c pst st = do
             let dec = (read address :: Int)
             contractMember dec c pst st
             let (nc, no, ns, nco) = run c (Decision dec) pst st 
+            putStrLn ("Contract State after Send")
+            prettyPrint no ns
+            loop nc nco ns
+
+        (Send (Address All) c1) -> do
+            wait <- getLine
+            putStrLn "Simulating Send > "
+            putStrLn "Choose Commit> "
+            address <- getLine
+            let dec = (read address :: Int)
+            contractMember dec c pst st
+            let (nc, no, ns, nco) = run c (WithdrawEther (Decision dec) (Amount 0)) pst st 
             putStrLn ("Contract State after Send")
             prettyPrint no ns
             loop nc nco ns
@@ -134,10 +146,26 @@ loop c pst st = do
             putStrLn ("Contract State after Set Beneficiary: ")
             prettyPrint no ns
             loop nc nco ns
+        (Set (TimeLimit) c1) -> do
+            wait <- getLine
+            putStrLn "Simulating Set Timelimit >"
+            putStrLn "What is the contract Timelimit (Provide time in days) > "
+            days <- getLine
+            let limit = (read days :: Int)
+            let (nc, no, ns, nco) = run c (SetTimeLimit limit) pst st
+            putStrLn ("Contract State after Set Timelimit: ")
+            prettyPrint no ns
+            loop nc nco ns
         (Until (People p) c1) -> do
             wait <- getLine
             putStrLn "Simulating Until >"
             putStrLn ("Function can be called until people = " ++ show p)
+            let (nc, no, ns, nco) = run c (Empty) pst st
+            loop nc nco ns
+        (Until (TimesUp) c1) -> do
+            wait <- getLine
+            putStrLn "Simulating Until >"
+            putStrLn ("Function can be called until time is up")
             let (nc, no, ns, nco) = run c (Empty) pst st
             loop nc nco ns
         (Unless (AlreadyJoined) c1) -> do 
@@ -150,6 +178,12 @@ loop c pst st = do
             wait <- getLine
             putStrLn "Simulating When >"
             putStrLn ("When there are " ++ show p ++ "people the next action can happen")
+            let (nc, no, ns, nco) = run c (Empty) pst st
+            loop nc nco ns
+        (When (TimesUp) c1) -> do 
+            wait <- getLine
+            putStrLn "Simulating When >"
+            putStrLn ("When time is up, the next action can happen")
             let (nc, no, ns, nco) = run c (Empty) pst st
             loop nc nco ns
         (Function str c1) -> do
@@ -170,7 +204,7 @@ loop c pst st = do
             let (nc, no, ns, nco) = run c (Empty) pst st
             loop nc nco ns
 
-        (End) -> putStrLn ("Contract finished")
+        (End) -> putStrLn ("Contract simulation finished")
 
         c -> do 
             let (nc, no, ns, nco) = run c (Empty) pst st 

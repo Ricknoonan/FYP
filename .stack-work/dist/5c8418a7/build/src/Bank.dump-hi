@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2019-04-02 22:38:56.5124237 UTC
+2019-04-03 19:01:42.906992 UTC
 
 interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:Bank 8022
-  interface hash: a0904e7cf514c826b350e143dd28f8b5
-  ABI hash: 9c2b10f68989d28f82c74b6aa4132129
+  interface hash: 0f31403beebc662dd3625aab9511ef90
+  ABI hash: 6d4a13ff71d5e3685a522b64c6d4f4ee
   export-list hash: 2bb9ce32a13b07ac4ebca95c8d8fe2c3
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 116d747c6d2286eaf4ade378327fec2c
@@ -36,20 +36,20 @@ family instance modules: base-4.10.1.0:Control.Applicative
                          base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
                          base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
                          containers-0.5.10.2:Data.Set.Internal
-import  -/  Contract 3adff78d8d624d3cc0276069af32a818
-  exports: 6627bdebaae646ad278a48bf11de3eed
-  Contract 6a273a1536fb3d1fc790e24ac714826d
+import  -/  Contract aaab57092ce6d0462b266ee87887b189
+  exports: 18280b7c07d72ea56b802b842c8c508a
+  Contract 287e4fefef54359a2ef6640bd806c459
   ContractOwner 4cc38e0c26ad3eff8ac162cc56cf12ea
-  End fb5e134afd8a0aae3eed01476f1becc6
-  NoLimit 8d8c332b294747195083f67458a45487
-import  -/  ContractClass c019de4150eee4fa1bd790841434c04b
+  End 0719f5aa24d0869f683a0681870a0300
+  NoLimit 12be2f3887c1a4bc4e620de686b37f4f
+import  -/  ContractClass 05cba93360fc1b4e99f4dda6413fd294
   exports: f8618b225029ed238f0e2e77b83b442c
-  addTo 187273fd0ca2a2dee68fffcdea54624b
-  commitEther cf6afc8ca078b0feb82e9156ab4db610
-  constructor 28d3459dc94b6e90db0e02c249bd4df4
-  function eadd38a47e039e87bf903e6709f5b4f7
-  set fd12ee1189eace91e8702c09686b380d
-  withdraw eff0e4adddef5a46548448a9e3a50d60
+  addTo 98821ddb27d569efc156c299e202252e
+  commitEther b13c109c1640abb065f5fe09ea527260
+  constructor 383de2ac1e04f79b6e821e759c9d5acf
+  function 698ba23e57da561885c1d1d5e28cc3d2
+  set 6b3b8c82feb082eef4e645d11a1266f6
+  withdraw e3e2b9f652565cd2c723aa115f8ca80c
 import  -/  base-4.10.1.0:Prelude a93a9400cc0c816c2ee5f39399baa7a0
 66ff3d403d584062975c96147346b5ff
   $trModule :: GHC.Types.Module
@@ -70,25 +70,25 @@ fb9b9a7ad8decdfa99060aa0309cf5c2
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("FYP-0.1.0.0-DB97z4OHGdmISridARSpDG"#) -}
-d72849782b05eb983435b85135361b8e
+7e9b1c61f4c74d1b276160fe04cc5b4f
   bank :: Contract.Contract
   {- Strictness: m14, Unfolding: (Contract.Constructor Bank.bank1) -}
-6e79bf07e1ebbe7b228148245b4b38b8
+53b8ade862828afd13cfb23962701f45
   bank1 :: Contract.Contract
   {- Strictness: m13,
      Unfolding: (Contract.Set Contract.ContractOwner Bank.deposit) -}
-3b337a4ea7f056778f9ad5422c3d602b
+24c8a0cca7c69092d749458f64140cb7
   cashOut :: Contract.Contract
   {- Unfolding: (case GHC.Base.eqString
                         Bank.cashOut_s
                         (GHC.Types.[] @ GHC.Types.Char) of wild {
                    GHC.Types.False -> Bank.cashOut1
                    GHC.Types.True -> ContractClass.function1 }) -}
-19b55ef90b851102f140f97cdb0b390b
+673c807a6a1410b627fbeb4510803e96
   cashOut1 :: Contract.Contract
   {- Strictness: m11,
      Unfolding: (Contract.Function Bank.cashOut_s Bank.cashOut2) -}
-0f48081ff8ce282f162ccc908ac8d448
+51a4a483512869255de2299ff82e8e34
   cashOut2 :: Contract.Contract
   {- HasNoCafRefs, Strictness: m9,
      Unfolding: (Contract.Withdraw Contract.End) -}
@@ -98,22 +98,22 @@ d72849782b05eb983435b85135361b8e
 29a72009431c4c1e322f1a701fee3f79
   cashOut_s :: GHC.Base.String
   {- Unfolding: (GHC.CString.unpackCString# Bank.cashOut3) -}
-f1c49c4913993bcdbd7cb6ca23c6e9fd
+dfb1087665f718e52d7201c1c8b131c2
   deposit :: Contract.Contract
   {- Unfolding: (case GHC.Base.eqString
                         Bank.deposit_s
                         (GHC.Types.[] @ GHC.Types.Char) of wild {
                    GHC.Types.False -> Bank.deposit1
                    GHC.Types.True -> ContractClass.function1 }) -}
-3694209b0dccd4619ad3b5578cdc5000
+a1189ffbb96c2204213eb9801c1c67f8
   deposit1 :: Contract.Contract
   {- Strictness: m11,
      Unfolding: (Contract.Function Bank.deposit_s Bank.deposit2) -}
-ba62f503696ca4efd1c4443d79705a16
+4b4659229a0bfe024d189c7b54cec010
   deposit2 :: Contract.Contract
   {- Strictness: m6,
      Unfolding: (Contract.CommitEther Contract.NoLimit Bank.deposit3) -}
-7878435e81a3791e11be992553f9006b
+54a294f23ef9fa5f7b6079a37ad0174b
   deposit3 :: Contract.Contract
   {- Strictness: m15,
      Unfolding: (Contract.AddTo Bank.deposit4 Bank.cashOut) -}

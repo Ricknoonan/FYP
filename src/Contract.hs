@@ -61,7 +61,7 @@ data Contract = End |
 data InputCondition = Min Ether |
                       Max Ether |
                       Equal Ether |
-                      Higher String | 
+                      HigherThan String | 
                       Lower String |
                       NoLimit
             deriving (Show, Eq,Read)
@@ -106,6 +106,7 @@ data Output = Null |
               SendSuccess Action |
               OwnerSet Address |
               BeneficiarySet Address |
+              TimeLimitSet Int |
               WithdrawPass [Action] |
               WithdrawFail [Action] |
               Message String 
@@ -119,6 +120,7 @@ data Input = CashInp Address Ether |
              Decision Int |
              SetOwner Address |
              SetBeneficary Address|
+             SetTimeLimit Int |
              WithdrawEther Input Parameter |
              Empty
         deriving (Show, Eq, Ord,Read)
@@ -141,6 +143,17 @@ evalC i c@(When param c1) pst o st = (c1, [], st, pst)
     where 
         output = (Message ("When " ++ (show param) ++ "is true, the following actions can happen"))
 
+evalC i@(WithdrawEther (Decision wal) (Amount amnt)) c@(Send (Address All) c1) pst o st
+    | evalParam c pst st i && (commitSize st) > 0  = (c1, outputP, updateState, pst)
+    | otherwise = (c, outputF, st, pst)
+        where 
+          wDraw = withdrawls st
+          address = getOneAddress (findAtIndex [wal] st )
+          refund = commitAtIndex (wal) st
+          outputP = [WithdrawPass [SendOut address amnt]] 
+          outputF = [WithdrawFail [SendOut address amnt]]
+          currentBal = etherBalance st
+          updateState = st {etherBalance = currentBal - refund, withdrawls = Map.insert (withdrawlsSize st) (SendOut address refund) wDraw}
 
 evalC i c@(Send param c1) pst o st 
     | length payees > 0 = (c1, (loopPayees payees payAmount), updateState, pst)
@@ -175,6 +188,9 @@ evalC i@(SetOwner address) c@(Set (ContractOwner) c1) pst o st =
 
 evalC i@(SetBeneficary address) c@(Set (Beneficiary) c1) pst o st = 
     (c1, [BeneficiarySet address], st {beneficiary = address} ,pst)
+
+evalC i@(SetTimeLimit limit) c@(Set(TimeLimit) c1) pst o st = 
+    (c1, [TimeLimitSet limit], st, pst {duration = limit})
 
 evalC i@(WithdrawEther (Decision wal) (Amount amnt)) c@(Withdraw c1) pst o st 
     | evalParam c pst st i && (commitSize st) > 0  = (c1, outputP, updateState, pst)
@@ -214,20 +230,18 @@ evalInput (Min m) const inp = (inp >= m )
 evalInput (Max m) const inp = (inp <= m )
 evalInput (Equal m) const inp = (inp == m)
 evalInput (NoLimit) const inp = True
-evalInput (Higher str) const inp 
+evalInput (HigherThan str) const inp 
+    | ((sizeCommits const) == 0) = True
     | (inp > (commitAtIndex(flatten(highestInMap (commits const)))const)) = True
     | otherwise = False
 
 evalParam :: Contract -> ParamState -> ContractState -> Input -> Bool
 evalParam c pst const (CashInp address money)
-    | (duration pst) /= 0 = at (Days (duration pst))
     | (amountSize pst) /= 0 = (etherBalance const + money) <= amountSize pst 
     | (maxPeople pst) /= 0 = ((commitSize const + 1) < maxPeople pst)
     | otherwise = True
 
-evalParam (Send param c1) pst const (Decision dec)
-    | (duration pst) /= 0 = at (Days (duration pst))
-    | otherwise = True 
+evalParam (Send param c1) pst const i = True 
 
 evalParam (When para c1) pst const i = 
     case para of 

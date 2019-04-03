@@ -1,0 +1,3 @@
+function "join" = Until there are People 2, they can CommitEther Equal 1, Unless they are AlreadyJoined
+
+function "selectwinner" = Send Random All 

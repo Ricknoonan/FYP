@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2019-04-02 22:39:01.2826592 UTC
+2019-04-03 22:10:45.0865224 UTC
 
 interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:ToSolidity 8022
-  interface hash: 38c2c6dd1f83d6be103594f39786c91c
-  ABI hash: 37e0211be01bae37793f3309f93b5ade
-  export-list hash: 659cba79845dfeab042bd727a60658b7
+  interface hash: 77ee9124836228bacc49277966d35786
+  ABI hash: dd2136a8b752811c29ba490670ae19ee
+  export-list hash: b2eaa5f39f173037512a6052a8a536c5
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 116d747c6d2286eaf4ade378327fec2c
   sig of: Nothing
@@ -36,7 +36,7 @@ exports:
   ToSolidity.toFile
   ToSolidity.toString
   ToSolidity.SolTypes{ToSolidity.Con ToSolidity.Expr ToSolidity.Fun ToSolidity.FunVar ToSolidity.IfExpr ToSolidity.PayExpr ToSolidity.RequireExpr ToSolidity.ReturnExpr ToSolidity.ReturnVar ToSolidity.StVar}
-  ToSolidity.StateTypes{ToSolidity.Bool ToSolidity.Count ToSolidity.List ToSolidity.Mapping ToSolidity.OtherAddress ToSolidity.OwnerAddress ToSolidity.Time ToSolidity.Unit}
+  ToSolidity.StateTypes{ToSolidity.Bool ToSolidity.Count ToSolidity.HighestAddress ToSolidity.HighestUnit ToSolidity.List ToSolidity.Mapping ToSolidity.OtherAddress ToSolidity.OwnerAddress ToSolidity.Time ToSolidity.Unit}
 module dependencies: Auction Bank Contract ContractClass Lottery
 package dependencies: Win32-2.5.4.1 array-0.5.2.0 base-4.10.1.0
                       containers-0.5.10.2 deepseq-1.4.3.0 ghc-prim-0.5.1.1
@@ -58,53 +58,53 @@ family instance modules: base-4.10.1.0:Control.Applicative
                          base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
                          base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
                          containers-0.5.10.2:Data.Set.Internal
-import  -/  Auction 7f2b79921618545d196b90acc60ebf2c
+import  -/  Auction b7fe92bc0d415f25213514d425c4be09
   exports: 2d23523b168327bb9e63db2342213c96
-  auction 12d2a0c3848daca71c1a2bc9192d6ae3
-import  -/  Bank 9c2b10f68989d28f82c74b6aa4132129
+  auction 99b0590672896b917d5aae5a901d60cd
+import  -/  Bank 6d4a13ff71d5e3685a522b64c6d4f4ee
   exports: 2bb9ce32a13b07ac4ebca95c8d8fe2c3
-import  -/  Contract 3adff78d8d624d3cc0276069af32a818
-  exports: 6627bdebaae646ad278a48bf11de3eed
-  AddTo 16a4ab257d0ac0e23a16dc86c22a0ef6
+import  -/  Contract 825040171bf0f5fba9e4be553cd25cfc
+  exports: 18280b7c07d72ea56b802b842c8c508a
+  AddTo f8a6eb9a21f4ff519be304dfb9e616ed
   Address 274cce099d647331940d67e560707969
   All 7ed62f24e01111c319fcab1b5619f4c7
-  Allow 8df762a3b86b8d5ae8193f2f50e6d0a9
+  Allow 4bcf998b5616a6244a5da682482ecb80
   AlreadyFinished f1e60aced5724c11770392685320875d
   AlreadyJoined aeedf90b74334a296594eef2c59c7f5b
   Amount 341537ce0e00a778849a9c7693f44f64
   AmountIn 42b4879f0298b537d382f2840bdd4917
   Beneficiary eb11561124df885f4b3461cdb529790f
-  CommitEther 5b77c1558142d855f930d294dab693e9
-  Constructor 99fe41f1b0fc9b6aa31d1cbb0e06ed90
-  Contract 6a273a1536fb3d1fc790e24ac714826d
+  CommitEther 0d03bba4243efc9d4d9f7455424356ba
+  Constructor a194b2183d57d3e500d8bc5b6ffdb82f
+  Contract 287e4fefef54359a2ef6640bd806c459
   ContractOwner 4cc38e0c26ad3eff8ac162cc56cf12ea
-  End fb5e134afd8a0aae3eed01476f1becc6
-  Equal 95e0a0066af32998c0cf43396d04c5f7
+  End 0719f5aa24d0869f683a0681870a0300
+  Equal b97b2f5d6d2244eeef6c14a019ad4be1
   Ether 0b21adb2a89b504e89e7a017ffaa2bf4
-  From 58b042125e3e48e8481018dc3bef4902
-  Function 4e599cfb54a2849bddf328a3f736995e
-  Higher 0f671eff55f2b25e820c5d4c414d96e6
-  Max c603297e7bdc865c0c8c6676020f4b66
-  Min ea48a0d8d0dee2400a7ff82ae76c9809
-  NoLimit 8d8c332b294747195083f67458a45487
+  From e4e07f0c078e5eeabd4f8d478315871d
+  Function d013115f82f58820e9684353a130163f
+  HigherThan d8b884c742acc3f50a2190305d6c17f4
+  Max 5ba1e7c072cdead3f63ecbb4e2ff59d6
+  Min 5c8a02d84ec93844fd58f78cc2be20b2
+  NoLimit 12be2f3887c1a4bc4e620de686b37f4f
   NotOwner 4fb714e045475aa5e7004e6908b46008
   OnlyOwner b5f21beda96b70866421a37ed76ed402
   People 58fa935abece96f6a2aeac16f6845fe2
   Random 9d823bffe8ffeab5658ef82f7465f55a
-  Send 28d2aafad88ccc1671895cb86529485e
-  Set c1f42170922b3443ea424b5783f82bca
+  Send 5c21d0d64f6594af25a398081624747c
+  Set 517a19c5752254154d838f984f7e575c
   TimeLimit 026d60b25bf41af7b4a95e86076d6c0f
   TimesUp 599c001e496166b967040765c4c7fc8f
   ToBeneficiary 04143c1d13559f0ebba25b6b1d0b087f
   ToOwner 6311757d6519f2898a047f11d3f937d5
-  Unless c573235331b9383f2ce8592f28846d00
-  Until e79ecca91a56d0fec1147be4486db3c3
-  When 790e695a1022b48ea3a3e121921a3368
+  Unless 416f1226644b4b57a375517a044c6355
+  Until 20a91bca68b0897f6bcf9ca312769a25
+  When fa475a06038622bbaa39698ae3663c79
   Winner 02c1e25e37e3f641368a838ec33573b7
-  Withdraw 4f78ed566180045f6ae2f547ed29a830
-import  -/  ContractClass c019de4150eee4fa1bd790841434c04b
+  Withdraw 84bb4f90eebe36456f1bed17322c50a5
+import  -/  ContractClass 05cba93360fc1b4e99f4dda6413fd294
   exports: f8618b225029ed238f0e2e77b83b442c
-import  -/  Lottery 4ade900613a2ea49e9f624c692de4cbc
+import  -/  Lottery cd688746840c21c8ad1da1cb77c5bfff
   exports: 4105ffcb240e5efe3e2d010ef884dd56
 import  -/  base-4.10.1.0:GHC.Base 8f949d675e49677c272f02ab7a85fe18
 import  -/  base-4.10.1.0:GHC.Num bee60808f8127e4cda82dd422aa1c6c0
@@ -150,7 +150,7 @@ import  -/  ghc-prim-0.5.1.1:GHC.Types b1fd0716441595db508c1a74387bf394
   $fShowSolTypes_$cshowsPrec ::
     GHC.Types.Int -> ToSolidity.SolTypes -> GHC.Show.ShowS
   {- Arity: 3, Strictness: <L,1*U(U)><S,1*U><L,U> -}
-1437c4a40e4dda7c2bdea842f665361b
+56a06e6aee2a8b57796f489a1b87bb6c
   $fShowStateTypes :: GHC.Show.Show ToSolidity.StateTypes
   DFunId
   {- Strictness: m, Inline: CONLIKE,
@@ -159,13 +159,13 @@ import  -/  ghc-prim-0.5.1.1:GHC.Types b1fd0716441595db508c1a74387bf394
                   ToSolidity.$fShowStateTypes_$cshowsPrec
                   ToSolidity.$fShowStateTypes_$cshow
                   ToSolidity.$fShowStateTypes_$cshowList -}
-1437c4a40e4dda7c2bdea842f665361b
+56a06e6aee2a8b57796f489a1b87bb6c
   $fShowStateTypes1 :: ToSolidity.StateTypes -> GHC.Show.ShowS
   {- Arity: 2, Strictness: <S,1*U><L,U>,
      Unfolding: (\ (w :: ToSolidity.StateTypes)
                    (w1 :: GHC.Base.String) ->
                  ToSolidity.$w$cshowsPrec 0# w w1) -}
-1437c4a40e4dda7c2bdea842f665361b
+56a06e6aee2a8b57796f489a1b87bb6c
   $fShowStateTypes_$cshow :: ToSolidity.StateTypes -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: InlineRule (1, True, False)
@@ -174,14 +174,14 @@ import  -/  ghc-prim-0.5.1.1:GHC.Types b1fd0716441595db508c1a74387bf394
                    ToSolidity.$fShowSolTypes2
                    x
                    (GHC.Types.[] @ GHC.Types.Char)) -}
-1437c4a40e4dda7c2bdea842f665361b
+56a06e6aee2a8b57796f489a1b87bb6c
   $fShowStateTypes_$cshowList ::
     [ToSolidity.StateTypes] -> GHC.Show.ShowS
   {- Arity: 2,
      Unfolding: (GHC.Show.showList__
                    @ ToSolidity.StateTypes
                    ToSolidity.$fShowStateTypes1) -}
-1437c4a40e4dda7c2bdea842f665361b
+56a06e6aee2a8b57796f489a1b87bb6c
   $fShowStateTypes_$cshowsPrec ::
     GHC.Types.Int -> ToSolidity.StateTypes -> GHC.Show.ShowS
   {- Arity: 3, Strictness: <S(S),1*U(U)><S,1*U><L,U>, Inline: [0],
@@ -302,6 +302,40 @@ c8dc3ec6ce96716b75ac2bf3f8ddbada
 da242e50a428770b4e5eeae6768a0c86
   $tc'FunVar2 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("'FunVar"#) -}
+e2fe55a3a0173ae299e143a37afdefe6
+  $tc'HighestAddress :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   13920009736844556052##
+                   17499469448220572452##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'HighestAddress1
+                   0#
+                   ToSolidity.$tc'Bool1) -}
+ecda197f938a0274490f821f7ca94e11
+  $tc'HighestAddress1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'HighestAddress2) -}
+6c8284b9689f3a70e87923e06483dbe7
+  $tc'HighestAddress2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'HighestAddress"#) -}
+d961e09f8a529065c60bfb7c8a9c3161
+  $tc'HighestUnit :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   650495386964027235##
+                   9555125537407901182##
+                   ToSolidity.$trModule
+                   ToSolidity.$tc'HighestUnit1
+                   0#
+                   ToSolidity.$tc'Bool1) -}
+c2454defeae05edd8944f1bdc7c2bfd6
+  $tc'HighestUnit1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS ToSolidity.$tc'HighestUnit2) -}
+1852f24377d69e5f1040c4e51f44fc22
+  $tc'HighestUnit2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'HighestUnit"#) -}
 be60c671b667e4ff4d3a61e70d63f507
   $tc'IfExpr :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
@@ -561,7 +595,7 @@ f3d4410ecfd848f3a837881ffed44522
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("FYP-0.1.0.0-DB97z4OHGdmISridARSpDG"#) -}
-1437c4a40e4dda7c2bdea842f665361b
+56a06e6aee2a8b57796f489a1b87bb6c
   $w$cshowsPrec ::
     GHC.Prim.Int#
     -> ToSolidity.StateTypes -> GHC.Base.String -> GHC.Base.String
@@ -581,7 +615,7 @@ f3d4410ecfd848f3a837881ffed44522
     | Fun GHC.Base.String
     | RequireExpr GHC.Base.String
     | Con
-1437c4a40e4dda7c2bdea842f665361b
+56a06e6aee2a8b57796f489a1b87bb6c
   data StateTypes
     = OwnerAddress GHC.Base.String GHC.Base.String
     | OtherAddress GHC.Base.String GHC.Base.String
@@ -591,6 +625,8 @@ f3d4410ecfd848f3a837881ffed44522
     | List GHC.Base.String GHC.Base.String
     | Count GHC.Base.String GHC.Base.String
     | Bool GHC.Base.String GHC.Base.String
+    | HighestAddress GHC.Base.String GHC.Base.String
+    | HighestUnit GHC.Base.String GHC.Base.String
 73cf541a729fa3cf4ca8606d5353ba9c
   combineString ::
     GHC.Base.String -> GHC.Base.String -> GHC.Base.String
@@ -702,7 +738,7 @@ c3f7513ba3e3ad5c6907678e0afa2776
 b80cbda384fb05db798eaf7d1ff9ea07
   createBody :: [[ToSolidity.SolTypes]] -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U> -}
-9195928eff1e2d1f5631c8be6e49933a
+a1c4c61cf67e690e57a5d7de070dd3b7
   createContract ::
     Contract.Contract -> [[ToSolidity.SolTypes]] -> GHC.Base.String
   {- Arity: 2, Strictness: <L,U><L,1*U>,
@@ -743,7 +779,7 @@ b9b1d65fb41b12ad5c780926f9b4447a
   {- HasNoCafRefs,
      Unfolding: ("pragma solidity ^0.5.0;\n\
                  \contract Contract {\n"#) -}
-8cfe799461963230dd06b7ca7a8b641c
+510b84ea470d11e4d928aac98f88a7b0
   createFunCon ::
     Contract.Contract -> [[ToSolidity.SolTypes]] -> [[GHC.Base.String]]
   {- Arity: 2, Strictness: <L,A><S,1*U>, Inline: [0],
@@ -753,7 +789,7 @@ b9b1d65fb41b12ad5c780926f9b4447a
 f66cfc2b7b0eb510be0ef54fce7b67fa
   createStandardFun :: [[ToSolidity.SolTypes]] -> [[GHC.Base.String]]
   {- Arity: 1, Strictness: <S,1*U> -}
-a205e3137d8be1dde35eeb16571441b6
+2ea6a0297ee266f3165975f78f37e5eb
   getFunCon :: Contract.Contract -> GHC.Base.String
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (1, True, False)
@@ -769,10 +805,10 @@ d0add543dd690f35e96440c051850064
 f3d9975a78d1e2fd1c415ff909e6d371
   getReturns :: [[ToSolidity.SolTypes]] -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U> -}
-cad790a228d81b14f08f19f21a7d826f
+36527df679e6ac82453aebd6dc7cc5e9
   getStVar :: [[ToSolidity.StateTypes]] -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U> -}
-cd46af1a3863868661eab12d8cbb9b13
+5808e01ff6f51a79afe1c7ead49b760e
   getStateType ::
     GHC.Base.String -> [[ToSolidity.StateTypes]] -> GHC.Base.String
   {- Arity: 2, Strictness: <S,U><S,1*U> -}
@@ -799,7 +835,7 @@ d21d17d1534e84a2421a8fe3741aa960
 1d0900af719bf660b7f406374cd27316
   isParameter3 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("("#) -}
-0314e52fe1b3fb9a394054150db60d13
+f157adabcd64376dba2f167f54a2bb1b
   isPubPriv :: Contract.Contract -> GHC.Types.Int -> GHC.Base.String
   {- Arity: 2, Strictness: <L,A><S(S),1*U(1*U)>,
      Unfolding: InlineRule (2, True, False)
@@ -827,26 +863,26 @@ d21d17d1534e84a2421a8fe3741aa960
 90f0cd3974208a33db605aa021c31f91
   sendAllSolidity1 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("owner.transfer(this.balance);"#) -}
-b5d7073fb6515d07ea954ca155c004df
+f37ec4de847773a1a871e21521528d5d
   sortStateTypes :: Contract.Contract -> [[ToSolidity.StateTypes]]
   {- Arity: 1, Strictness: <S,1*U> -}
-aa80b781d630fd4e2b78279b39d2e3e9
+b249aa479ea73539c446011a3574ba20
   sortTypes ::
     Contract.Contract
     -> [[ToSolidity.StateTypes]] -> [[ToSolidity.SolTypes]]
   {- Arity: 2, Strictness: <S,1*U><L,U> -}
-404c253216315f4c3c6ce68ec4d6087b
+5e04f2d7e81f99fabb1f62c1f798ea2c
   stateTypesToSort :: Contract.Contract -> [[ToSolidity.SolTypes]]
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (1, True, False)
                 (\ (c :: Contract.Contract) ->
                  ToSolidity.sortTypes c (ToSolidity.sortStateTypes c)) -}
-95eed15116503886957a44f96fdbf96d
+08eaebe937bf5f6861748e895f176e13
   test :: GHC.Types.IO ()
   {- Arity: 1,
      Unfolding: InlineRule (0, True, True)
                 ToSolidity.test1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-c8f15129c37b636c4c96716f7c1530ff
+c297bbdcf7a0b36b867f45486de82288
   test1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -858,7 +894,7 @@ b1cad9d6d351c76e7a13f0ee1eedb9ef
 94e293ec33268ef84b11ca6ae553c0f1
   test3 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("auctionTest"#) -}
-91cd75a31b123e1e64a3956cf56aa9b7
+6d4d3c91d3d5c3f4e5a4b28992d188cb
   test4 ::
     GHC.Base.String
     -> Contract.Contract
@@ -887,15 +923,15 @@ a7b6b8a0628ef6c1aacc0fa5647bb903
 3d4e322fcdc0c3811900b5cd7eaea09e
   test6 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Solidity.sol"#) -}
-f14306efea021031da08de7680a558ff
+5a715f4217c063675ae17c2af4d1d3ff
   testTypes :: [[ToSolidity.SolTypes]]
   {- Unfolding: (ToSolidity.sortTypes
                    Auction.auction
                    ToSolidity.testTypes1) -}
-9d3ab2545798ff76aa2acd3e310c7101
+5a8f3a9eaf1759473f834c1a13cc5efb
   testTypes1 :: [[ToSolidity.StateTypes]]
   {- Unfolding: (ToSolidity.sortStateTypes Auction.auction) -}
-7553a2ab691ceed896c0fb1849949d0c
+6b030f184deed9d9c03f8d1c08a06254
   toFile :: GHC.Base.String -> Contract.Contract -> GHC.Types.IO ()
   {- Arity: 3, Strictness: <L,1*U><L,U><S,U>,
      Unfolding: InlineRule (0, True, True)

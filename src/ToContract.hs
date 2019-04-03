@@ -14,7 +14,7 @@ readDataTypes ("constructor":xs) = (Constructor (readDataTypes xs))
 readDataTypes ("set":x:xs) = 
     case x of 
         ("contractowner") -> (Set (ContractOwner) (readDataTypes xs))
-        ("timelimit") -> (Set (ContractOwner) (readDataTypes xs))
+        ("timelimit") -> (Set (TimeLimit) (readDataTypes xs))
         ("totalamount") -> (Set (TotalAmount) (readDataTypes xs))
         ("beneficiary") -> (Set (Beneficiary) (readDataTypes xs))
         _ -> (Error ("Incorrect Parameter for Set: " ++ x))
@@ -30,7 +30,7 @@ readDataTypes ("commitether":x:y:xs) =
         ("max")
             | ((readInt y) <= 0) -> (Error "Number must be greater than or equal to 0")
             | otherwise -> (CommitEther (Max (readMoney y)) (readDataTypes (xs)))
-        ("higher") -> (CommitEther (Higher y) (readDataTypes xs))
+        ("higherthan") -> (CommitEther (HigherThan y) (readDataTypes xs))
         _ -> (Error ("Incorrect Parameter for CommitEther: " ++ x))
 readDataTypes ("when":x:y:xs) = 
     case x of 

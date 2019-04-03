@@ -26,7 +26,9 @@ data StateTypes = OwnerAddress String String|
                   Unit String String |
                   List String String |
                   Count String String |
-                  Bool String String
+                  Bool String String |
+                  HighestAddress String String |
+                  HighestUnit String String
                 deriving (Show)
 
 -- Takes the contract and sorts into StateTypes with two strins; first being data type and the second being variable name. This is done so 
@@ -58,10 +60,10 @@ sortStateTypes c =
         (CommitEther (NoLimit) c1) -> case c1 of 
                                    (AddTo str c2) -> [(Mapping ("mapping (address => uint) private") (str))] : sortStateTypes c2
                                    (_) -> sortStateTypes c1 
-        (CommitEther (Higher str1) c1) -> case c1 of 
-                                        (AddTo str2 c2) -> [(OtherAddress ("address public") (str1 ++ "Address"))] : 
-                                                           [(Mapping ("mapping(address => uint) public") (str2 ++ "s"))] : 
-                                                           [(Unit ("uint public") (str2 ++ "Highest"))] : sortStateTypes c2                                                
+        (CommitEther (HigherThan str1) c1) -> case c1 of 
+                                        (AddTo str2 c2) -> [(HighestAddress ("address public") (str1 ++ "Address"))] : 
+                                                           [(Mapping ("mapping(address => uint) public") (str2))] : 
+                                                           [(HighestUnit ("uint public") (str2 ++ "Highest"))] : sortStateTypes c2                                                
                                         (_) -> sortStateTypes c1
         (CommitEther (Equal m) c1) -> case c1 of 
                                       (AddTo str c2) -> [(Mapping ("mapping (address => uint) private") (str))] : sortStateTypes c2
@@ -105,6 +107,15 @@ getStateType "oa" s =
     case s of 
         ([OwnerAddress str1 str2] : rest) -> str2
         ([_] : rest) -> getStateType "oa" rest
+getStateType "high" s = 
+    case s of 
+        ([HighestAddress str1 str2] : rest) -> str2
+        ([_] : rest) -> getStateType "high" rest
+
+getStateType "highUint" s =
+  case s of 
+        ([HighestUnit str1 str2] : rest) -> str2
+        ([_] : rest) -> getStateType "highUint" rest
 
 
 -- Helper function that takes the contract, sortTypes takes the contract and the sorted state types. This is done so the state types only needed to be sorted once 
@@ -129,11 +140,11 @@ sortTypes c s =
                                                       [(ReturnExpr ( "return " ++ (getStateType "map" s) ++ "[msg.sender];"))] :
                                                       [(ReturnVar ("uint"))] : sortTypes c2 s
                                     (_) -> sortTypes c1 s       
-        (CommitEther (Higher str1) c1) -> case c1 of 
-                                        (AddTo str2 c2) -> [(Expr ("require(msg.value > " ++ str2 ++ "Highest);"))] :
+        (CommitEther (HigherThan str1) c1) -> case c1 of 
+                                        (AddTo str2 c2) -> [(PayExpr ("require(msg.value > " ++ str2 ++ "Highest);"))] :
                                                            [(IfExpr ("if (" ++ str2 ++ "Highest != 0)" ))] :
-                                                           [(Expr ("pendingReturns[" ++ (getStateType "ota" s) ++ "] += " ++ str2 ++ "Highest) };"))] :
-                                                           [(Expr ((getStateType "ota" s) ++ "= msg.sender;"))] : 
+                                                           [(Expr ((getStateType "map" s)++"[" ++ (getStateType "high" s) ++ "] += " ++ str2 ++ "Highest; }"))] :
+                                                           [(Expr ((getStateType "high" s) ++ "= msg.sender;"))] : 
                                                            [(Expr ((str2 ++ "Highest") ++ "= msg.value;"))] : sortTypes c2 s                                                  
                                         (_) -> sortTypes c1 s
 
@@ -168,14 +179,14 @@ sortTypes c s =
                                    [(ReturnExpr "return winner;")] : 
                                    [(ReturnVar "address")] : sortTypes c1 s
 
-        (Send (ToBeneficiary (AmountIn str)) c1) -> [(PayExpr ("beneficiary.transfer(" ++ str ++");"))] : sortTypes c1 s
+        (Send (ToBeneficiary (AmountIn str)) c1) -> [(PayExpr ("beneficiary.transfer(" ++ (getStateType "highUint" s) ++");"))] : sortTypes c1 s
 
         (Withdraw c1) -> [(IfExpr ("if (withdrawAmount <=" ++ (getStateType "map" s) ++ "[msg.sender]) "))] :
                          [(Expr  ((getStateType "map" s) ++ "[msg.sender] -= withdrawAmount;"))] :
-                         [(Expr ("msg.sender.transfer(withdrawAmount);"))] :
+                         [(Expr ("msg.sender.transfer(withdrawAmount);}"))] :
                          [(ReturnExpr ("return " ++ (getStateType "map" s) ++"[msg.sender];"))] : 
-                         [(FunVar ("unit withdrawAmount"))] : 
-                         [(ReturnVar ("unit remainingBal"))] : sortTypes c1 s
+                         [(FunVar ("uint withdrawAmount"))] : 
+                         [(ReturnVar ("uint"))] : sortTypes c1 s
         
 
         (When (Amount m) c1) -> [(IfExpr ("if (totalAmount ==" ++ show m ++ ") " ))] : sortTypes c1 s
@@ -230,6 +241,8 @@ getStVar ([Unit str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
 getStVar ([Count str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
 getStVar ([List str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
 getStVar ([Bool str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
+getStVar ([HighestAddress str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
+getStVar ([HighestUnit str1 str2] : rest) = combineString str1 str2 ++ getStVar rest
 getStVar _ = "\n" 
 
 --This function will take out he "nothings" and return the actul funtion 
@@ -286,6 +299,9 @@ isStateMutable ([ReturnVar str] : rest) = isStateMutable rest
 isStateMutable ([Expr str] : rest) = isStateMutable rest 
 isStateMutable ([StVar str] : rest) = isStateMutable rest 
 isStateMutable ([FunVar str] : rest) = isStateMutable rest 
+isStateMutable ([IfExpr str] : rest) = isStateMutable rest 
+isStateMutable ([ReturnExpr str] : rest) = isStateMutable rest
+isStateMutable ([RequireExpr str] : rest) = isStateMutable rest 
 isStateMutable ([Fun str] : rest) = ""
 isStateMutable ([Con] : rest) = ""
 isStateMutable _ = ""
@@ -297,10 +313,12 @@ getReturns ([Expr str] : rest) = getReturns rest
 getReturns ([PayExpr str] : rest) = getReturns rest 
 getReturns ([IfExpr str] : rest) = getReturns rest
 getReturns ([StVar str] : rest) = getReturns rest 
-getReturns ([FunVar str] : rest) = getReturns rest 
+getReturns ([FunVar str] : rest) = getReturns rest
+getReturns ([RequireExpr str] : rest) = getReturns rest 
 getReturns ([Fun str] : rest) = ""
 getReturns ([Con] : rest) = ""
 getReturns _ = ""
+
 
 --What is types needs to have a parameter? 
 isParameter :: [[SolTypes]] -> String 
@@ -316,6 +334,9 @@ getParameters ([StVar str] : rest) n = getParameters rest n
 getParameters ([Fun str] : rest) n = ""
 getParameters ([Con] : rest) n = ""
 getParameters ([ReturnVar str] : rest) n = getParameters rest n
+getParameters ([IfExpr str] : rest) n = getParameters rest n
+getParameters ([RequireExpr str] : rest) n = getParameters rest n
+getParameters ([ReturnExpr str] : rest) n = getParameters rest n
 getParameters _ n = ""
 
 --What determines if a function is private? 

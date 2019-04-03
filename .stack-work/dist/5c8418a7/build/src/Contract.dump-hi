@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2019-04-02 22:47:03.7954696 UTC
+2019-04-03 21:11:04.1407649 UTC
 
 interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:Contract 8022
-  interface hash: c8972d995a0a13b8915e05525eff6140
-  ABI hash: 3adff78d8d624d3cc0276069af32a818
-  export-list hash: 6627bdebaae646ad278a48bf11de3eed
+  interface hash: dbdbfafead6ee1639ea422624898ade5
+  ABI hash: 825040171bf0f5fba9e4be553cd25cfc
+  export-list hash: 18280b7c07d72ea56b802b842c8c508a
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 116d747c6d2286eaf4ade378327fec2c
   sig of: Nothing
@@ -45,11 +45,11 @@ exports:
   Contract.ContractState{Contract.ContractState beneficiary commits etherBalance owner withdrawls}
   Contract.Decision
   Contract.Ether
-  Contract.Input{Contract.CashInp Contract.Decision Contract.Empty Contract.SetBeneficary Contract.SetOwner Contract.WithdrawEther}
-  Contract.InputCondition{Contract.Equal Contract.Higher Contract.Lower Contract.Max Contract.Min Contract.NoLimit}
+  Contract.Input{Contract.CashInp Contract.Decision Contract.Empty Contract.SetBeneficary Contract.SetOwner Contract.SetTimeLimit Contract.WithdrawEther}
+  Contract.InputCondition{Contract.Equal Contract.HigherThan Contract.Lower Contract.Max Contract.Min Contract.NoLimit}
   Contract.Modifier{Contract.NotOwner Contract.OnlyOwner}
   Contract.OP
-  Contract.Output{Contract.BeneficiarySet Contract.CommitFail Contract.CommitPass Contract.Message Contract.Null Contract.OwnerSet Contract.SendFail Contract.SendSuccess Contract.WithdrawFail Contract.WithdrawPass}
+  Contract.Output{Contract.BeneficiarySet Contract.CommitFail Contract.CommitPass Contract.Message Contract.Null Contract.OwnerSet Contract.SendFail Contract.SendSuccess Contract.TimeLimitSet Contract.WithdrawFail Contract.WithdrawPass}
   Contract.ParamState{Contract.ParamState amountSize duration maxPeople}
   Contract.Parameter{Contract.Amount Contract.Beneficiary Contract.ContractOwner Contract.Days Contract.People Contract.TimeLimit Contract.TimesUp Contract.TotalAmount Contract.TotalReached}
   Contract.PayOption{Contract.All Contract.AmountIn Contract.Partial Contract.Rest}
@@ -167,7 +167,7 @@ import  -/  time-1.8.0.2:Data.Time 4bd9dc72d68915b5fb30f67244451a3a
                    -> case ds1 of wild1 {
                         Contract.AlreadyJoined -> GHC.Types.False
                         Contract.AlreadyFinished -> GHC.Types.True } }) -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fEqContract :: GHC.Classes.Eq Contract.Contract
   DFunId
   {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
@@ -214,7 +214,7 @@ d993594dcad27f3fe0cb1d7871ebbe0e
                  case w of ww { Contract.ContractState ww1 ww2 ww3 ww4 ww5 ->
                  case w1 of ww6 { Contract.ContractState ww7 ww8 ww9 ww10 ww11 ->
                  Contract.$w$c== ww1 ww2 ww3 ww4 ww5 ww7 ww8 ww9 ww10 ww11 } }) -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fEqContract_$c/= ::
     Contract.Contract -> Contract.Contract -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
@@ -223,17 +223,17 @@ d993594dcad27f3fe0cb1d7871ebbe0e
                  case Contract.$fEqContract_$c== a b of wild {
                    GHC.Types.False -> GHC.Types.True
                    GHC.Types.True -> GHC.Types.False }) -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fEqContract_$c== ::
     Contract.Contract -> Contract.Contract -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U> -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fEqInput :: GHC.Classes.Eq Contract.Input
   DFunId
   {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
      Unfolding: DFun:.
                   @ Contract.Input Contract.$fEqInput_$c== Contract.$fEqInput_$c/= -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fEqInputCondition :: GHC.Classes.Eq Contract.InputCondition
   DFunId
   {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
@@ -241,7 +241,7 @@ aada6366b2c524a2787888a895e6ee1a
                   @ Contract.InputCondition
                   Contract.$fEqInputCondition_$c==
                   Contract.$fEqInputCondition_$c/= -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fEqInputCondition_$c/= ::
     Contract.InputCondition
     -> Contract.InputCondition -> GHC.Types.Bool
@@ -251,7 +251,7 @@ aada6366b2c524a2787888a895e6ee1a
                  case Contract.$fEqInputCondition_$c== a b of wild {
                    GHC.Types.False -> GHC.Types.True
                    GHC.Types.True -> GHC.Types.False }) -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fEqInputCondition_$c== ::
     Contract.InputCondition
     -> Contract.InputCondition -> GHC.Types.Bool
@@ -271,10 +271,10 @@ aada6366b2c524a2787888a895e6ee1a
                    -> case ds1 of wild1 {
                         DEFAULT -> GHC.Types.False
                         Contract.Equal b1 -> GHC.Classes.eqDouble a1 b1 }
-                   Contract.Higher a1
+                   Contract.HigherThan a1
                    -> case ds1 of wild1 {
                         DEFAULT -> GHC.Types.False
-                        Contract.Higher b1 -> GHC.Base.eqString a1 b1 }
+                        Contract.HigherThan b1 -> GHC.Base.eqString a1 b1 }
                    Contract.Lower a1
                    -> case ds1 of wild1 {
                         DEFAULT -> GHC.Types.False
@@ -283,7 +283,7 @@ aada6366b2c524a2787888a895e6ee1a
                    -> case ds1 of wild1 {
                         DEFAULT -> GHC.Types.False
                         Contract.NoLimit -> GHC.Types.True } }) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fEqInput_$c/= ::
     Contract.Input -> Contract.Input -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
@@ -292,7 +292,7 @@ d419b1d410a90a0c7bf2c9be57e6335d
                  case Contract.$fEqInput_$c== a b of wild {
                    GHC.Types.False -> GHC.Types.True
                    GHC.Types.True -> GHC.Types.False }) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fEqInput_$c== ::
     Contract.Input -> Contract.Input -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U> -}
@@ -755,7 +755,7 @@ f83ba076e13fdce7d2454eb8b6999ecf
                      @ Contract.Action
                      GHC.Classes.$fOrdInt
                      Contract.$fOrdAction) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fOrdInput :: GHC.Classes.Ord Contract.Input
   DFunId
   {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
@@ -769,7 +769,7 @@ d419b1d410a90a0c7bf2c9be57e6335d
                   Contract.$fOrdInput_$c>=
                   Contract.$fOrdInput_$cmax
                   Contract.$fOrdInput_$cmin -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fOrdInput_$c< ::
     Contract.Input -> Contract.Input -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
@@ -777,7 +777,7 @@ d419b1d410a90a0c7bf2c9be57e6335d
                 (\ (x :: Contract.Input) (y :: Contract.Input) ->
                  case Contract.$fOrdInput_$ccompare x y of wild {
                    DEFAULT -> GHC.Types.False GHC.Types.LT -> GHC.Types.True }) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fOrdInput_$c<= ::
     Contract.Input -> Contract.Input -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
@@ -785,7 +785,7 @@ d419b1d410a90a0c7bf2c9be57e6335d
                 (\ (x :: Contract.Input) (y :: Contract.Input) ->
                  case Contract.$fOrdInput_$ccompare x y of wild {
                    DEFAULT -> GHC.Types.True GHC.Types.GT -> GHC.Types.False }) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fOrdInput_$c> ::
     Contract.Input -> Contract.Input -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
@@ -793,7 +793,7 @@ d419b1d410a90a0c7bf2c9be57e6335d
                 (\ (x :: Contract.Input) (y :: Contract.Input) ->
                  case Contract.$fOrdInput_$ccompare x y of wild {
                    DEFAULT -> GHC.Types.False GHC.Types.GT -> GHC.Types.True }) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fOrdInput_$c>= ::
     Contract.Input -> Contract.Input -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
@@ -801,11 +801,11 @@ d419b1d410a90a0c7bf2c9be57e6335d
                 (\ (x :: Contract.Input) (y :: Contract.Input) ->
                  case Contract.$fOrdInput_$ccompare x y of wild {
                    DEFAULT -> GHC.Types.True GHC.Types.LT -> GHC.Types.False }) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fOrdInput_$ccompare ::
     Contract.Input -> Contract.Input -> GHC.Types.Ordering
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U> -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fOrdInput_$cmax ::
     Contract.Input -> Contract.Input -> Contract.Input
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><S,U>,
@@ -813,7 +813,7 @@ d419b1d410a90a0c7bf2c9be57e6335d
                 (\ (x :: Contract.Input) (y :: Contract.Input) ->
                  case Contract.$fOrdInput_$ccompare x y of wild {
                    DEFAULT -> y GHC.Types.GT -> x }) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fOrdInput_$cmin ::
     Contract.Input -> Contract.Input -> Contract.Input
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><S,U>,
@@ -1207,7 +1207,7 @@ d8b462e3dbae03b6ad46449da945f63d
                       Text.ParserCombinators.ReadPrec.ReadPrec Contract.CheckState)
                    Contract.$fReadCheckState8
                    Contract.$fReadCheckState3) -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fReadContract :: GHC.Read.Read Contract.Contract
   DFunId
   {- Strictness: m, Inline: CONLIKE,
@@ -1224,14 +1224,14 @@ d8b462e3dbae03b6ad46449da945f63d
                        (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
                                  <Contract.Contract>_R)))
                   Contract.$fReadContract_$creadListPrec -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fReadContract1 ::
     Text.ParserCombinators.ReadPrec.Prec
     -> forall b.
        (Contract.Contract -> Text.ParserCombinators.ReadP.P b)
        -> Text.ParserCombinators.ReadP.P b
   {- Arity: 2 -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fReadContract2 ::
     Text.ParserCombinators.ReadP.P [Contract.Contract]
   {- Unfolding: ((Contract.$fReadContract_$creadListPrec
@@ -1244,14 +1244,14 @@ d8b462e3dbae03b6ad46449da945f63d
                    @ [Contract.Contract]
                    (Text.ParserCombinators.ReadP.$fApplicativeP_$cpure
                       @ [Contract.Contract])) -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fReadContract_$creadList ::
     Text.ParserCombinators.ReadP.ReadS [Contract.Contract]
   {- Arity: 1,
      Unfolding: (Text.ParserCombinators.ReadP.run
                    @ [Contract.Contract]
                    Contract.$fReadContract2) -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fReadContract_$creadListPrec ::
     Text.ParserCombinators.ReadPrec.ReadPrec [Contract.Contract]
   {- Unfolding: (GHC.Read.list
@@ -1264,7 +1264,7 @@ d8b462e3dbae03b6ad46449da945f63d
                                        <Contract.Contract>_R))
                         (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
                                   <Contract.Contract>_R)))) -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fReadContract_$creadsPrec ::
     GHC.Types.Int
     -> Text.ParserCombinators.ReadP.ReadS Contract.Contract
@@ -1278,7 +1278,7 @@ d8b462e3dbae03b6ad46449da945f63d
                       @ Contract.Contract
                       (Text.ParserCombinators.ReadP.$fApplicativeP_$cpure
                          @ Contract.Contract))) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fReadInput :: GHC.Read.Read Contract.Input
   DFunId
   {- Strictness: m, Inline: CONLIKE,
@@ -1295,14 +1295,14 @@ d419b1d410a90a0c7bf2c9be57e6335d
                        (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
                                  <Contract.Input>_R)))
                   Contract.$fReadInput_$creadListPrec -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fReadInput1 ::
     Text.ParserCombinators.ReadPrec.Prec
     -> forall b.
        (Contract.Input -> Text.ParserCombinators.ReadP.P b)
        -> Text.ParserCombinators.ReadP.P b
   {- Arity: 2 -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fReadInput2 :: Text.ParserCombinators.ReadP.P [Contract.Input]
   {- Unfolding: ((Contract.$fReadInput_$creadListPrec
                     `cast`
@@ -1314,7 +1314,7 @@ d419b1d410a90a0c7bf2c9be57e6335d
                    @ [Contract.Input]
                    (Text.ParserCombinators.ReadP.$fApplicativeP_$cpure
                       @ [Contract.Input])) -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fReadInputCondition :: GHC.Read.Read Contract.InputCondition
   DFunId
   {- Strictness: m, Inline: CONLIKE,
@@ -1331,7 +1331,7 @@ aada6366b2c524a2787888a895e6ee1a
                        (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
                                  <Contract.InputCondition>_R)))
                   Contract.$fReadInputCondition_$creadListPrec -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fReadInputCondition1 ::
     Text.ParserCombinators.ReadPrec.Prec
     -> forall b.
@@ -1348,14 +1348,14 @@ aada6366b2c524a2787888a895e6ee1a
                                        <Contract.InputCondition>_R))
                         (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
                                   <Contract.InputCondition>_R)))) -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fReadInputCondition2 ::
     Text.ParserCombinators.ReadPrec.Prec
     -> forall b.
        (Contract.InputCondition -> Text.ParserCombinators.ReadP.P b)
        -> Text.ParserCombinators.ReadP.P b
   {- Arity: 2, Strictness: <L,1*U(U)><L,C(U)> -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fReadInputCondition3 ::
     Text.ParserCombinators.ReadP.P [Contract.InputCondition]
   {- Unfolding: ((Contract.$fReadInputCondition_$creadListPrec
@@ -1369,14 +1369,14 @@ aada6366b2c524a2787888a895e6ee1a
                    @ [Contract.InputCondition]
                    (Text.ParserCombinators.ReadP.$fApplicativeP_$cpure
                       @ [Contract.InputCondition])) -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fReadInputCondition_$creadList ::
     Text.ParserCombinators.ReadP.ReadS [Contract.InputCondition]
   {- Arity: 1,
      Unfolding: (Text.ParserCombinators.ReadP.run
                    @ [Contract.InputCondition]
                    Contract.$fReadInputCondition3) -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fReadInputCondition_$creadListPrec ::
     Text.ParserCombinators.ReadPrec.ReadPrec [Contract.InputCondition]
   {- Unfolding: (GHC.Read.list
@@ -1389,7 +1389,7 @@ aada6366b2c524a2787888a895e6ee1a
                                        <Contract.InputCondition>_R))
                         (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
                                   <Contract.InputCondition>_R)))) -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fReadInputCondition_$creadsPrec ::
     GHC.Types.Int
     -> Text.ParserCombinators.ReadP.ReadS Contract.InputCondition
@@ -1412,14 +1412,14 @@ aada6366b2c524a2787888a895e6ee1a
                       @ Contract.InputCondition
                       (Text.ParserCombinators.ReadP.$fApplicativeP_$cpure
                          @ Contract.InputCondition))) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fReadInput_$creadList ::
     Text.ParserCombinators.ReadP.ReadS [Contract.Input]
   {- Arity: 1,
      Unfolding: (Text.ParserCombinators.ReadP.run
                    @ [Contract.Input]
                    Contract.$fReadInput2) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fReadInput_$creadListPrec ::
     Text.ParserCombinators.ReadPrec.ReadPrec [Contract.Input]
   {- Unfolding: (GHC.Read.list
@@ -1432,7 +1432,7 @@ d419b1d410a90a0c7bf2c9be57e6335d
                                        <Contract.Input>_R))
                         (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
                                   <Contract.Input>_R)))) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fReadInput_$creadsPrec ::
     GHC.Types.Int -> Text.ParserCombinators.ReadP.ReadS Contract.Input
   {- Arity: 1, Strictness: <L,U>,
@@ -1626,7 +1626,7 @@ dc33d3edfdadc163c2b4d8a11a14b98d
                       Text.ParserCombinators.ReadPrec.ReadPrec Contract.Modifier)
                    Contract.$fReadModifier8
                    Contract.$fReadModifier3) -}
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   $fReadOutput :: GHC.Read.Read Contract.Output
   DFunId
   {- Strictness: m, Inline: CONLIKE,
@@ -1643,7 +1643,7 @@ fa247b76781f0c901173b12215a6771f
                        (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
                                  <Contract.Output>_R)))
                   Contract.$fReadOutput_$creadListPrec -}
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   $fReadOutput1 ::
     Text.ParserCombinators.ReadPrec.Prec
     -> forall b.
@@ -1656,12 +1656,12 @@ fa247b76781f0c901173b12215a6771f
                      `cast`
                    (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
                              <Contract.Output>_R))) -}
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   $fReadOutput2 ::
     Text.ParserCombinators.ReadPrec.Prec
     -> Text.ParserCombinators.ReadP.ReadP Contract.Output
   {- Arity: 1, Strictness: <L,U(U)> -}
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   $fReadOutput3 :: Text.ParserCombinators.ReadP.P [Contract.Output]
   {- Unfolding: ((Contract.$fReadOutput_$creadListPrec
                     `cast`
@@ -1673,14 +1673,14 @@ fa247b76781f0c901173b12215a6771f
                    @ [Contract.Output]
                    (Text.ParserCombinators.ReadP.$fApplicativeP_$cpure
                       @ [Contract.Output])) -}
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   $fReadOutput_$creadList ::
     Text.ParserCombinators.ReadP.ReadS [Contract.Output]
   {- Arity: 1,
      Unfolding: (Text.ParserCombinators.ReadP.run
                    @ [Contract.Output]
                    Contract.$fReadOutput3) -}
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   $fReadOutput_$creadListPrec ::
     Text.ParserCombinators.ReadPrec.ReadPrec [Contract.Output]
   {- Unfolding: (GHC.Read.list
@@ -1693,7 +1693,7 @@ fa247b76781f0c901173b12215a6771f
                                        <Contract.Output>_R))
                         (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
                                   <Contract.Output>_R)))) -}
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   $fReadOutput_$creadsPrec ::
     GHC.Types.Int -> Text.ParserCombinators.ReadP.ReadS Contract.Output
   {- Arity: 1, Strictness: <L,U>,
@@ -2330,7 +2330,7 @@ ba644acab50f9f67368665f5e149d4e2
                            (n :: b)[OneShot] ->
                          GHC.Base.foldr @ GHC.Types.Char @ b c n Contract.$fReadCheckState6)
                         eta }) -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fShowContract :: GHC.Show.Show Contract.Contract
   DFunId
   {- Strictness: m, Inline: CONLIKE,
@@ -2339,7 +2339,7 @@ ba644acab50f9f67368665f5e149d4e2
                   Contract.$fShowContract_$cshowsPrec
                   Contract.$fShowContract_$cshow
                   Contract.$fShowContract_$cshowList -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fShowContract1 :: Contract.Contract -> GHC.Show.ShowS
   {- Arity: 1,
      Unfolding: (Contract.$fShowContract_$cshowsPrec
@@ -2411,7 +2411,7 @@ d993594dcad27f3fe0cb1d7871ebbe0e
                  case w of ww { GHC.Types.I# ww1 ->
                  case w1 of ww2 { Contract.ContractState ww3 ww4 ww5 ww6 ww7 ->
                  Contract.$w$cshowsPrec1 ww1 ww3 ww4 ww5 ww6 ww7 } }) -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fShowContract_$cshow :: Contract.Contract -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: InlineRule (1, True, False)
@@ -2420,17 +2420,17 @@ d993594dcad27f3fe0cb1d7871ebbe0e
                    Contract.$fShowAction4
                    x
                    (GHC.Types.[] @ GHC.Types.Char)) -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fShowContract_$cshowList :: [Contract.Contract] -> GHC.Show.ShowS
   {- Arity: 2,
      Unfolding: (GHC.Show.showList__
                    @ Contract.Contract
                    Contract.$fShowContract1) -}
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   $fShowContract_$cshowsPrec ::
     GHC.Types.Int -> Contract.Contract -> GHC.Show.ShowS
   {- Arity: 2, Strictness: <L,1*U(U)><S,1*U> -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fShowInput :: GHC.Show.Show Contract.Input
   DFunId
   {- Strictness: m, Inline: CONLIKE,
@@ -2439,12 +2439,12 @@ d419b1d410a90a0c7bf2c9be57e6335d
                   Contract.$fShowInput_$cshowsPrec
                   Contract.$fShowInput_$cshow
                   Contract.$fShowInput_$cshowList -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fShowInput1 :: Contract.Input -> GHC.Show.ShowS
   {- Arity: 1,
      Unfolding: (Contract.$fShowInput_$cshowsPrec
                    Contract.$fShowAction4) -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fShowInputCondition :: GHC.Show.Show Contract.InputCondition
   DFunId
   {- Strictness: m, Inline: CONLIKE,
@@ -2453,7 +2453,7 @@ aada6366b2c524a2787888a895e6ee1a
                   Contract.$fShowInputCondition_$cshowsPrec
                   Contract.$fShowInputCondition_$cshow
                   Contract.$fShowInputCondition_$cshowList -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fShowInputCondition1 :: Contract.InputCondition -> GHC.Show.ShowS
   {- Arity: 1,
      Unfolding: (Contract.$fShowInputCondition_$cshowsPrec
@@ -2491,9 +2491,9 @@ bab0676149f127e40bc8d5ba41ca7a30
 b2a204c7e99c0f0971a90b227340a81b
   $fShowInputCondition5 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Lower "#) -}
-7faef285dd88809eb959ea22c3019173
+6f1999a09170a7cf36024be3e266e49a
   $fShowInputCondition6 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: ("Higher "#) -}
+  {- HasNoCafRefs, Unfolding: ("HigherThan "#) -}
 1c3eb23c0de86d0de07585500eacf3da
   $fShowInputCondition7 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
@@ -2505,7 +2505,7 @@ b2a204c7e99c0f0971a90b227340a81b
   $fShowInputCondition9 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
                    Contract.$fShowInputCondition10) -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fShowInputCondition_$cshow ::
     Contract.InputCondition -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U>,
@@ -2541,7 +2541,7 @@ aada6366b2c524a2787888a895e6ee1a
                            Contract.$fReadPayOption7
                            ww1
                            (GHC.Types.[] @ GHC.Types.Char) })
-                   Contract.Higher b1
+                   Contract.HigherThan b1
                    -> GHC.CString.unpackAppendCString#
                         Contract.$fShowInputCondition6
                         (GHC.Types.:
@@ -2556,14 +2556,14 @@ aada6366b2c524a2787888a895e6ee1a
                            GHC.Show.$fShow(,)3
                            (GHC.Show.showLitString b1 Contract.$fShowInputCondition13))
                    Contract.NoLimit -> Contract.$fShowInputCondition3 }) -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fShowInputCondition_$cshowList ::
     [Contract.InputCondition] -> GHC.Show.ShowS
   {- Arity: 2,
      Unfolding: (GHC.Show.showList__
                    @ Contract.InputCondition
                    Contract.$fShowInputCondition1) -}
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   $fShowInputCondition_$cshowsPrec ::
     GHC.Types.Int -> Contract.InputCondition -> GHC.Show.ShowS
   {- Arity: 2, Strictness: <L,1*U(U)><S,1*U>,
@@ -2645,7 +2645,7 @@ aada6366b2c524a2787888a895e6ee1a
                                 @ GHC.Types.Char
                                 Contract.$fShowInputCondition7
                                 (g (GHC.Types.: @ GHC.Types.Char GHC.Show.$fShow(,)2 x1))) } }
-                   Contract.Higher b1
+                   Contract.HigherThan b1
                    -> case a of wild1 { GHC.Types.I# x ->
                       case GHC.Prim.tagToEnum#
                              @ GHC.Types.Bool
@@ -2714,7 +2714,7 @@ aada6366b2c524a2787888a895e6ee1a
                                             GHC.Show.$fShow(,)2
                                             x1))))) } }
                    Contract.NoLimit -> Contract.$fShowInputCondition2 }) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fShowInput_$cshow :: Contract.Input -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: InlineRule (1, True, False)
@@ -2723,13 +2723,13 @@ d419b1d410a90a0c7bf2c9be57e6335d
                    Contract.$fShowAction4
                    x
                    (GHC.Types.[] @ GHC.Types.Char)) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fShowInput_$cshowList :: [Contract.Input] -> GHC.Show.ShowS
   {- Arity: 2,
      Unfolding: (GHC.Show.showList__
                    @ Contract.Input
                    Contract.$fShowInput1) -}
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   $fShowInput_$cshowsPrec ::
     GHC.Types.Int -> Contract.Input -> GHC.Show.ShowS
   {- Arity: 2, Strictness: <L,1*U(U)><S,1*U> -}
@@ -2803,7 +2803,7 @@ d419b1d410a90a0c7bf2c9be57e6335d
                            (n :: b)[OneShot] ->
                          GHC.Base.foldr @ GHC.Types.Char @ b c n Contract.$fReadModifier6)
                         eta }) -}
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   $fShowOutput :: GHC.Show.Show Contract.Output
   DFunId
   {- Strictness: m, Inline: CONLIKE,
@@ -2812,12 +2812,12 @@ fa247b76781f0c901173b12215a6771f
                   Contract.$fShowOutput_$cshowsPrec
                   Contract.$fShowOutput_$cshow
                   Contract.$fShowOutput_$cshowList -}
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   $fShowOutput1 :: Contract.Output -> GHC.Show.ShowS
   {- Arity: 1,
      Unfolding: (Contract.$fShowOutput_$cshowsPrec
                    Contract.$fShowAction4) -}
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   $fShowOutput_$cshow :: Contract.Output -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: InlineRule (1, True, False)
@@ -2826,13 +2826,13 @@ fa247b76781f0c901173b12215a6771f
                    Contract.$fShowAction4
                    x
                    (GHC.Types.[] @ GHC.Types.Char)) -}
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   $fShowOutput_$cshowList :: [Contract.Output] -> GHC.Show.ShowS
   {- Arity: 2,
      Unfolding: (GHC.Show.showList__
                    @ Contract.Output
                    Contract.$fShowOutput1) -}
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   $fShowOutput_$cshowsPrec ::
     GHC.Types.Int -> Contract.Output -> GHC.Show.ShowS
   {- Arity: 2, Strictness: <L,1*U(U)><S,1*U> -}
@@ -3887,26 +3887,26 @@ c0b0e04d3b843131e6bc0663cc1e4d34
 a63a9d87d2de270f58b9cb0a4070d3a2
   $tc'Function2 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("'Function"#) -}
-11b6d5fc8300786a7b8d143410f61606
-  $tc'Higher :: GHC.Types.TyCon
+3e0f14bde4012bc84e5011dd9e9c534a
+  $tc'HigherThan :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   15942096730118810806##
-                   7011516783244788397##
+                   1136269622327711832##
+                   6672584995749545760##
                    Contract.$trModule
-                   Contract.$tc'Higher2
+                   Contract.$tc'HigherThan2
                    0#
-                   Contract.$tc'Higher1) -}
-e8c67c1c485a838f2786ba2f573915dd
-  $tc'Higher1 :: GHC.Types.KindRep
+                   Contract.$tc'HigherThan1) -}
+0b0e09ae10c8f20d8a33b39baabd3ce2
+  $tc'HigherThan1 :: GHC.Types.KindRep
   {- HasNoCafRefs, Strictness: m4, Inline: [~] -}
-083e1c71fb23c8086d73c71027d478f4
-  $tc'Higher2 :: GHC.Types.TrName
+c6a52e0897c8e62865114a197e8425f6
+  $tc'HigherThan2 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
-     Unfolding: (GHC.Types.TrNameS Contract.$tc'Higher3) -}
-45ccfbe38874559f9d3b30e89641ec1a
-  $tc'Higher3 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: ("'Higher"#) -}
+     Unfolding: (GHC.Types.TrNameS Contract.$tc'HigherThan3) -}
+1dbb2108a67af1463e2171daaeab0d8d
+  $tc'HigherThan3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'HigherThan"#) -}
 ec41ce65b10152f009d254bc867cc946
   $tc'Highest :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
@@ -3941,7 +3941,7 @@ db943cbb867be87bc42e5c300076d37c
 f10ff84c2cb60336783be94db5b1092c
   $tc'IsNot2 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("'IsNot"#) -}
-68df534a33a38012f1669b5b5fd45499
+8929c68f6b43839f2dcf1b05b5e9f103
   $tc'Lower :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
@@ -3950,7 +3950,7 @@ f10ff84c2cb60336783be94db5b1092c
                    Contract.$trModule
                    Contract.$tc'Lower1
                    0#
-                   Contract.$tc'Higher1) -}
+                   Contract.$tc'HigherThan1) -}
 25fe9a334d732bc1ea67c3f082c188a0
   $tc'Lower1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
@@ -4339,6 +4339,23 @@ e6c2020f6c559a459a850a5f82c30ee0
 a796302216c15cb1378d987ef1898197
   $tc'SetOwner2 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("'SetOwner"#) -}
+b89864fa38819f0d8a3cdfe34bdf1cc4
+  $tc'SetTimeLimit :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   9235560031306527257##
+                   16946765677645025076##
+                   Contract.$trModule
+                   Contract.$tc'SetTimeLimit1
+                   0#
+                   Contract.$tc'Decision1) -}
+959edffc60857f83e184a5d77bf6acae
+  $tc'SetTimeLimit1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Contract.$tc'SetTimeLimit2) -}
+08088df9742d299c3bb3663c9daa752c
+  $tc'SetTimeLimit2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'SetTimeLimit"#) -}
 2721913add76f87230516681d4d7d91f
   $tc'TimeLimit :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
@@ -4356,6 +4373,26 @@ a796302216c15cb1378d987ef1898197
 5e54c98fdb1180f33f22b5e2c3966516
   $tc'TimeLimit2 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("'TimeLimit"#) -}
+f783f057c8224aa5424d8e2c795b8c19
+  $tc'TimeLimitSet :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   15216673228104378375##
+                   6600187775701493772##
+                   Contract.$trModule
+                   Contract.$tc'TimeLimitSet2
+                   0#
+                   Contract.$tc'TimeLimitSet1) -}
+7e7ba1f87dffa8c6921f0a6316d5297d
+  $tc'TimeLimitSet1 :: GHC.Types.KindRep
+  {- HasNoCafRefs, Strictness: m4, Inline: [~] -}
+7526ff707a93efecf7ef98f5088d750c
+  $tc'TimeLimitSet2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Contract.$tc'TimeLimitSet3) -}
+812f4db068d7a83b2c0cff23a0b91d05
+  $tc'TimeLimitSet3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'TimeLimitSet"#) -}
 0079e05c9c5fa4516449bafec01175b9
   $tc'TimesUp :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
@@ -5426,7 +5463,7 @@ dde6b5fbdab3609606a6d49674ee186c
     -> Data.Map.Internal.Map GHC.Types.Int a1
     -> Data.Map.Internal.Map GHC.Types.Int a1
   {- Arity: 2, Strictness: <L,U><S,1*U>, Inline: [0] -}
-07b1a3699d3728f9a0c6babe583ee249
+c7f35ee7dd6587d5a5ab40fc7d670ef7
   $wevalC ::
     Contract.Input
     -> Contract.Contract
@@ -5450,7 +5487,7 @@ f6a8901332f67379735ddb3f91784585
     -> Data.Map.Internal.Map GHC.Types.Int Contract.Action
     -> GHC.Prim.Int#
   {- Arity: 2, HasNoCafRefs, Strictness: <S,U><S,U>, Inline: [0] -}
-c68027e6b2ffa61f5a23191ed10fb69f
+7d2a63a3255706dc357bcb585448babb
   $wloopPayees ::
     [GHC.Base.String]
     -> GHC.Types.Double -> (# Contract.Output, [Contract.Output] #)
@@ -5472,7 +5509,7 @@ c755878924420b840c78a963ae8264f8
   type Address = GHC.Base.String
 64f0a15067a74817abca84a21b5412ad
   data CheckState = AlreadyJoined | AlreadyFinished
-6a273a1536fb3d1fc790e24ac714826d
+287e4fefef54359a2ef6640bd806c459
   data Contract
     = End
     | When Contract.Parameter Contract.Contract
@@ -5504,27 +5541,28 @@ d7a811d2895b852f99b9ef243a37131f
   type Decision = Contract.Address
 0b21adb2a89b504e89e7a017ffaa2bf4
   type Ether = GHC.Types.Double
-d419b1d410a90a0c7bf2c9be57e6335d
+6494ca9cca0b2983d715bc7bbefcaff4
   data Input
     = CashInp Contract.Address Contract.Ether
     | Decision GHC.Types.Int
     | SetOwner Contract.Address
     | SetBeneficary Contract.Address
+    | SetTimeLimit GHC.Types.Int
     | WithdrawEther Contract.Input Contract.Parameter
     | Empty
-aada6366b2c524a2787888a895e6ee1a
+b24257cac3f4075ae4e1069ca66664c3
   data InputCondition
     = Min Contract.Ether
     | Max Contract.Ether
     | Equal Contract.Ether
-    | Higher GHC.Base.String
+    | HigherThan GHC.Base.String
     | Lower GHC.Base.String
     | NoLimit
 571750549f645a1584f0a6d855eab0b9
   data Modifier = OnlyOwner | NotOwner
-19caed1a49e6925229036d4da0f1ef3d
+e16973a08e39373162ebd4291fad6da4
   type OP = [Contract.Output]
-fa247b76781f0c901173b12215a6771f
+a1cd38e423bcb4467209bf4f2c48cd4e
   data Output
     = Null
     | CommitFail Contract.Action
@@ -5533,6 +5571,7 @@ fa247b76781f0c901173b12215a6771f
     | SendSuccess Contract.Action
     | OwnerSet Contract.Address
     | BeneficiarySet Contract.Address
+    | TimeLimitSet GHC.Types.Int
     | WithdrawPass [Contract.Action]
     | WithdrawFail [Contract.Action]
     | Message GHC.Base.String
@@ -5693,7 +5732,7 @@ d993594dcad27f3fe0cb1d7871ebbe0e
                 (\ (ds :: Contract.ContractState) ->
                  case ds of wild { Contract.ContractState ds1 ds2 ds3 ds4 ds5 ->
                  ds3 }) -}
-45efd299686f36c0a568edd7e4b715b1
+7e9b7bfe56074b9fcf56236f9a2c1323
   evalC ::
     Contract.Input
     -> Contract.Contract
@@ -5718,11 +5757,11 @@ d993594dcad27f3fe0cb1d7871ebbe0e
                         w3
                         w4 of ww { (#,,,#) ww1 ww2 ww3 ww4 ->
                  (ww1, ww2, ww3, ww4) }) -}
-83a52a52d537366145d5bb3984ea0db9
+4557a85bfc815157c5e6f01c4ec3fbc7
   evalInput ::
     Contract.InputCondition
     -> Contract.ContractState -> Contract.Ether -> GHC.Types.Bool
-  {- Arity: 3, Strictness: <S,1*U><L,U(U,A,A,A,A)><L,1*U(U)>,
+  {- Arity: 3, Strictness: <S,1*U><L,1*U(U,A,A,A,A)><L,1*U(U)>,
      Unfolding: (\ (ds :: Contract.InputCondition)
                    (const :: Contract.ContractState)
                    (inp :: Contract.Ether) ->
@@ -5730,36 +5769,43 @@ d993594dcad27f3fe0cb1d7871ebbe0e
                    Contract.Min m -> GHC.Classes.$fOrdDouble_$c>= inp m
                    Contract.Max m -> GHC.Classes.$fOrdDouble_$c<= inp m
                    Contract.Equal m -> GHC.Classes.eqDouble inp m
-                   Contract.Higher str
-                   -> case inp of wild1 { GHC.Types.D# x ->
-                      case Contract.$wfindAtIndex
-                             (GHC.Types.:
-                                @ GHC.Types.Int
-                                (case const of wild2 { Contract.ContractState ds1 ds2 ds3 ds4 ds5 ->
-                                 case Contract.evalInput_go
-                                        (GHC.Types.[] @ GHC.Types.Int)
-                                        (GHC.Base.Nothing @ Contract.Action)
-                                        (Data.Map.Internal.$fDataMap_go
-                                           @ GHC.Types.Int
-                                           @ Contract.Action
-                                           (GHC.Types.[] @ (GHC.Types.Int, Contract.Action))
-                                           ds1) of wild3 {
-                                   [] -> Contract.evalInput2
-                                   : a ds6
-                                   -> case ds6 of wild4 {
-                                        [] -> a : ipv ipv1 -> Contract.evalInput2 } } })
-                                (GHC.Types.[] @ GHC.Types.Int))
-                             const of ww { (#,#) ww1 ww2 ->
-                      case ww1 of wild2 {
-                        Contract.Commit p m
-                        -> case ww2 of wild3 {
-                             []
-                             -> case m of wild4 { GHC.Types.D# y ->
-                                GHC.Prim.tagToEnum# @ GHC.Types.Bool (GHC.Prim.>## x y) }
-                             : ipv ipv1
-                             -> case Contract.commitAtIndex1 ret_ty GHC.Types.Bool of {} }
-                        Contract.SendOut ipv ipv1
-                        -> case Contract.commitAtIndex1 ret_ty GHC.Types.Bool of {} } } }
+                   Contract.HigherThan str
+                   -> case const of wild1 { Contract.ContractState ds1 ds2 ds3 ds4 ds5 ->
+                      case ds1 of wild2 {
+                        Data.Map.Internal.Bin dt ds6 ds7 ds8 ds9
+                        -> case dt of wild3 {
+                             DEFAULT
+                             -> case inp of wild4 { GHC.Types.D# x ->
+                                case Contract.$wfindAtIndex
+                                       (GHC.Types.:
+                                          @ GHC.Types.Int
+                                          (case Contract.evalInput_go
+                                                  (GHC.Types.[] @ GHC.Types.Int)
+                                                  (GHC.Base.Nothing @ Contract.Action)
+                                                  (Data.Map.Internal.$fDataMap_go
+                                                     @ GHC.Types.Int
+                                                     @ Contract.Action
+                                                     (GHC.Types.[]
+                                                        @ (GHC.Types.Int, Contract.Action))
+                                                     wild2) of wild5 {
+                                             [] -> Contract.evalInput2
+                                             : a ds10
+                                             -> case ds10 of wild6 {
+                                                  [] -> a : ipv ipv1 -> Contract.evalInput2 } })
+                                          (GHC.Types.[] @ GHC.Types.Int))
+                                       wild1 of ww { (#,#) ww1 ww2 ->
+                                case ww1 of wild5 {
+                                  Contract.Commit p m
+                                  -> case ww2 of wild6 {
+                                       []
+                                       -> case m of wild7 { GHC.Types.D# y ->
+                                          GHC.Prim.tagToEnum# @ GHC.Types.Bool (GHC.Prim.>## x y) }
+                                       : ipv ipv1
+                                       -> case Contract.commitAtIndex1 ret_ty GHC.Types.Bool of {} }
+                                  Contract.SendOut ipv ipv1
+                                  -> case Contract.commitAtIndex1 ret_ty GHC.Types.Bool of {} } } }
+                             0# -> GHC.Types.True }
+                        Data.Map.Internal.Tip -> GHC.Types.True } }
                    Contract.Lower ipv -> Contract.evalInput1
                    Contract.NoLimit -> GHC.Types.True }) -}
 de5b7fdfe103fc8923db98040535fda9
@@ -5775,7 +5821,7 @@ de5b7fdfe103fc8923db98040535fda9
     -> [(GHC.Types.Int, Contract.Action)]
     -> [GHC.Types.Int]
   {- Arity: 3, Strictness: <L,U><L,1*U><S,1*U> -}
-db9665ac9fdbfbb9f348bf3b9605c5e9
+3da594790d3dcdb81880e82af56b8b79
   evalParam ::
     Contract.Contract
     -> Contract.ParamState
@@ -5812,14 +5858,7 @@ db9665ac9fdbfbb9f348bf3b9605c5e9
                            case ds3 of wild3 { GHC.Types.I# x ->
                            case x of wild4 {
                              DEFAULT -> GHC.Types.False 0# -> GHC.Types.True } } }
-                        Contract.Send param c1
-                        -> case wild of wild2 {
-                             DEFAULT -> Contract.evalParam1
-                             Contract.Decision dec
-                             -> case pst of wild3 { Contract.ParamState ds1 ds2 ds3 ->
-                                case ds3 of wild4 { GHC.Types.I# x ->
-                                case x of wild5 {
-                                  DEFAULT -> GHC.Types.False 0# -> GHC.Types.True } } } }
+                        Contract.Send param c1 -> GHC.Types.True
                         Contract.Withdraw c1
                         -> case wild of wild2 {
                              DEFAULT -> Contract.evalParam1
@@ -5860,40 +5899,34 @@ db9665ac9fdbfbb9f348bf3b9605c5e9
                                                of {} } } } } } }
                    Contract.CashInp address money
                    -> case pst of wild1 { Contract.ParamState ds1 ds2 ds3 ->
-                      case ds3 of wild2 { GHC.Types.I# x ->
-                      case x of wild3 {
-                        DEFAULT -> GHC.Types.False
-                        0#
-                        -> case ds2 of wild4 { GHC.Types.D# x1 ->
-                           case GHC.Prim.tagToEnum#
-                                  @ GHC.Types.Bool
-                                  (GHC.Prim.==## x1 0.0##) of wild5 {
-                             GHC.Types.False
+                      case ds2 of wild2 { GHC.Types.D# x ->
+                      case GHC.Prim.tagToEnum#
+                             @ GHC.Types.Bool
+                             (GHC.Prim.==## x 0.0##) of wild3 {
+                        GHC.Types.False
+                        -> case const of wild4 { Contract.ContractState ds4 ds5 ds6 ds7 ds8 ->
+                           case ds6 of wild5 { GHC.Types.D# x1 ->
+                           case money of wild6 { GHC.Types.D# y ->
+                           GHC.Prim.tagToEnum#
+                             @ GHC.Types.Bool
+                             (GHC.Prim.<=## (GHC.Prim.+## x1 y) x) } } }
+                        GHC.Types.True
+                        -> case ds1 of wild4 { GHC.Types.I# x1 ->
+                           case x1 of wild5 {
+                             DEFAULT
                              -> case const of wild6 { Contract.ContractState ds4 ds5 ds6 ds7 ds8 ->
-                                case ds6 of wild7 { GHC.Types.D# x2 ->
-                                case money of wild8 { GHC.Types.D# y ->
-                                GHC.Prim.tagToEnum#
-                                  @ GHC.Types.Bool
-                                  (GHC.Prim.<=## (GHC.Prim.+## x2 y) x1) } } }
-                             GHC.Types.True
-                             -> case ds1 of wild6 { GHC.Types.I# x2 ->
-                                case x2 of wild7 {
-                                  DEFAULT
-                                  -> case const of wild8 { Contract.ContractState ds4 ds5 ds6 ds7 ds8 ->
-                                     case ds4 of wild9 {
-                                       Data.Map.Internal.Bin dt ds9 ds10 ds11 ds12
-                                       -> GHC.Prim.tagToEnum#
-                                            @ GHC.Types.Bool
-                                            (GHC.Prim.<# (GHC.Prim.+# dt 1#) wild7)
-                                       Data.Map.Internal.Tip
-                                       -> GHC.Prim.tagToEnum#
-                                            @ GHC.Types.Bool
-                                            (GHC.Prim.<# 1# wild7) } }
-                                  0# -> GHC.Types.True } } } } } } } }) -}
+                                case ds4 of wild7 {
+                                  Data.Map.Internal.Bin dt ds9 ds10 ds11 ds12
+                                  -> GHC.Prim.tagToEnum#
+                                       @ GHC.Types.Bool
+                                       (GHC.Prim.<# (GHC.Prim.+# dt 1#) wild5)
+                                  Data.Map.Internal.Tip
+                                  -> GHC.Prim.tagToEnum# @ GHC.Types.Bool (GHC.Prim.<# 1# wild5) } }
+                             0# -> GHC.Types.True } } } } } }) -}
 752fc597243e642af7039ec68570b2c1
   evalParam1 :: GHC.Types.Bool
   {- Strictness: x -}
-8ac6827aa1b67d37c52d4b77d99b963a
+8b228588debde09b0ad0dfecbb344bc4
   evalSend ::
     Contract.SendCondition
     -> Contract.ContractState -> Contract.Input -> [Contract.Address]
@@ -6009,7 +6042,7 @@ d2b58392d2c862e22f194bb862693132
                 (\ (w :: [GHC.Types.Int]) (w1 :: Contract.ContractState) ->
                  case Contract.$wfindAtIndex w w1 of ww { (#,#) ww1 ww2 ->
                  GHC.Types.: @ Contract.Action ww1 ww2 }) -}
-7147844b4eccec33e51b59a5cc375805
+d79e16e592570d1a01c4c02cbbdb7046
   flatten :: [a] -> a
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: InlineRule (1, True, False)
@@ -6019,7 +6052,7 @@ d2b58392d2c862e22f194bb862693132
                    : a1 ds1
                    -> case ds1 of wild1 {
                         [] -> a1 : ipv ipv1 -> Contract.flatten1 @ a GHC.Prim.void# } }) -}
-a23310f748eb1a8bb9f6058e22585f1d
+d9d05ec18a551320fe3d41d6ac18d3a5
   flatten1 :: GHC.Prim.Void# -> a
   {- Arity: 1, Strictness: <B,A>x, Inline: [0],
      Unfolding: InlineRule (1, True, True)
@@ -6028,10 +6061,10 @@ a23310f748eb1a8bb9f6058e22585f1d
                    @ 'GHC.Types.LiftedRep
                    @ a
                    Contract.flatten2) -}
-c68d5b0e6346392197c0a818ca1d8c0f
+07c4a8d7ea112cc91d972aca2abcd71c
   flatten2 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
-     Unfolding: ("src\\Contract.hs:270:1-15|function flatten"#) -}
+     Unfolding: ("src\\Contract.hs:284:1-15|function flatten"#) -}
 511c8ae8533d7c636f863c40a7ace79d
   getAddress :: [Contract.Action] -> [Contract.Address]
   {- Arity: 1, Strictness: <S,1*U> -}
@@ -6091,7 +6124,7 @@ bd801adce405135a4f13aee00a46315d
   intialDays :: Contract.Parameter
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (Contract.Days Contract.$fShowAction4) -}
-4f131e1eaa2d40ee17222b93f4c011db
+c6f3ac894c690669e8eef9208b35d8db
   loopPayees :: [GHC.Base.String] -> GHC.Types.Double -> Contract.OP
   {- Arity: 2, Strictness: <S,1*U><L,U>m2, Inline: [0],
      Unfolding: InlineRule (2, True, False)
@@ -6123,7 +6156,7 @@ fee12f6b198397030d8029a4ff0c6ed2
                         payees
                         0# of ww2 { DEFAULT ->
                  GHC.Types.D# (GHC.Prim.int2Double# ww2) }) -}
-5eb32a0026b1bb77bdb7b0cb3b362bf8
+087020b765956ef75cb71216beb7fe80
   run ::
     Contract.Contract
     -> Contract.Input

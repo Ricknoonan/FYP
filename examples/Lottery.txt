@@ -1,3 +1,3 @@
-function join until people 2 cashin equal 1 unless alreadyjoined
+Function "join" =  Until People 2, Unless AlreadyJoined, CommitEther Equal 1
 
-function selectwinner send random all 
+Function "selectwinner" = Send Random All 

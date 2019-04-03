@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2019-04-02 22:38:56.9809451 UTC
+2019-04-03 19:01:43.6150074 UTC
 
 interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:Auction 8022
-  interface hash: c76bafa6c1bbd6d4eb795bb376b8ef6b
-  ABI hash: 7f2b79921618545d196b90acc60ebf2c
+  interface hash: f9f68c42d5c4a8492bdae90e0f5e0e5c
+  ABI hash: b7fe92bc0d415f25213514d425c4be09
   export-list hash: 2d23523b168327bb9e63db2342213c96
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 116d747c6d2286eaf4ade378327fec2c
@@ -37,31 +37,31 @@ family instance modules: base-4.10.1.0:Control.Applicative
                          base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
                          base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
                          containers-0.5.10.2:Data.Set.Internal
-import  -/  Contract 3adff78d8d624d3cc0276069af32a818
-  exports: 6627bdebaae646ad278a48bf11de3eed
+import  -/  Contract aaab57092ce6d0462b266ee87887b189
+  exports: 18280b7c07d72ea56b802b842c8c508a
   Address 274cce099d647331940d67e560707969
   All 7ed62f24e01111c319fcab1b5619f4c7
   AlreadyFinished f1e60aced5724c11770392685320875d
   AmountIn 42b4879f0298b537d382f2840bdd4917
   Beneficiary eb11561124df885f4b3461cdb529790f
-  Contract 6a273a1536fb3d1fc790e24ac714826d
-  End fb5e134afd8a0aae3eed01476f1becc6
-  Higher 0f671eff55f2b25e820c5d4c414d96e6
+  Contract 287e4fefef54359a2ef6640bd806c459
+  End 0719f5aa24d0869f683a0681870a0300
+  HigherThan d8b884c742acc3f50a2190305d6c17f4
   TimeLimit 026d60b25bf41af7b4a95e86076d6c0f
   TimesUp 599c001e496166b967040765c4c7fc8f
   ToBeneficiary 04143c1d13559f0ebba25b6b1d0b087f
-import  -/  ContractClass c019de4150eee4fa1bd790841434c04b
+import  -/  ContractClass 05cba93360fc1b4e99f4dda6413fd294
   exports: f8618b225029ed238f0e2e77b83b442c
-  addTo 187273fd0ca2a2dee68fffcdea54624b
-  commitEther cf6afc8ca078b0feb82e9156ab4db610
-  constructor 28d3459dc94b6e90db0e02c249bd4df4
-  from e6c1e2470f4794364f9de2c7ee67e0a7
-  function eadd38a47e039e87bf903e6709f5b4f7
-  send 87a27eda10d1946b5c0375f8b7b14285
-  set fd12ee1189eace91e8702c09686b380d
-  unless 995558223913aa54262e6bcf07804daa
-  until 49f2764be0ae98ed41e8e15a9dda3840
-  when 39e8bc159535b1e87abbde23e8f58441
+  addTo 98821ddb27d569efc156c299e202252e
+  commitEther b13c109c1640abb065f5fe09ea527260
+  constructor 383de2ac1e04f79b6e821e759c9d5acf
+  from 4d04723c283fcd7fcc0aaa8348856624
+  function 698ba23e57da561885c1d1d5e28cc3d2
+  send 22e62acde99053180b9481729fbed520
+  set 6b3b8c82feb082eef4e645d11a1266f6
+  unless 83cdf971a943dcac9a8daa247ca50e83
+  until fa4f477cdce14f169d00733b8cdbf7a1
+  when afacd71dde8a8af1cb29ce7b95b714fe
 import  -/  base-4.10.1.0:Prelude a93a9400cc0c816c2ee5f39399baa7a0
 588e6af8fbe455f652de6f9638b6a2a6
   $trModule :: GHC.Types.Module
@@ -84,44 +84,44 @@ eca3a1f2c70202b400fbd670afc3f374
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("FYP-0.1.0.0-DB97z4OHGdmISridARSpDG"#) -}
-12d2a0c3848daca71c1a2bc9192d6ae3
+99b0590672896b917d5aae5a901d60cd
   auction :: Contract.Contract
   {- Strictness: m14,
      Unfolding: (Contract.Constructor Auction.auction1) -}
-7c4cd3af06d9868d965d95e1cb4eeb74
+bddc97e4cd34ac67ec887176eb4c8d17
   auction1 :: Contract.Contract
   {- Strictness: m13,
      Unfolding: (Contract.Set Contract.TimeLimit Auction.auction2) -}
-5dfd879e58b23d5b4eff55ad22cf3102
+624e1b51e4c4b31bc5aee525514b0537
   auction2 :: Contract.Contract
   {- Strictness: m13,
      Unfolding: (Contract.Set
                    Contract.Beneficiary
                    Auction.takeCashOut) -}
-ccf7e0b8533901964d2ee41593c0f4d9
+9b66b6487231ab47c6970b1dde933970
   endAuction :: Contract.Contract
   {- Unfolding: (case GHC.Base.eqString
                         Auction.endAuction_s
                         (GHC.Types.[] @ GHC.Types.Char) of wild {
                    GHC.Types.False -> Auction.endAuction1
                    GHC.Types.True -> ContractClass.function1 }) -}
-635199b43e12f3e284393536391bde98
+f754bd17d14dbf7722ba2051bf3ec396
   endAuction1 :: Contract.Contract
   {- Strictness: m11,
      Unfolding: (Contract.Function
                    Auction.endAuction_s
                    Auction.endAuction2) -}
-c94bb0ae159024392ca1a0fa64c92df1
+e17a97f2be976455503db168989c51dc
   endAuction2 :: Contract.Contract
   {- Strictness: m2,
      Unfolding: (Contract.When Contract.TimesUp Auction.endAuction3) -}
-5e5b151a3133840a344b6eb0a4c68445
+694fbdebc1fb20e28653d34505889e2d
   endAuction3 :: Contract.Contract
   {- Strictness: m8,
      Unfolding: (Contract.Send
                    Auction.endAuction5
                    Auction.endAuction4) -}
-b6c31f38ac1a9adb06f9dc1ccb33993f
+661b5f63c62f0edd3e2527ab75778edb
   endAuction4 :: Contract.Contract
   {- HasNoCafRefs, Strictness: m17,
      Unfolding: (Contract.Unless
@@ -147,30 +147,30 @@ fd0b9e2a54a8e0c5921a4c8877b737aa
 3561876d7c6dc6d1859c0579c0aff2c1
   endAuction_s :: GHC.Base.String
   {- Unfolding: (GHC.CString.unpackCString# Auction.endAuction9) -}
-414db773fb604bf212703b1e2d40c9d6
+845bb2cb23e6e70bac8d54d4a4365690
   placeBid :: Contract.Contract
   {- Unfolding: (case GHC.Base.eqString
                         Auction.placeBid_s
                         (GHC.Types.[] @ GHC.Types.Char) of wild {
                    GHC.Types.False -> Auction.placeBid1
                    GHC.Types.True -> ContractClass.function1 }) -}
-df91666ef4377db2a80ed34bac3b950d
+62719cb757bc282551fe1e8af7e4cc9e
   placeBid1 :: Contract.Contract
   {- Strictness: m11,
      Unfolding: (Contract.Function
                    Auction.placeBid_s
                    Auction.placeBid2) -}
-dc28a1268a6d90e466aa76f571b19d8d
+509a72148c61b4b135ff00e1891ba2c0
   placeBid2 :: Contract.Contract
   {- Strictness: m5,
      Unfolding: (Contract.Until Contract.TimesUp Auction.placeBid3) -}
-e0c3e8af40c485657c22fcbeaedc3014
+bdf3039c086873bef8a2cbd37ed9a9a1
   placeBid3 :: Contract.Contract
   {- Strictness: m6,
      Unfolding: (Contract.CommitEther
                    Auction.placeBid7
                    Auction.placeBid4) -}
-d6c7ddc3276654c1f1e09bdd294d9050
+16ac9a5245fc737375e76859e28ca4fe
   placeBid4 :: Contract.Contract
   {- Strictness: m15,
      Unfolding: (Contract.AddTo Auction.placeBid5 Auction.endAuction) -}
@@ -180,36 +180,36 @@ a72029069ec94025acfb4c62a2017560
 da02e0c4661df6d6fc8ae7ad44e93017
   placeBid6 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("bid"#) -}
-7ce19c523539e185d5af00db800217bc
+900af5abb46fb98afe2e487bb854ead9
   placeBid7 :: Contract.InputCondition
   {- Strictness: m4,
-     Unfolding: (Contract.Higher Auction.endAuction7) -}
+     Unfolding: (Contract.HigherThan Auction.endAuction7) -}
 87433157c9cce6478ea16f9e958cf11f
   placeBid8 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("placeBid"#) -}
 b749efdc7074487c8be3dab9e35540b0
   placeBid_s :: GHC.Base.String
   {- Unfolding: (GHC.CString.unpackCString# Auction.placeBid8) -}
-7d50c7330a5bbf704af100d32dec95d0
+6a56384992194ef6bca954d1ddb44a9f
   takeCashOut :: Contract.Contract
   {- Unfolding: (case GHC.Base.eqString
                         Auction.takeCashOut_s
                         (GHC.Types.[] @ GHC.Types.Char) of wild {
                    GHC.Types.False -> Auction.takeCashOut1
                    GHC.Types.True -> ContractClass.function1 }) -}
-0db486473be0049d76923a5085940c6d
+badce9e09faa2f52ffaae9d5ce875485
   takeCashOut1 :: Contract.Contract
   {- Strictness: m11,
      Unfolding: (Contract.Function
                    Auction.takeCashOut_s
                    Auction.takeCashOut2) -}
-de9cbc3953ae137de5716d34c299129f
+10fa10a8091b59c2bb532aa72057d248
   takeCashOut2 :: Contract.Contract
   {- Strictness: m8,
      Unfolding: (Contract.Send
                    Auction.takeCashOut4
                    Auction.takeCashOut3) -}
-9fac582213aaa1af3b32578fd26165f6
+7757b903a58f26e265e41867802afede
   takeCashOut3 :: Contract.Contract
   {- Strictness: m16,
      Unfolding: (Contract.From Auction.placeBid5 Auction.placeBid) -}

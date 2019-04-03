@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2019-04-02 22:44:40.5913598 UTC
+2019-04-03 21:11:09.2966605 UTC
 
 interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:Simulate 8022
-  interface hash: ba43b33b6f3b9f51aab3f81f29921d4c
-  ABI hash: abf60e6668a276b72fa385bd0e96def5
+  interface hash: 262b7212f6254595d640512ef52dee7a
+  ABI hash: 3b6fcf0ac75ef8c6d0723b537c0d8f1e
   export-list hash: f14883f128629940d4c0dac6b54bc48e
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 116d747c6d2286eaf4ade378327fec2c
@@ -44,47 +44,51 @@ family instance modules: base-4.10.1.0:Control.Applicative
                          base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
                          base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
                          containers-0.5.10.2:Data.Set.Internal
-import  -/  Contract 3adff78d8d624d3cc0276069af32a818
-  exports: 6627bdebaae646ad278a48bf11de3eed
+import  -/  Contract 825040171bf0f5fba9e4be553cd25cfc
+  exports: 18280b7c07d72ea56b802b842c8c508a
   Action 573acde020f1111cee41e244e1529314
-  AddTo 16a4ab257d0ac0e23a16dc86c22a0ef6
+  AddTo f8a6eb9a21f4ff519be304dfb9e616ed
+  Address 274cce099d647331940d67e560707969
   All 7ed62f24e01111c319fcab1b5619f4c7
   AlreadyJoined aeedf90b74334a296594eef2c59c7f5b
   Amount 341537ce0e00a778849a9c7693f44f64
   AmountIn 42b4879f0298b537d382f2840bdd4917
   Beneficiary eb11561124df885f4b3461cdb529790f
-  CashInp 0bbd77e8f29361b92b3908de7f1d4f09
-  CommitEther 5b77c1558142d855f930d294dab693e9
-  Constructor 99fe41f1b0fc9b6aa31d1cbb0e06ed90
-  Contract 6a273a1536fb3d1fc790e24ac714826d
+  CashInp 7b620fb3f177d78b4118f2ab46172f82
+  CommitEther 0d03bba4243efc9d4d9f7455424356ba
+  Constructor a194b2183d57d3e500d8bc5b6ffdb82f
+  Contract 287e4fefef54359a2ef6640bd806c459
   ContractOwner 4cc38e0c26ad3eff8ac162cc56cf12ea
   ContractState d993594dcad27f3fe0cb1d7871ebbe0e
-  Decision 996599e3d4623ced631d6754e8ded36c
-  Empty 2a4ca97bf158ec44c34386498fc8b3f4
-  End fb5e134afd8a0aae3eed01476f1becc6
-  Equal 95e0a0066af32998c0cf43396d04c5f7
+  Decision 6320f8845499efbf88f714390776fb06
+  Empty 9ad8f2be369b1716cb52d35ff988b444
+  End 0719f5aa24d0869f683a0681870a0300
+  Equal b97b2f5d6d2244eeef6c14a019ad4be1
   Ether 0b21adb2a89b504e89e7a017ffaa2bf4
-  Function 4e599cfb54a2849bddf328a3f736995e
-  Higher 0f671eff55f2b25e820c5d4c414d96e6
-  Max c603297e7bdc865c0c8c6676020f4b66
-  Min ea48a0d8d0dee2400a7ff82ae76c9809
-  NoLimit 8d8c332b294747195083f67458a45487
-  OP 19caed1a49e6925229036d4da0f1ef3d
-  Output fa247b76781f0c901173b12215a6771f
+  Function d013115f82f58820e9684353a130163f
+  HigherThan d8b884c742acc3f50a2190305d6c17f4
+  Max 5ba1e7c072cdead3f63ecbb4e2ff59d6
+  Min 5c8a02d84ec93844fd58f78cc2be20b2
+  NoLimit 12be2f3887c1a4bc4e620de686b37f4f
+  OP e16973a08e39373162ebd4291fad6da4
+  Output a1cd38e423bcb4467209bf4f2c48cd4e
   ParamState 5038f5929ca2fe72716b18a20a8dd14a
   People 58fa935abece96f6a2aeac16f6845fe2
   Random 9d823bffe8ffeab5658ef82f7465f55a
-  Send 28d2aafad88ccc1671895cb86529485e
-  Set c1f42170922b3443ea424b5783f82bca
-  SetBeneficary cdbeb3f905e56f1e50ba8a83997343ca
-  SetOwner 9a9bc3449aa41aef9f5b3df0faa9c533
+  Send 5c21d0d64f6594af25a398081624747c
+  Set 517a19c5752254154d838f984f7e575c
+  SetBeneficary 7acfb53122fb76d1678dc938741b8787
+  SetOwner 872b9b7c338163e39e8caa65469b5396
+  SetTimeLimit 23ff30bfad16375fbbd329c77a036cac
+  TimeLimit 026d60b25bf41af7b4a95e86076d6c0f
+  TimesUp 599c001e496166b967040765c4c7fc8f
   ToBeneficiary 04143c1d13559f0ebba25b6b1d0b087f
-  Unless c573235331b9383f2ce8592f28846d00
-  Until e79ecca91a56d0fec1147be4486db3c3
-  When 790e695a1022b48ea3a3e121921a3368
+  Unless 416f1226644b4b57a375517a044c6355
+  Until 20a91bca68b0897f6bcf9ca312769a25
+  When fa475a06038622bbaa39698ae3663c79
   Winner 02c1e25e37e3f641368a838ec33573b7
-  Withdraw 4f78ed566180045f6ae2f547ed29a830
-  WithdrawEther 3dba3e0dbe9948feac071c43053d2476
+  Withdraw 84bb4f90eebe36456f1bed17322c50a5
+  WithdrawEther a3ab8d77cc660678d6369a2a0d513123
   commits d993594dcad27f3fe0cb1d7871ebbe0e
   emptyCState e3e5ece2677bed7ac50c1cb811870ecf
   emptyPState 0a16d5a2688e85c31df1e5fc074d30ba
@@ -92,11 +96,11 @@ import  -/  Contract 3adff78d8d624d3cc0276069af32a818
   findAtIndex d2b58392d2c862e22f194bb862693132
   getOneAddress 6200b2f415afbbab0c7798468cab7df5
   owner d993594dcad27f3fe0cb1d7871ebbe0e
-  run 5eb32a0026b1bb77bdb7b0cb3b362bf8
+  run 087020b765956ef75cb71216beb7fe80
   sizeCommits 4689edf0ad39b85249c536c7145fc54d
   withdrawSize 0d9846020151632be4a9719a4e7d7e50
   withdrawls d993594dcad27f3fe0cb1d7871ebbe0e
-import  -/  ContractClass c019de4150eee4fa1bd790841434c04b
+import  -/  ContractClass 05cba93360fc1b4e99f4dda6413fd294
   exports: f8618b225029ed238f0e2e77b83b442c
 import  -/  base-4.10.1.0:GHC.Base 8f949d675e49677c272f02ab7a85fe18
 import  -/  base-4.10.1.0:GHC.Num bee60808f8127e4cda82dd422aa1c6c0
@@ -139,7 +143,7 @@ e7d1e1829fde28cad4ea9bd2f9d8311a
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("FYP-0.1.0.0-DB97z4OHGdmISridARSpDG"#) -}
-50612d02402d684e4e69d65111b6d42b
+1d26e458c3f887627268b3678913a55b
   $wcontractMember ::
     GHC.Prim.Int#
     -> Contract.Contract
@@ -216,7 +220,7 @@ e7d1e1829fde28cad4ea9bd2f9d8311a
   $wpoly_go13 ::
     GHC.Prim.Int# -> Data.Map.Internal.Map GHC.Types.Int a -> a
   {- Arity: 2, Strictness: <S,U><S,1*U>, Inline: [0] -}
-97db47c9d2cac17d0a679248e801c9fe
+1304f32695e57c4a69953b42baf57fca
   contractMember ::
     GHC.Types.Int
     -> Contract.Contract
@@ -233,7 +237,7 @@ e7d1e1829fde28cad4ea9bd2f9d8311a
                  ->_R <Contract.ParamState>_R
                  ->_R <Contract.ContractState>_R
                  ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-f8aaae7622e89e18cd92c754c9af8aa9
+32a2b55b6a117ebe14ed38951125e239
   contractMember1 ::
     GHC.Types.Int
     -> Contract.Contract
@@ -263,7 +267,7 @@ c4a0177e1a00db00d7384913ea72b18e
 a31d71a36949ad58e3861888a5769b87
   contractMember4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("Wallet "#) -}
-87c28e6ffe16fadb653371d029804b4d
+dc439fffd079f5d98861cb416b62f6c3
   contractMember5 ::
     Contract.Contract
     -> Contract.ParamState
@@ -343,7 +347,7 @@ ea19403b33273faa62862d66cdc21c6a
                 (\ (w :: GHC.Types.Int) (w1 :: Contract.ContractState) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  Simulate.$wgetWithdrawActionHelper ww1 w1 }) -}
-f97a01e6a0ecbb18eff8b03ee5558baf
+15b9c7fa2f1233d68ea75806f92a9e26
   loop ::
     Contract.Contract
     -> Contract.ParamState -> Contract.ContractState -> GHC.Types.IO ()
@@ -356,7 +360,7 @@ f97a01e6a0ecbb18eff8b03ee5558baf
                  ->_R <Contract.ParamState>_R
                  ->_R <Contract.ContractState>_R
                  ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-15411b52e0268b9da3af5c85450a834f
+aa837fdc2f930384690105c3bcbb6cf0
   niceOutput :: Contract.OP -> Contract.Output
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: InlineRule (1, True, False)
@@ -375,11 +379,11 @@ f97a01e6a0ecbb18eff8b03ee5558baf
                              @ 'GHC.Types.LiftedRep
                              @ Contract.Output
                              Simulate.niceOutput1 } }) -}
-4183c77d0da5c6d0af2980f96631800b
+df0c3421ed4d3892c083b6743f90efa3
   niceOutput1 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
-     Unfolding: ("src\\Simulate.hs:220:1-18|function niceOutput"#) -}
-a14492285f4ba0897acc3a0573bcb21f
+     Unfolding: ("src\\Simulate.hs:254:1-18|function niceOutput"#) -}
+afcf219866630ff2b3aa7f388b00f975
   prettyPrint ::
     Contract.OP -> Contract.ContractState -> GHC.Types.IO ()
   {- Arity: 3, Strictness: <L,1*U><L,U(U,U,1*U(U),1*U,A)><S,U>,
@@ -389,21 +393,21 @@ a14492285f4ba0897acc3a0573bcb21f
                 (<Contract.OP>_R
                  ->_R <Contract.ContractState>_R
                  ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-a8b4b29afce50fe7e52301059d4ce323
+f4b51410130d51f04ed7a01fe2bb2142
   prettyPrint1 ::
     Contract.OP
     -> Contract.ContractState
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 3, Strictness: <L,1*U><L,U(U,U,1*U(U),1*U,A)><S,U> -}
-74d2fa1a1f7d9dcacbb3fd808b117939
+6fecf9ad04bb5b697880cc8f5c1425e3
   simulate :: Contract.Contract -> GHC.Types.IO ()
   {- Arity: 2, Strictness: <L,U><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Simulate.simulate1
                   `cast`
                 (<Contract.Contract>_R ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-0ff5c98e2f7ede3dad23cb3145f03ad6
+aa1ba08eeb1fea19ba9bc5ce89b8bfe5
   simulate1 ::
     Contract.Contract
     -> GHC.Prim.State# GHC.Prim.RealWorld

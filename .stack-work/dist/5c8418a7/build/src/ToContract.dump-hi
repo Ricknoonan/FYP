@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2019-04-02 22:39:02.9394161 UTC
+2019-04-03 21:28:41.2506787 UTC
 
 interface FYP-0.1.0.0-DB97z4OHGdmISridARSpDG:ToContract 8022
-  interface hash: 304e21b6efef8da5d8f579b36b1d1b86
-  ABI hash: 0fa4392bcc6a1cad60341aa3cf9f65d6
+  interface hash: 8ceadc27af649b030c9f78bc26f6a5e2
+  ABI hash: d0e999aa97ba452fb5c2dec3b425232a
   export-list hash: bb08da3308aec040f66956574d551df6
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 116d747c6d2286eaf4ade378327fec2c
@@ -55,9 +55,9 @@ family instance modules: base-4.10.1.0:Control.Applicative
                          base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
                          base-4.10.1.0:GHC.TypeNats containers-0.5.10.2:Data.Map.Internal
                          containers-0.5.10.2:Data.Set.Internal
-import  -/  Contract 3adff78d8d624d3cc0276069af32a818
-  exports: 6627bdebaae646ad278a48bf11de3eed
-  AddTo 16a4ab257d0ac0e23a16dc86c22a0ef6
+import  -/  Contract 825040171bf0f5fba9e4be553cd25cfc
+  exports: 18280b7c07d72ea56b802b842c8c508a
+  AddTo f8a6eb9a21f4ff519be304dfb9e616ed
   Address 274cce099d647331940d67e560707969
   All 7ed62f24e01111c319fcab1b5619f4c7
   AlreadyFinished f1e60aced5724c11770392685320875d
@@ -65,43 +65,44 @@ import  -/  Contract 3adff78d8d624d3cc0276069af32a818
   Amount 341537ce0e00a778849a9c7693f44f64
   AmountIn 42b4879f0298b537d382f2840bdd4917
   Beneficiary eb11561124df885f4b3461cdb529790f
-  CommitEther 5b77c1558142d855f930d294dab693e9
-  Constructor 99fe41f1b0fc9b6aa31d1cbb0e06ed90
-  Contract 6a273a1536fb3d1fc790e24ac714826d
+  CommitEther 0d03bba4243efc9d4d9f7455424356ba
+  Constructor a194b2183d57d3e500d8bc5b6ffdb82f
+  Contract 287e4fefef54359a2ef6640bd806c459
   ContractOwner 4cc38e0c26ad3eff8ac162cc56cf12ea
-  End fb5e134afd8a0aae3eed01476f1becc6
-  Equal 95e0a0066af32998c0cf43396d04c5f7
-  Error 1257c0ab9194e583a7cf3e0c28a925b4
+  End 0719f5aa24d0869f683a0681870a0300
+  Equal b97b2f5d6d2244eeef6c14a019ad4be1
+  Error 62f034ad40e7c557f73de45d8c867cd2
   Ether 0b21adb2a89b504e89e7a017ffaa2bf4
-  From 58b042125e3e48e8481018dc3bef4902
-  Function 4e599cfb54a2849bddf328a3f736995e
-  Higher 0f671eff55f2b25e820c5d4c414d96e6
-  IsNot c4b347568fe64bac16259fe0d2d2a87c
-  Max c603297e7bdc865c0c8c6676020f4b66
-  Min ea48a0d8d0dee2400a7ff82ae76c9809
-  NoLimit 8d8c332b294747195083f67458a45487
+  From e4e07f0c078e5eeabd4f8d478315871d
+  Function d013115f82f58820e9684353a130163f
+  HigherThan d8b884c742acc3f50a2190305d6c17f4
+  IsNot ec1f7280f9d2f9cb83ca6207bf925d5b
+  Max 5ba1e7c072cdead3f63ecbb4e2ff59d6
+  Min 5c8a02d84ec93844fd58f78cc2be20b2
+  NoLimit 12be2f3887c1a4bc4e620de686b37f4f
   Partial e2ab183c66ceac33454ad415753eac7a
   People 58fa935abece96f6a2aeac16f6845fe2
   Random 9d823bffe8ffeab5658ef82f7465f55a
   Rest 6c18654e3cec54a993986507415b0049
-  Send 28d2aafad88ccc1671895cb86529485e
-  Set c1f42170922b3443ea424b5783f82bca
+  Send 5c21d0d64f6594af25a398081624747c
+  Set 517a19c5752254154d838f984f7e575c
+  TimeLimit 026d60b25bf41af7b4a95e86076d6c0f
   TimesUp 599c001e496166b967040765c4c7fc8f
   ToBeneficiary 04143c1d13559f0ebba25b6b1d0b087f
   ToOwner 6311757d6519f2898a047f11d3f937d5
   TotalAmount b86eb609ab784c4d51bd731741f18eb3
   TotalReached 6b8ef10f5ac1fcaae270c76f7b82c226
-  Unless c573235331b9383f2ce8592f28846d00
-  Until e79ecca91a56d0fec1147be4486db3c3
-  When 790e695a1022b48ea3a3e121921a3368
+  Unless 416f1226644b4b57a375517a044c6355
+  Until 20a91bca68b0897f6bcf9ca312769a25
+  When fa475a06038622bbaa39698ae3663c79
   Winner 02c1e25e37e3f641368a838ec33573b7
-  Withdraw 4f78ed566180045f6ae2f547ed29a830
-import  -/  ContractClass c019de4150eee4fa1bd790841434c04b
+  Withdraw 84bb4f90eebe36456f1bed17322c50a5
+import  -/  ContractClass 05cba93360fc1b4e99f4dda6413fd294
   exports: f8618b225029ed238f0e2e77b83b442c
-import  -/  Simulate c1cb02f5da18255abd376e73e7f0532b
+import  -/  Simulate 3b6fcf0ac75ef8c6d0723b537c0d8f1e
   exports: f14883f128629940d4c0dac6b54bc48e
-import  -/  ToSolidity 37e0211be01bae37793f3309f93b5ade
-  exports: 659cba79845dfeab042bd727a60658b7
+import  -/  ToSolidity dd2136a8b752811c29ba490670ae19ee
+  exports: b2eaa5f39f173037512a6052a8a536c5
 import  -/  base-4.10.1.0:GHC.Base 8f949d675e49677c272f02ab7a85fe18
 import  -/  base-4.10.1.0:Prelude a93a9400cc0c816c2ee5f39399baa7a0
 import  -/  base-4.10.1.0:Text.Read c150617dda21a009ed26981626bd21d7
@@ -227,7 +228,7 @@ a03426cba7bcdfcb247d9ffc7474dc96
 15b963ba01b09cae8e096ec7bde429d0
   isWithdraw :: [GHC.Base.String] -> GHC.Types.Bool
   {- Arity: 1, Strictness: <S,1*U> -}
-265f6789c47e5639fc52b0b20ad14087
+8064b483b026f65f7ead7b7bd7414ca2
   patialError :: Contract.Contract
   {- Strictness: m18,
      Unfolding: (Contract.Error ToContract.patialError1) -}
@@ -239,7 +240,7 @@ feceab3261052086827eb0d8462b12cd
   patialError2 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("Number must be 0 < x > 1 for Partial"#) -}
-99e5ece20cd5d8560ee05a359d00a09d
+2d2e6bbfe6e9c1b2200fef119e4ead42
   readDataTypes :: [GHC.Base.String] -> Contract.Contract
   {- Arity: 1, Strictness: <S,1*U> -}
 fa951e9c968416a34aedc52400cc7522

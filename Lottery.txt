@@ -1,3 +1,0 @@
-function join until people 2 commitether equal 1 unless alreadyjoined
-
-function selectwinner send random all 
