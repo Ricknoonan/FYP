@@ -1,5 +1,5 @@
-constructor = set contractowner
+Constructor = Set ContractOwner
 
-function "deposit" = CommitEther nolimit, Addto "balance" 
+Function "deposit" = CommitEther NoLimit, AddTo "balance" 
 
-function "cashOut" = withdraw
+Function "withdraw" = Withdraw

@@ -1,6 +1,6 @@
 Constructor = Set TimeLimit, Set Beneficiary 
 
-Function "placeBid" = Until TimesUp, Until People 2 CommitEther HigherThan "highestBid", AddTo "bids" 
+Function "placeBid" = Until TimesUp, Until People 2, CommitEther HigherThan "highestBid", AddTo "bids" 
 
 Function "withdraw" = Send Address All From "bids" 
 
