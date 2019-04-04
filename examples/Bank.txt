@@ -1,5 +1,5 @@
 Constructor = Set ContractOwner
 
-Function "deposit" = CommitEther NoLimit, AddTo "balance" 
+Function "deposit" = CommitEther NoLimit, AddTo "balance"
 
-Function "withdraw" = Withdraw
+Function "cashOut" = Withdraw

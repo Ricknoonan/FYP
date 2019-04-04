@@ -22,10 +22,10 @@ main = do
     handle <- openFile ("examples\\" ++ fileName ++ ".txt") ReadMode
     contents <- hGetContents handle
     let cleanedContents = removePunc contents
-    let contractList = map (map toLower) (toWords cleanedContents)
+    let contractList = map (map toLower) (words cleanedContents)
     let contractType = (readDataTypes contractList)
-    putStrLn (show contractList)
-    putStrLn (show contractType)
+    --putStrLn (show contractList)
+    --putStrLn (show contractType)
     checkErrors contractType
     checkLogic contractList
     choice fileName contractType contractList
@@ -41,7 +41,7 @@ choice fileName contractType contractList = do
     input2 <- getLine
     case input2 of
         ("1") -> simulate contractType >> choice fileName contractType contractList
-        ("2") -> (toFile fileName contractType) >> putStrLn "Contract Generated Succesfully!"
+        ("2") -> (toFile fileName contractType) >> putStrLn "Contract Generated Succesfully!" >>  main
         ("3") -> main 
 
 checkErrors :: Contract -> IO ()
@@ -99,6 +99,6 @@ checkLogic s
 removePunc :: String -> String
 removePunc xs = [ x | x <- xs, not (x `elem` "(),.?!-:;\"\'") ]
 
-toWords :: String -> [String]
-toWords s = filter (\w -> w `notElem` ["they", "are", "an", "can", "there", "the","for"]) (words s)
+--toWords :: String -> [String]
+--toWords s = filter (\w -> w `notElem` ["they", "are", "an", "can", "there", "the","for"]) (words s)
         

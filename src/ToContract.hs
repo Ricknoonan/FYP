@@ -49,7 +49,7 @@ readDataTypes ("send":x:y:xs) =
         ("beneficiary") -> case y of 
             ("all") -> (Send (ToBeneficiary All) (readDataTypes xs))
             ("rest") -> (Send (ToBeneficiary Rest) (readDataTypes xs))
-            ("amountin") -> (Send (ToBeneficiary (AmountIn (getString xs))) (readDataTypes xs))
+            ("amountin") -> (Send (ToBeneficiary (AmountIn (getString xs))) (readDataTypes (y:xs)))
             ("partial")
                 | (0<(readDouble xs) && (readDouble xs)<1 ) -> (Send (ToBeneficiary (Partial (readDouble xs))) (readDataTypes xs))
                 | otherwise -> patialError
@@ -89,7 +89,7 @@ readDataTypes ("send":x:y:xs) =
 
         _ -> (Error ("Incorrect Parameter for Contract Send"))
 readDataTypes ("partial":xs) = readDataTypes xs
-readDataTypes ("amountin": xs) = readDataTypes xs
+readDataTypes ("amountin":x:xs) = readDataTypes (xs)
 readDataTypes ("until":x:y:xs) = 
     case x of 
         ("amount") 
@@ -117,7 +117,13 @@ readDataTypes ("unless":x:xs) =
         ("alreadyjoined") -> (Unless (AlreadyJoined) (readDataTypes xs))
         ("alreadyfinished") -> (Unless (AlreadyFinished)(readDataTypes xs))
         _ -> (Error ("Incorrect Parameter for Unless " ++ x))
-readDataTypes (x:xs) = readDataTypes xs
+
+readDataTypes ("=":xs) = readDataTypes xs
+
+readDataTypes (x:xs) = (Error x)
+
+
+
 getString :: [String] -> String
 getString (x:xs) = x
 
